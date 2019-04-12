@@ -3,6 +3,7 @@
 import unittest
 import checkout.Discounts
 import checkout.Items
+from checkout.Items import ScannedItem
 
 class DiscountsTest(unittest.TestCase):
 
@@ -15,6 +16,10 @@ class DiscountsTest(unittest.TestCase):
         self.cerealMarkdownValue = 0.40
         self.cerealItem = checkout.Items.Item("Cereal", 4.25)
         self.markdown = checkout.Discounts.Markdown(self.cerealItem, self.cerealMarkdownValue)
+        
+        self.scannedCereal = checkout.Items.ScannedItem(self.cerealItem)
+        
+        self.scannedItems.addScannedItem(self.scannedCereal)
 
     def tearDown(self):
         pass
@@ -29,10 +34,14 @@ class DiscountsTest(unittest.TestCase):
         markdownValue = 0.40
         cerealItem = checkout.Items.Item("Cereal", 4.25)
         aMarkdown = checkout.Discounts.Markdown(cerealItem, markdownValue)
+        self.assertEqual(aMarkdown.value, markdownValue, "Markdown value not set")
+        self.assertEqual(aMarkdown.item.name, cerealItem.name, "Markdown name set")
+
         
     def testMarkdownApplication(self):
         self.markdown.applyTo(self.scannedItems)
-
+        scannedItem = self.scannedItems.getAt(0)
+        self.assertEqual(scannedItem.getMarkdownPrice(), self.scannedCereal.getBasePrice() - self.cerealMarkdownValue, "Markdown not applied")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

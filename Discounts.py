@@ -9,4 +9,5 @@ class Discount(object):
     
 class Markdown(Discount):
     def __init__(self, item, value):
-        pass
+        self.item = item
+        self.value = value
