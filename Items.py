@@ -6,7 +6,7 @@ class Item(object):
         self.pricePerUnit = pricePerUnit
         
 class ScannedItem():
-    def __init__(self, item):
+    def __init__(self, item, quantity=1):
         self.baseItem = item
     
     def getName(self):

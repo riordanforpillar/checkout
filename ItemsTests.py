@@ -20,6 +20,10 @@ class ItemsTest(unittest.TestCase):
         self.cerealItem = checkout.Items.Item(self.cerealName, self.cerealPricePerUnit)
         self.cerealScanned = checkout.Items.ScannedItem(self.cerealItem)
 
+        self.beefName = "Beef"
+        self.beefPricePerUnit = 4.09
+        self.beefItem = checkout.Items.Item(self.beefName, self.beefPricePerUnit)
+        self.beefScanned = checkout.Items.ScannedItem(self.beefItem, 1.59)
 
         self.inventory = checkout.Items.Inventory()
         self.inventory.addItem(self.soupItem)
@@ -56,6 +60,9 @@ class ItemsTest(unittest.TestCase):
         returnedItem = self.inventory.getItemByName("Soup")
         self.assertEqual(returnedItem.name, "Soup", "Did not return Soup")
         
+    def testScannedItemByWeight(self):
+        weight = 1.09
+        weightItem = checkout.Items.ScannedItem(self.beefItem, 1.09)
 
     def testScannedBaseItemNameAndPrices(self):
         nameMessageForm = "%s not found"
