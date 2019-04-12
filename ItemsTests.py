@@ -121,7 +121,10 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(self.scannedItemContainer.getSize(), 0, "ScannedItemContainer not empty")
         
     def testScannedItemContainerGetIndex(self):
-        pass
+        aScannedItemContainer = checkout.Items.ScannedItemContainer()
+        aScannedItemContainer.addScannedItem(self.beefScanned)
+        aScannedItemContainer.addScannedItem(self.cerealScanned)
+        scannedItem = aScannedItemContainer.getAt(0)
         
     def testScannedItemContainerAdd(self):
         sizeBefore = self.scannedItemContainer.getSize()

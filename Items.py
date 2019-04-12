@@ -67,6 +67,9 @@ class ScannedItemContainer():
     def addScannedItem(self, scannedItem):
         self.itemStack.append(scannedItem)
         
+    def getAt(self, index):
+        pass
+        
     def removeLastItem(self):
         self.itemStack.pop()
     
