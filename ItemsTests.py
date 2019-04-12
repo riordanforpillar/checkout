@@ -94,6 +94,9 @@ class ItemsTest(unittest.TestCase):
     def testScannedItemContainerAdd(self):
         sizeBefore = self.scannedItemContainer.getSize()
         self.scannedItemContainer.addScannedItem(self.soupScanned)
+        sizeAfter = self.scannedItemContainer.getSize()
+        self.assertEqual(sizeAfter, sizeBefore+1, "ScannedItemContainer size not incremented")
+
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

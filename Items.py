@@ -40,13 +40,13 @@ class Inventory():
     
 class ScannedItemContainer():
     def __init__(self):
-        pass
+        self.itemStack = []
     
     def getSize(self):
-        return 0
+        return len(self.itemStack)
     
     def addScannedItem(self, scannedItem):
-        pass
+        self.itemStack.append(scannedItem)
     
 class InventoryException(Exception):
     pass
