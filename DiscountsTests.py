@@ -14,15 +14,15 @@ class DiscountsTest(unittest.TestCase):
         self.scannedItems = checkout.Items.ScannedItemContainer()
 
         self.cerealMarkdownValue = 0.40
-        self.cerealItem = checkout.Items.Item("Cereal", 4.25)
-        self.scannedCereal = checkout.Items.ScannedItem(self.cerealItem)
-        self.cerealMarkdown = checkout.Discounts.Markdown(self.cerealItem, self.cerealMarkdownValue)
+        self.quantityItem = checkout.Items.Item("Cereal", 4.25)
+        self.scannedCereal = checkout.Items.ScannedItem(self.quantityItem)
+        self.cerealMarkdown = checkout.Discounts.Markdown(self.quantityItem, self.cerealMarkdownValue)
         
         self.beefMarkdownValue = 0.1
-        self.beefWeight = 3.5
-        self.beefItem = checkout.Items.Item("Beef", 2.0)
-        self.scannedBeef = checkout.Items.ScannedWeightedItem(self.beefItem, self.beefWeight)
-        self.beefMarkdown = checkout.Discounts.Markdown(self.beefItem, self.beefMarkdownValue)
+        self.weightItemWeight = 3.5
+        self.weightItem = checkout.Items.Item("Beef", 2.0)
+        self.scannedBeef = checkout.Items.ScannedWeightedItem(self.weightItem, self.weightItemWeight)
+        self.beefMarkdown = checkout.Discounts.Markdown(self.weightItem, self.beefMarkdownValue)
         
         self.scannedItems.addScannedItem(self.scannedCereal)
         self.scannedItems.addScannedItem(self.scannedBeef)
@@ -51,13 +51,13 @@ class DiscountsTest(unittest.TestCase):
         targetCerealPrice = self.scannedCereal.getBasePrice() - self.cerealMarkdownValue
         self.assertEqual(scannedItem.getMarkdownPrice(), targetCerealPrice, "Cereal markdown not applied")
         scannedItem = self.scannedItems.getAt(1)
-        self.assertEqual(scannedItem.getMarkdownPrice(), self.scannedBeef.getBasePrice()*self.beefWeight, "Markdown misapplied")
+        self.assertEqual(scannedItem.getMarkdownPrice(), self.scannedBeef.getBasePrice()*self.weightItemWeight, "Markdown misapplied")
         
         self.beefMarkdown.applyTo(self.scannedItems)
         scannedItem = self.scannedItems.getAt(0)
         self.assertEqual(scannedItem.getMarkdownPrice(), targetCerealPrice, "Cereal markdown undone")
         scannedItem = self.scannedItems.getAt(1)
-        targetBeefPrice = (self.scannedBeef.getBasePrice()-self.beefMarkdownValue)*self.beefWeight
+        targetBeefPrice = (self.scannedBeef.getBasePrice()-self.beefMarkdownValue)*self.weightItemWeight
         self.assertEqual(scannedItem.getMarkdownPrice(), targetBeefPrice, "Beef markdown misapplied")
 
 
