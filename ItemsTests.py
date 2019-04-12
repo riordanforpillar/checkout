@@ -135,7 +135,6 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(afterSize, beforeSize-1, "Scanned item size not decremented")
 
 
-
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
