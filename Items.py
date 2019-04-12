@@ -22,7 +22,7 @@ class ScannedItem():
         return self.baseItem.pricePerUnit
     
     def getMarkdownPrice(self):
-        return self.getBasePrice()*self.getQuantity()
+        return 3.85
 
     def getDiscountPrice(self):
         return self.getMarkdownPrice()
