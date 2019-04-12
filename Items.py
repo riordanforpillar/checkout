@@ -14,6 +14,9 @@ class ScannedItem():
     
     def getBasePrice(self):
         return self.baseItem.pricePerUnit
+    
+    def getMarkdownPrice(self):
+        return self.baseItem.pricePerUnit
         
 class Inventory():
     def __init__(self):

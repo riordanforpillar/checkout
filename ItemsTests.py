@@ -52,20 +52,29 @@ class ItemsTest(unittest.TestCase):
         
     def testInventoryGet(self):
         with self.assertRaises(checkout.Items.InventoryException):
-            self.inventory.getItemByName("Cereal")
+            self.inventory.getItemByName("Nonsense Item")
         returnedItem = self.inventory.getItemByName("Soup")
         self.assertEqual(returnedItem.name, "Soup", "Did not return Soup")
         
 
-    def testScannedItemNameAndPrices(self):
-        messageForm = "%s not found"
-        testCases = [(self.scannedItem, self.soupName, self.soupPricePerUnit),\
+    def testScannedBaseItemNameAndPrices(self):
+        nameMessageForm = "%s not found"
+        priceMessageForm = "Price %f not returned"
+
+        testCases = [ (self.scannedItem,   self.soupName,   self.soupPricePerUnit),\
                       (self.cerealScanned, self.cerealName, self.cerealPricePerUnit)]
         for scanned, name, price in testCases:
-            self.assertEqual(scanned.getName(), name, messageForm %(name))
-            self.assertEqual(scanned.getBasePrice(), price, messageForm %(name))
+            self.assertEqual(scanned.getName(),      name,  nameMessageForm %(name))
+            self.assertEqual(scanned.getBasePrice(), price, priceMessageForm %(price))
 
-
+    def testScannedMarkdownPrice(self):
+        messageForm = "Markdown price %f not found"
+        
+        testCases = [ (self.scannedItem,   self.soupPricePerUnit),\
+                      (self.cerealScanned, self.cerealPricePerUnit)]
+        
+        for scanned, markdown in testCases:
+            self.assertEqual(scanned.getMarkdownPrice(), markdown, messageForm % markdown)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
