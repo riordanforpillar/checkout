@@ -18,11 +18,15 @@ class DiscountsTest(unittest.TestCase):
         self.scannedCereal = checkout.Items.ScannedItem(self.cerealItem)
         self.cerealMarkdown = checkout.Discounts.Markdown(self.cerealItem, self.cerealMarkdownValue)
         
+        self.beefMarkdownValue = 0.1
+        self.beefWeight = 3.25
         self.beefItem = checkout.Items.Item("Beef", 2.35)
-        self.scannedBeef = checkout.Items.ScannedWeightedItem(self.beefItem, 3.25)
-        self.beefMarkdown = checkout.Discounts.Markdown(self.beefItem, 0.0)
+        self.scannedBeef = checkout.Items.ScannedWeightedItem(self.beefItem, self.beefWeight)
+        self.beefMarkdown = checkout.Discounts.Markdown(self.beefItem, self.beefMarkdownValue)
         
         self.scannedItems.addScannedItem(self.scannedCereal)
+        self.scannedItems.addScannedItem(self.scannedBeef)
+
 
     def tearDown(self):
         pass
@@ -45,6 +49,9 @@ class DiscountsTest(unittest.TestCase):
         self.cerealMarkdown.applyTo(self.scannedItems)
         scannedItem = self.scannedItems.getAt(0)
         self.assertEqual(scannedItem.getMarkdownPrice(), self.scannedCereal.getBasePrice() - self.cerealMarkdownValue, "Markdown not applied")
+        
+        scannedItem = self.scannedItems.getAt(1)
+        self.assertEqual(scannedItem.getMarkdownPrice(), self.scannedBeef.getBasePrice()*self.beefWeight, "Markdown misapplied")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
