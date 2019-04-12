@@ -9,9 +9,11 @@ class Discount(object):
     
 class Markdown(Discount):
     def __init__(self, item, value):
-        self.item = item
+        self.itemtoMarkdown = item
         self.value = value
         
     def applyTo(self, scannedItems):
-        item = scannedItems.getAt(0)
-        item.markdownPrice = (self.item.pricePerUnit - self.value)*item.getQuantity()
+        for index in range(scannedItems.getSize()):
+            scannedItem = scannedItems.getAt(index)
+            if scannedItem.getName() == self.itemtoMarkdown.name:
+                scannedItem.markdownPrice = (scannedItem.getBasePrice() - self.value)*scannedItem.getTotalQuantity()

@@ -80,8 +80,6 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(self.beefScanned.getTotalQuantity(), self.beefWeight, "Weighted TotalQuantity Failed")
         self.assertEqual(self.applesScanned.getTotalQuantity(), self.applesWeight*self.applesQuantity, "Multiple Weighted TotalQuantity Failed")
 
-
-        
     def testScannedItemByWeightConstruction(self):
         weight = 1.09
         weightItem = checkout.Items.ScannedWeightedItem(self.beefItem, weight, 1)
