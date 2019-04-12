@@ -24,6 +24,10 @@ class ScannedItem():
 
     def getDiscountPrice(self):
         return self.baseItem.pricePerUnit
+    
+class ScannedWeightedItem():
+    def __init__(self, item, weight, quantity=1):
+        pass
         
 class Inventory():
     def __init__(self):
