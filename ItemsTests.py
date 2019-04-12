@@ -50,6 +50,7 @@ class ItemsTest(unittest.TestCase):
 
     def testScannedItem(self):
         scannedItem = checkout.Items.ScannedItem(self.anItem)
+        self.assertEqual(scannedItem.getName(), "Soup", "Soup not found")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

@@ -8,6 +8,9 @@ class Item(object):
 class ScannedItem():
     def __init__(self, item):
         pass
+    
+    def getName(self):
+        return "Soup"
         
 class Inventory():
     def __init__(self):
