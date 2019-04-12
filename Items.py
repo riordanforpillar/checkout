@@ -7,6 +7,8 @@ class Item(object):
         
 class ScannedItem():
     def __init__(self, item, quantity=1):
+        if type(quantity) != int:
+            raise QuantityNotIntegerException
         self.baseItem = item
         self.quantity = quantity
     
@@ -25,8 +27,9 @@ class ScannedItem():
     def getDiscountPrice(self):
         return self.baseItem.pricePerUnit
     
-class ScannedWeightedItem():
+class ScannedWeightedItem(ScannedItem):
     def __init__(self, item, weight, quantity=1):
+        super().__init__(item, quantity)
         if type(weight) != float:
             raise WeightNotFloatException
         
@@ -58,6 +61,9 @@ class ScannedItemContainer():
         self.itemStack.append(scannedItem)
     
 class InventoryException(Exception):
+    pass
+
+class QuantityNotIntegerException(Exception):
     pass
 
 class WeightNotFloatException(Exception):
