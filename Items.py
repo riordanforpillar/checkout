@@ -7,10 +7,10 @@ class Item(object):
         
 class ScannedItem():
     def __init__(self, item):
-        pass
+        self.baseItem = item
     
     def getName(self):
-        return "Soup"
+        return self.baseItem.name
     
     def getPrice(self):
         return 1.25

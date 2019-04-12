@@ -16,6 +16,12 @@ class ItemsTest(unittest.TestCase):
         self.itemPricePerUnit = 1.25
         self.anItem = checkout.Items.Item(self.itemName, self.itemPricePerUnit)
 
+        self.cerealName = "Cereal"
+        self.cerealPricePerUnit = 5.25
+        self.cerealItem = checkout.Items.Item(self.cerealName, self.cerealPricePerUnit)
+        self.cerealScanned = checkout.Items.ScannedItem(self.cerealItem)
+
+
         self.inventory = checkout.Items.Inventory()
         self.inventory.addItem(self.anItem)
 
@@ -49,12 +55,16 @@ class ItemsTest(unittest.TestCase):
             self.inventory.getItemByName("Cereal")
         returnedItem = self.inventory.getItemByName("Soup")
         self.assertEqual(returnedItem.name, "Soup", "Did not return Soup")
+        
 
     def testScannedItemName(self):
-        self.assertEqual(self.scannedItem.getName(), "Soup", "Soup not found")
+        self.assertEqual(self.scannedItem.getName(), self.anItem.name, "%s not found" %(self.anItem.name))
+        self.assertEqual(self.cerealScanned.getName(), self.cerealItem.name, "%s not found" %(self.cerealItem.name))
+
 
     def testScannedItemPrice(self):
         self.assertEqual(self.scannedItem.getPrice(), self.itemPricePerUnit, "Price %f not returned" % self.itemPricePerUnit)
+        self.assertEqual(self.cerealScanned.getPrice(), self.cerealPricePerUnit, "Price %f not returned" %(self.cerealPricePerUnit))
 
 
 if __name__ == "__main__":
