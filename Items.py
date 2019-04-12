@@ -8,9 +8,13 @@ class Item(object):
 class ScannedItem():
     def __init__(self, item, quantity=1):
         self.baseItem = item
+        self.quantity = quantity
     
     def getName(self):
         return self.baseItem.name
+    
+    def getQuantity(self):
+        return self.quantity
     
     def getBasePrice(self):
         return self.baseItem.pricePerUnit
