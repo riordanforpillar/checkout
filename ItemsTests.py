@@ -18,13 +18,14 @@ class ItemsTest(unittest.TestCase):
         self.cerealName = "Cereal"
         self.cerealPricePerUnit = 5.25
         self.cerealItem = checkout.Items.Item(self.cerealName, self.cerealPricePerUnit)
-        self.cerealScanned = checkout.Items.ScannedItem(self.cerealItem)
+        self.cerealQuantity = 2
+        self.cerealScanned = checkout.Items.ScannedItem(self.cerealItem,2)
 
         self.beefName = "Beef"
         self.beefPricePerUnit = 4.09
-        self.beefQuantity = 1.59
+        self.beefWeight = 1.59
         self.beefItem = checkout.Items.Item(self.beefName, self.beefPricePerUnit)
-        self.beefScanned = checkout.Items.ScannedWeightedItem(self.beefItem, self.beefQuantity)
+        self.beefScanned = checkout.Items.ScannedWeightedItem(self.beefItem, self.beefWeight)
 
         self.inventory = checkout.Items.Inventory()
         self.inventory.addItem(self.soupItem)
@@ -72,6 +73,8 @@ class ItemsTest(unittest.TestCase):
         with self.assertRaises(checkout.Items.ScannedWeightNotFloatException):
             checkout.Items.ScannedWeightedItem(self.beefItem, 2)
 
+    def testScannedItemByWeightGetWeight(self):
+        self.assertAlmostEqual(self.beefScanned.getWeight(), self.beefWeight, 1e-3, "Weight %f not close enough" % self.beefWeight)
         
     def testScannedItemQuantityRetreival(self):
         messageForm = "Quantity %f not found"
@@ -95,7 +98,8 @@ class ItemsTest(unittest.TestCase):
         messageForm = "Markdown price %f not found"
         
         testCases = [ (self.soupScanned,   self.soupPricePerUnit),\
-                      (self.cerealScanned, self.cerealPricePerUnit)]
+                      (self.cerealScanned, self.cerealPricePerUnit*self.cerealQuantity),
+                      (self.beefScanned,   self.beefPricePerUnit*self.beefWeight) ]
         
         for scanned, markdown in testCases:
             self.assertEqual(scanned.getMarkdownPrice(), markdown, messageForm % markdown)

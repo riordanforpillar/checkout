@@ -22,7 +22,7 @@ class ScannedItem():
         return self.baseItem.pricePerUnit
     
     def getMarkdownPrice(self):
-        return self.baseItem.pricePerUnit
+        return self.getBasePrice()*self.getQuantity()
 
     def getDiscountPrice(self):
         return self.baseItem.pricePerUnit
@@ -32,6 +32,13 @@ class ScannedWeightedItem(ScannedItem):
         super().__init__(item, quantity)
         if type(weight) != float:
             raise ScannedWeightNotFloatException
+        self.weight = weight
+    
+    def getWeight(self):
+        return self.weight
+                
+    def getMarkdownPrice(self):
+        return self.getBasePrice()*self.getQuantity()*self.getWeight()
         
 class Inventory():
     def __init__(self):
