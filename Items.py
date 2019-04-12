@@ -9,4 +9,7 @@ class Item(object):
 class Inventory():
     def __init__(self):
         pass
+    
+    def getSize(self):
+        return 0
         

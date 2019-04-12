@@ -27,6 +27,7 @@ class ItemsTest(unittest.TestCase):
         
     def testInventory(self):
         inventory = checkout.Items.Inventory()
+        self.assertEquals(inventory.getSize(), 0, "Initial inventory not empty")
 
 
 if __name__ == "__main__":
