@@ -68,7 +68,9 @@ class ItemsTest(unittest.TestCase):
             checkout.Items.ScannedItem(self.cerealItem, 1.2)
             
     def testScannedItemTotalQuantity(self):
-        self.assertEqual(self.soupScanned.getTotalQuantity(), 1, "Soup Total Quantity Failed")
+        self.assertEqual(self.soupScanned.getTotalQuantity(), 1, "Single TotalQuantity Failed")
+        self.assertEqual(self.cerealScanned.getTotalQuantity(), self.cerealQuantity, "Multiple TotalQuantity Failed")
+
         
     def testScannedItemByWeightConstruction(self):
         weight = 1.09
