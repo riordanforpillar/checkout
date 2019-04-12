@@ -58,8 +58,10 @@ class ItemsTest(unittest.TestCase):
         
 
     def testScannedItemName(self):
-        self.assertEqual(self.scannedItem.getName(), self.soupItem.name, "%s not found" %(self.soupItem.name))
-        self.assertEqual(self.cerealScanned.getName(), self.cerealItem.name, "%s not found" %(self.cerealItem.name))
+        messageForm = "%s not found"
+        testCases = [(self.scannedItem, self.soupName), (self.cerealScanned, self.cerealName)]
+        for scanned, name in testCases:
+            self.assertEqual(scanned.getName(), name, messageForm %(name))
 
 
     def testScannedItemPrice(self):
