@@ -21,7 +21,7 @@ class DiscountsTest(unittest.TestCase):
         aDiscount = checkout.Discounts.Discount()
     
     def testDiscountApply(self):
-        pass
+        self.discount.applyTo(self.scannedItems)
 
 
 if __name__ == "__main__":
