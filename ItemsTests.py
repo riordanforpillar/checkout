@@ -57,16 +57,14 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(returnedItem.name, "Soup", "Did not return Soup")
         
 
-    def testScannedItemName(self):
+    def testScannedItemNameAndPrices(self):
         messageForm = "%s not found"
-        testCases = [(self.scannedItem, self.soupName), (self.cerealScanned, self.cerealName)]
-        for scanned, name in testCases:
+        testCases = [(self.scannedItem, self.soupName, self.soupPricePerUnit),\
+                      (self.cerealScanned, self.cerealName, self.cerealPricePerUnit)]
+        for scanned, name, price in testCases:
             self.assertEqual(scanned.getName(), name, messageForm %(name))
+            self.assertEqual(scanned.getBasePrice(), price, messageForm %(name))
 
-
-    def testScannedItemPrice(self):
-        self.assertEqual(self.scannedItem.getBasePrice(), self.soupPricePerUnit, "Price %f not returned" % self.soupPricePerUnit)
-        self.assertEqual(self.cerealScanned.getBasePrice(), self.cerealPricePerUnit, "Price %f not returned" %(self.cerealPricePerUnit))
 
 
 if __name__ == "__main__":
