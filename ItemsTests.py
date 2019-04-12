@@ -5,6 +5,7 @@ Created on Apr 12, 2019
 '''
 import unittest
 import checkout.Items
+from distutils.command.check import check
 
 
 class ItemsTest(unittest.TestCase):
@@ -47,7 +48,8 @@ class ItemsTest(unittest.TestCase):
         returnedItem = self.inventory.getItemByName("Soup")
         self.assertEqual(returnedItem.name, "Soup", "Did not return Soup")
 
-
+    def testScannedItem(self):
+        scannedItem = checkout.Items.ScannedItem(self.anItem)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

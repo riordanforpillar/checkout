@@ -5,6 +5,9 @@ class Item(object):
         self.name = name
         self.pricePerUnit = pricePerUnit
         
+class ScannedItem():
+    def __init__(self, item):
+        pass
         
 class Inventory():
     def __init__(self):
