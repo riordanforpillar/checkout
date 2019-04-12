@@ -11,6 +11,9 @@ class ScannedItem():
     
     def getName(self):
         return "Soup"
+    
+    def getPrice(self):
+        return 1.25
         
 class Inventory():
     def __init__(self):

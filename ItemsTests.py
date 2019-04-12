@@ -19,6 +19,8 @@ class ItemsTest(unittest.TestCase):
         self.inventory = checkout.Items.Inventory()
         self.inventory.addItem(self.anItem)
 
+        self.scannedItem = checkout.Items.ScannedItem(self.anItem)
+
 
     def tearDown(self):
         pass
@@ -48,9 +50,12 @@ class ItemsTest(unittest.TestCase):
         returnedItem = self.inventory.getItemByName("Soup")
         self.assertEqual(returnedItem.name, "Soup", "Did not return Soup")
 
-    def testScannedItem(self):
-        scannedItem = checkout.Items.ScannedItem(self.anItem)
-        self.assertEqual(scannedItem.getName(), "Soup", "Soup not found")
+    def testScannedItemName(self):
+        self.assertEqual(self.scannedItem.getName(), "Soup", "Soup not found")
+
+    def testScannedItemPrice(self):
+        self.assertEqual(self.scannedItem.getPrice(), self.itemPricePerUnit, "Price %f not returned" % self.itemPricePerUnit)
+
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
