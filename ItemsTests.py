@@ -12,9 +12,9 @@ class ItemsTest(unittest.TestCase):
 
 
     def setUp(self):
-        self.itemName = "Soup"
-        self.itemPricePerUnit = 1.25
-        self.anItem = checkout.Items.Item(self.itemName, self.itemPricePerUnit)
+        self.soupName = "Soup"
+        self.soupPricePerUnit = 1.25
+        self.soupItem = checkout.Items.Item(self.soupName, self.soupPricePerUnit)
 
         self.cerealName = "Cereal"
         self.cerealPricePerUnit = 5.25
@@ -23,9 +23,9 @@ class ItemsTest(unittest.TestCase):
 
 
         self.inventory = checkout.Items.Inventory()
-        self.inventory.addItem(self.anItem)
+        self.inventory.addItem(self.soupItem)
 
-        self.scannedItem = checkout.Items.ScannedItem(self.anItem)
+        self.scannedItem = checkout.Items.ScannedItem(self.soupItem)
 
 
     def tearDown(self):
@@ -34,8 +34,8 @@ class ItemsTest(unittest.TestCase):
 
     def testItemConstruction(self):
         
-        self.assertEqual(self.anItem.name, self.itemName, "Name not set")
-        self.assertEqual(self.anItem.pricePerUnit, self.itemPricePerUnit, "Price per unit not set")
+        self.assertEqual(self.soupItem.name, self.soupName, "Name not set")
+        self.assertEqual(self.soupItem.pricePerUnit, self.soupPricePerUnit, "Price per unit not set")
         
     def testInventoryConstruct(self):
         inventory = checkout.Items.Inventory()
@@ -58,12 +58,12 @@ class ItemsTest(unittest.TestCase):
         
 
     def testScannedItemName(self):
-        self.assertEqual(self.scannedItem.getName(), self.anItem.name, "%s not found" %(self.anItem.name))
+        self.assertEqual(self.scannedItem.getName(), self.soupItem.name, "%s not found" %(self.soupItem.name))
         self.assertEqual(self.cerealScanned.getName(), self.cerealItem.name, "%s not found" %(self.cerealItem.name))
 
 
     def testScannedItemPrice(self):
-        self.assertEqual(self.scannedItem.getBasePrice(), self.itemPricePerUnit, "Price %f not returned" % self.itemPricePerUnit)
+        self.assertEqual(self.scannedItem.getBasePrice(), self.soupPricePerUnit, "Price %f not returned" % self.soupPricePerUnit)
         self.assertEqual(self.cerealScanned.getBasePrice(), self.cerealPricePerUnit, "Price %f not returned" %(self.cerealPricePerUnit))
 
 
