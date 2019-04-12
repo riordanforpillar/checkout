@@ -9,8 +9,7 @@ from distutils.command.check import check
 
 
 class ItemsTest(unittest.TestCase):
-
-
+    
     def setUp(self):
         self.soupName = "Soup"
         self.soupPricePerUnit = 1.25
@@ -88,8 +87,12 @@ class ItemsTest(unittest.TestCase):
             
     def testScannedItemContainer(self):
         scannedItemContainer = checkout.Items.ScannedItemContainer()
+
+    def testScannedItemContainerGetSize(self):
+        self.assertEqual(self.scannedItemContainer.getSize(), 0, "ScannedItemContainer not empty")
         
     def testScannedItemContainerAdd(self):
+        sizeBefore = self.scannedItemContainer.getSize()
         self.scannedItemContainer.addScannedItem(self.soupScanned)
 
 if __name__ == "__main__":

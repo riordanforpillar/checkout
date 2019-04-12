@@ -42,6 +42,9 @@ class ScannedItemContainer():
     def __init__(self):
         pass
     
+    def getSize(self):
+        return 0
+    
     def addScannedItem(self, scannedItem):
         pass
     
