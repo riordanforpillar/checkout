@@ -1,8 +1,5 @@
-'''
-Created on Apr 12, 2019
 
-@author: seamus
-'''
+
 import unittest
 import checkout.Items
 from distutils.command.check import check
@@ -66,7 +63,7 @@ class ItemsTest(unittest.TestCase):
         with self.assertRaises(checkout.Items.NotFoundInInventoryException):
             self.inventory.getItemByName("Nonsense Item")
         returnedItem = self.inventory.getItemByName("Soup")
-        self.assertEqual(returnedItem.name, "Soup", "Did not return Soup")
+        self.assertEqual(returnedItem.name, "Soup", "Inventory did not return Soup")
 
     def testScannedItemWithQuantityConstruction(self):
         quantity = 2
@@ -155,10 +152,10 @@ class ItemsTest(unittest.TestCase):
     def testScannedItemContainerRemoveLast(self):
         self.scannedItemContainer.addScannedItem(self.cerealScanned)
         self.scannedItemContainer.addScannedItem(self.soupScanned)
-        beforeSize = self.scannedItemContainer.getSize()
         self.scannedItemContainer.removeLastItem()
-        afterSize = self.scannedItemContainer.getSize()
-        self.assertEqual(afterSize, beforeSize-1, "Scanned item size not decremented")
+        nItems = self.scannedItemContainer.getSize()
+        lastItem = self.scannedItemContainer.getAt(nItems-1)
+        self.assertEqual(lastItem.getName(), "Cereal", "ScannedItemContainer not removing last item correctly")
 
 
 if __name__ == "__main__":
