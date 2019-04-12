@@ -14,6 +14,7 @@ class ItemsTest(unittest.TestCase):
         self.soupName = "Soup"
         self.soupPricePerUnit = 1.25
         self.soupItem = checkout.Items.Item(self.soupName, self.soupPricePerUnit)
+        self.soupScanned = checkout.Items.ScannedItem(self.soupItem)
 
         self.cerealName = "Cereal"
         self.cerealPricePerUnit = 5.25
@@ -30,7 +31,6 @@ class ItemsTest(unittest.TestCase):
         self.inventory = checkout.Items.Inventory()
         self.inventory.addItem(self.soupItem)
 
-        self.soupScanned = checkout.Items.ScannedItem(self.soupItem)
 
         self.scannedItemContainer = checkout.Items.ScannedItemContainer()
 
@@ -66,6 +66,9 @@ class ItemsTest(unittest.TestCase):
         item = checkout.Items.ScannedItem(self.cerealItem, quantity)
         with self.assertRaises(checkout.Items.ScannedQuantityNotIntegerException):
             checkout.Items.ScannedItem(self.cerealItem, 1.2)
+            
+    def testScannedItemTotalQuantity(self):
+        self.assertEqual(self.soupScanned.getTotalQuantity(), 1, "Soup Total Quantity Failed")
         
     def testScannedItemByWeightConstruction(self):
         weight = 1.09

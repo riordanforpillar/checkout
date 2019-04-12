@@ -20,6 +20,9 @@ class ScannedItem():
     def getQuantity(self):
         return self.quantity
     
+    def getTotalQuantity(self):
+        return 1
+    
     def getBasePrice(self):
         return self.baseItem.pricePerUnit
     

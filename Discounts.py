@@ -14,4 +14,4 @@ class Markdown(Discount):
         
     def applyTo(self, scannedItems):
         item = scannedItems.getAt(0)
-        item.markdownPrice = 3.85
+        item.markdownPrice = (self.item.pricePerUnit - self.value)*item.getQuantity()

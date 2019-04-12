@@ -48,10 +48,16 @@ class DiscountsTest(unittest.TestCase):
     def testMarkdownApplication(self):
         self.cerealMarkdown.applyTo(self.scannedItems)
         scannedItem = self.scannedItems.getAt(0)
-        self.assertEqual(scannedItem.getMarkdownPrice(), self.scannedCereal.getBasePrice() - self.cerealMarkdownValue, "Markdown not applied")
-        
+        self.assertEqual(scannedItem.getMarkdownPrice(), self.scannedCereal.getBasePrice() - self.cerealMarkdownValue, "Cereal markdown not applied")
         scannedItem = self.scannedItems.getAt(1)
         self.assertEqual(scannedItem.getMarkdownPrice(), self.scannedBeef.getBasePrice()*self.beefWeight, "Markdown misapplied")
+        
+        self.beefMarkdown.applyTo(self.scannedItems)
+        scannedItem = self.scannedItems.getAt(0)
+        self.assertEqual(scannedItem.getMarkdownPrice(), self.scannedCereal.getBasePrice() - self.cerealMarkdownValue, "Cereal markdown undone")
+        scannedItem = self.scannedItems.getAt(1)
+        self.assertEqual(scannedItem.getMarkdownPrice(), (self.scannedBeef.getBasePrice()-self.beefMarkdownValue)*self.beefWeight, "Beef markdown not applied")
+
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
