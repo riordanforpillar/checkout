@@ -42,5 +42,8 @@ class ScannedItemContainer():
     def __init__(self):
         pass
     
+    def addScannedItem(self, scannedItem):
+        pass
+    
 class InventoryException(Exception):
     pass

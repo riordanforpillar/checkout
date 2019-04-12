@@ -25,8 +25,9 @@ class ItemsTest(unittest.TestCase):
         self.inventory = checkout.Items.Inventory()
         self.inventory.addItem(self.soupItem)
 
-        self.scannedItem = checkout.Items.ScannedItem(self.soupItem)
+        self.soupScanned = checkout.Items.ScannedItem(self.soupItem)
 
+        self.scannedItemContainer = checkout.Items.ScannedItemContainer()
 
     def tearDown(self):
         pass
@@ -61,7 +62,7 @@ class ItemsTest(unittest.TestCase):
         nameMessageForm = "%s not found"
         priceMessageForm = "Price %f not returned"
 
-        testCases = [ (self.scannedItem,   self.soupName,   self.soupPricePerUnit),\
+        testCases = [ (self.soupScanned,   self.soupName,   self.soupPricePerUnit),\
                       (self.cerealScanned, self.cerealName, self.cerealPricePerUnit)]
         for scanned, name, price in testCases:
             self.assertEqual(scanned.getName(),      name,  nameMessageForm %(name))
@@ -70,7 +71,7 @@ class ItemsTest(unittest.TestCase):
     def testScannedMarkdownPrice(self):
         messageForm = "Markdown price %f not found"
         
-        testCases = [ (self.scannedItem,   self.soupPricePerUnit),\
+        testCases = [ (self.soupScanned,   self.soupPricePerUnit),\
                       (self.cerealScanned, self.cerealPricePerUnit)]
         
         for scanned, markdown in testCases:
@@ -79,7 +80,7 @@ class ItemsTest(unittest.TestCase):
     def testScannedDiscountPrice(self):
         messageForm = "Discount price %f not found"
         
-        testCases = [ (self.scannedItem,   self.soupPricePerUnit),\
+        testCases = [ (self.soupScanned,   self.soupPricePerUnit),\
                       (self.cerealScanned, self.cerealPricePerUnit)]
         
         for scanned, discountPrice in testCases:
@@ -87,6 +88,9 @@ class ItemsTest(unittest.TestCase):
             
     def testScannedItemContainer(self):
         scannedItemContainer = checkout.Items.ScannedItemContainer()
+        
+    def testScannedItemContainerAdd(self):
+        self.scannedItemContainer.addScannedItem(self.soupScanned)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
