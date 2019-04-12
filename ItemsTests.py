@@ -11,7 +11,9 @@ class ItemsTest(unittest.TestCase):
 
 
     def setUp(self):
-        pass
+        self.itemName = "Soup"
+        self.itemPricePerUnit = 1.25
+        self.anItem = checkout.Items.Item(self.itemName, self.itemPricePerUnit)
 
 
     def tearDown(self):
@@ -19,15 +21,16 @@ class ItemsTest(unittest.TestCase):
 
 
     def testItemConstruction(self):
-        name = "Soup"
-        pricePerUnit = 1.25
-        anItem = checkout.Items.Item(name, pricePerUnit)
-        self.assertEqual(anItem.name, name, "Name not set")
-        self.assertEqual(anItem.pricePerUnit, pricePerUnit, "Price per unit not set")
+        
+        self.assertEqual(self.anItem.name, self.itemName, "Name not set")
+        self.assertEqual(self.anItem.pricePerUnit, self.itemPricePerUnit, "Price per unit not set")
         
     def testInventory(self):
         inventory = checkout.Items.Inventory()
         self.assertEquals(inventory.getSize(), 0, "Initial inventory not empty")
+        
+        inventory.addItem(self.anItem)
+        
 
 
 if __name__ == "__main__":

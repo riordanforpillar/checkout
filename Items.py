@@ -12,4 +12,7 @@ class Inventory():
     
     def getSize(self):
         return 0
+    
+    def addItem(self, item):
+        pass
         
