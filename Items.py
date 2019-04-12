@@ -13,7 +13,7 @@ class ScannedItem():
         return self.baseItem.name
     
     def getPrice(self):
-        return 1.25
+        return self.baseItem.pricePerUnit
         
 class Inventory():
     def __init__(self):
