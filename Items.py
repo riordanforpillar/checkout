@@ -16,3 +16,5 @@ class Inventory():
     def addItem(self, item):
         self.storedItems[item.name] = item
         
+    def getItem(self, itemName):
+        return 0
