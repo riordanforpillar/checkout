@@ -27,6 +27,13 @@ class ItemsTest(unittest.TestCase):
         self.beefWeight = 1.59
         self.beefItem = checkout.Items.Item(self.beefName, self.beefPricePerUnit)
         self.beefScanned = checkout.Items.ScannedWeightedItem(self.beefItem, self.beefWeight)
+        
+        self.applesName = "Apples"
+        self.applesPricePerUnit = 0.69
+        self.applesWeight = 1.59
+        self.applesQuantity = 4
+        self.applesItem = checkout.Items.Item(self.applesName, self.applesPricePerUnit)
+        self.applesScanned = checkout.Items.ScannedWeightedItem(self.applesItem, self.applesWeight, self.applesQuantity)
 
         self.inventory = checkout.Items.Inventory()
         self.inventory.addItem(self.soupItem)
@@ -70,6 +77,9 @@ class ItemsTest(unittest.TestCase):
     def testScannedItemTotalQuantity(self):
         self.assertEqual(self.soupScanned.getTotalQuantity(), 1, "Single TotalQuantity Failed")
         self.assertEqual(self.cerealScanned.getTotalQuantity(), self.cerealQuantity, "Multiple TotalQuantity Failed")
+        self.assertEqual(self.beefScanned.getTotalQuantity(), self.beefWeight, "Weighted TotalQuantity Failed")
+        self.assertEqual(self.applesScanned.getTotalQuantity(), self.applesWeight*self.applesQuantity, "Multiple Weighted TotalQuantity Failed")
+
 
         
     def testScannedItemByWeightConstruction(self):

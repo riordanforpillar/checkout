@@ -41,6 +41,9 @@ class ScannedWeightedItem(ScannedItem):
     
     def getWeight(self):
         return self.weight
+    
+    def getTotalQuantity(self):
+        return ScannedItem.getTotalQuantity(self)*self.weight
                 
     def getMarkdownPrice(self):
         return self.getBasePrice()*self.getQuantity()*self.getWeight()
