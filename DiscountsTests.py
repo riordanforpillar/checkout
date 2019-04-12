@@ -7,7 +7,7 @@ class DiscountsTest(unittest.TestCase):
 
 
     def setUp(self):
-        pass
+        self.discount = checkout.Discounts.Discount()
 
 
     def tearDown(self):
@@ -15,8 +15,10 @@ class DiscountsTest(unittest.TestCase):
 
 
     def testDiscountConstructor(self):
-        aDiscount = checkout.Discounts.Discount
+        aDiscount = checkout.Discounts.Discount()
     
+    def testDiscountApply(self):
+        pass
 
 
 if __name__ == "__main__":
