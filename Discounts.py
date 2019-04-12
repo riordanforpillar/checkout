@@ -1,17 +1,7 @@
-'''
-Created on Apr 12, 2019
 
-@author: seamus
-'''
-
-class MyClass(object):
-    '''
-    classdocs
-    '''
-
+class Discount(object):
 
     def __init__(self, params):
-        '''
-        Constructor
-        '''
+        pass
+     
         

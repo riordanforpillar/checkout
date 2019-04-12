@@ -1,12 +1,9 @@
-'''
-Created on Apr 12, 2019
 
-@author: seamus
-'''
+
 import unittest
+import checkout.Discounts
 
-
-class Test(unittest.TestCase):
+class DiscountsTest(unittest.TestCase):
 
 
     def setUp(self):
@@ -17,8 +14,9 @@ class Test(unittest.TestCase):
         pass
 
 
-    def testName(self):
-        pass
+    def testDiscountConstructor(self):
+        aDiscount = checkout.Discounts.Discount
+    
 
 
 if __name__ == "__main__":
