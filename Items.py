@@ -16,11 +16,12 @@ class Inventory():
     def addItem(self, item):
         self.storedItems[item.name] = item
         
-    def getItem(self, itemName):
+    def getItemByName(self, itemName):
         try:
-            self.storedItems[itemName]
+            foundItem = self.storedItems[itemName]
         except:
             raise InventoryException
+        return foundItem
     
     
 class InventoryException(Exception):

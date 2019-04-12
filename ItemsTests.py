@@ -16,6 +16,7 @@ class ItemsTest(unittest.TestCase):
         self.anItem = checkout.Items.Item(self.itemName, self.itemPricePerUnit)
 
         self.inventory = checkout.Items.Inventory()
+        self.inventory.addItem(self.anItem)
 
 
     def tearDown(self):
@@ -42,8 +43,9 @@ class ItemsTest(unittest.TestCase):
         
     def testInventoryGet(self):
         with self.assertRaises(checkout.Items.InventoryException):
-            returnedItem = self.inventory.getItem("Cereal")
-        
+            self.inventory.getItemByName("Cereal")
+        returnedItem = self.inventory.getItemByName("Soup")
+        self.assertEqual(returnedItem.name, "Soup", "Did not return Soup")
 
 
 
