@@ -12,7 +12,7 @@ class ScannedItem():
         self.baseItem = item
         self.quantity = quantity
         
-        self.markdownPrice = self.baseItem.pricePerUnit*self.quantity
+        self.markdownPrice = self.baseItem.pricePerUnit*self.getTotalQuantity()
     
     def getName(self):
         return self.baseItem.name
@@ -34,10 +34,11 @@ class ScannedItem():
     
 class ScannedWeightedItem(ScannedItem):
     def __init__(self, item, weight, quantity=1):
-        super().__init__(item, quantity)
         if type(weight) != float:
             raise ScannedWeightNotFloatException
         self.weight = weight
+        super().__init__(item, quantity)
+
     
     def getWeight(self):
         return self.weight
