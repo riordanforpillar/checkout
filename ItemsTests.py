@@ -63,8 +63,8 @@ class ItemsTest(unittest.TestCase):
 
 
     def testScannedItemPrice(self):
-        self.assertEqual(self.scannedItem.getPrice(), self.itemPricePerUnit, "Price %f not returned" % self.itemPricePerUnit)
-        self.assertEqual(self.cerealScanned.getPrice(), self.cerealPricePerUnit, "Price %f not returned" %(self.cerealPricePerUnit))
+        self.assertEqual(self.scannedItem.getBasePrice(), self.itemPricePerUnit, "Price %f not returned" % self.itemPricePerUnit)
+        self.assertEqual(self.cerealScanned.getBasePrice(), self.cerealPricePerUnit, "Price %f not returned" %(self.cerealPricePerUnit))
 
 
 if __name__ == "__main__":

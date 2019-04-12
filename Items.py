@@ -12,7 +12,7 @@ class ScannedItem():
     def getName(self):
         return self.baseItem.name
     
-    def getPrice(self):
+    def getBasePrice(self):
         return self.baseItem.pricePerUnit
         
 class Inventory():
