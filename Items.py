@@ -27,7 +27,8 @@ class ScannedItem():
     
 class ScannedWeightedItem():
     def __init__(self, item, weight, quantity=1):
-        pass
+        if type(weight) != float:
+            raise WeightNotFloatException
         
 class Inventory():
     def __init__(self):
@@ -57,4 +58,7 @@ class ScannedItemContainer():
         self.itemStack.append(scannedItem)
     
 class InventoryException(Exception):
+    pass
+
+class WeightNotFloatException(Exception):
     pass

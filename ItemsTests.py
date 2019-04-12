@@ -63,6 +63,9 @@ class ItemsTest(unittest.TestCase):
     def testScannedItemByWeightAddition(self):
         weight = 1.09
         weightItem = checkout.Items.ScannedWeightedItem(self.beefItem, 1.09, 1)
+        with self.assertRaises(checkout.Items.WeightNotFloatException):
+            weightItem = checkout.Items.ScannedWeightedItem(self.beefItem, 2)
+
         
     def testScannedItemQuantityRetreival(self):
         messageForm = "Quantity %f not found"
