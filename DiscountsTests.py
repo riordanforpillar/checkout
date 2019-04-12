@@ -43,6 +43,10 @@ class DiscountsTest(unittest.TestCase):
         aMarkdown = checkout.Discounts.Markdown(cerealItem, markdownValue)
         self.assertEqual(aMarkdown.value, markdownValue, "Markdown value not set")
         self.assertEqual(aMarkdown.itemtoMarkdown.name, cerealItem.name, "Markdown name not set")
+        
+    def testMarkdownMatchItem(self):
+        self.assertTrue(self.beefMarkdown.itemMatchesMarkdown(self.scannedBeef), "Markdown did not match scanned item")
+        self.assertFalse(self.cerealMarkdown.itemMatchesMarkdown(self.scannedBeef), "Markdown matched scanned item incorrectly")
 
         
     def testMarkdownApplication(self):
