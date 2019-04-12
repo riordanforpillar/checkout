@@ -24,6 +24,9 @@ class ItemsTest(unittest.TestCase):
         anItem = checkout.Items.Item(name, pricePerUnit)
         self.assertEqual(anItem.name, name, "Name not set")
         self.assertEqual(anItem.pricePerUnit, pricePerUnit, "Price per unit not set")
+        
+    def testInventory(self):
+        inventory = checkout.Items.Inventory()
 
 
 if __name__ == "__main__":

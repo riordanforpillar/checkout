@@ -5,3 +5,8 @@ class Item(object):
         self.name = name
         self.pricePerUnit = pricePerUnit
         
+        
+class Inventory():
+    def __init__(self):
+        pass
+        
