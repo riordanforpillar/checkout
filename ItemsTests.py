@@ -120,6 +120,9 @@ class ItemsTest(unittest.TestCase):
     def testScannedItemContainerGetSize(self):
         self.assertEqual(self.scannedItemContainer.getSize(), 0, "ScannedItemContainer not empty")
         
+    def testScannedItemContainerGetIndex(self):
+        pass
+        
     def testScannedItemContainerAdd(self):
         sizeBefore = self.scannedItemContainer.getSize()
         self.scannedItemContainer.addScannedItem(self.soupScanned)

@@ -12,10 +12,12 @@ class DiscountsTest(unittest.TestCase):
         
         self.scannedItems = checkout.Items.ScannedItemContainer()
 
+        self.cerealMarkdownValue = 0.40
+        self.cerealItem = checkout.Items.Item("Cereal", 4.25)
+        self.markdown = checkout.Discounts.Markdown(self.cerealItem, self.cerealMarkdownValue)
 
     def tearDown(self):
         pass
-
 
     def testDiscountConstructor(self):
         aDiscount = checkout.Discounts.Discount()
@@ -27,6 +29,9 @@ class DiscountsTest(unittest.TestCase):
         markdownValue = 0.40
         cerealItem = checkout.Items.Item("Cereal", 4.25)
         aMarkdown = checkout.Discounts.Markdown(cerealItem, markdownValue)
+        
+    def testMarkdownApplication(self):
+        self.markdown.applyTo(self.scannedItems)
 
 
 if __name__ == "__main__":
