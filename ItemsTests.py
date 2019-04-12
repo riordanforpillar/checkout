@@ -4,6 +4,7 @@ Created on Apr 12, 2019
 @author: seamus
 '''
 import unittest
+import checkout.Items
 
 
 class ItemsTest(unittest.TestCase):
@@ -17,8 +18,12 @@ class ItemsTest(unittest.TestCase):
         pass
 
 
-    def testName(self):
-        pass
+    def testItemConstruction(self):
+        name = "Soup"
+        pricePerUnit = 1.25
+        anItem = checkout.Items.Item(name, pricePerUnit)
+        self.assertEqual(anItem.name, name, "Name not set")
+        self.assertEqual(anItem.pricePerUnit, pricePerUnit, "Price per unit not set")
 
 
 if __name__ == "__main__":
