@@ -25,7 +25,7 @@ class ScannedItem():
         return self.getBasePrice()*self.getQuantity()
 
     def getDiscountPrice(self):
-        return self.baseItem.pricePerUnit
+        return self.getMarkdownPrice()
     
 class ScannedWeightedItem(ScannedItem):
     def __init__(self, item, weight, quantity=1):

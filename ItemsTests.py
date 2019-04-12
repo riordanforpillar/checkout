@@ -108,7 +108,8 @@ class ItemsTest(unittest.TestCase):
         messageForm = "Discount price %f not found"
         
         testCases = [ (self.soupScanned,   self.soupPricePerUnit),\
-                      (self.cerealScanned, self.cerealPricePerUnit)]
+                      (self.cerealScanned, self.cerealPricePerUnit*self.cerealQuantity),
+                      (self.beefScanned,   self.beefPricePerUnit*self.beefWeight)]
         
         for scanned, discountPrice in testCases:
             self.assertEqual(scanned.getDiscountPrice(), discountPrice, messageForm % discountPrice)
