@@ -17,4 +17,11 @@ class Inventory():
         self.storedItems[item.name] = item
         
     def getItem(self, itemName):
-        return self.storedItems[itemName]
+        try:
+            self.storedItems[itemName]
+        except:
+            raise InventoryException
+    
+    
+class InventoryException(Exception):
+    pass

@@ -41,7 +41,7 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(self.inventory.getSize(), beforeSize+1, "Inventory size not incremented")
         
     def testInventoryGet(self):
-        with self.assertRaises(KeyError):
+        with self.assertRaises(checkout.Items.InventoryException):
             returnedItem = self.inventory.getItem("Cereal")
         
 
