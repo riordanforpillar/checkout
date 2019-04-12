@@ -8,7 +8,7 @@ class Item(object):
 class ScannedItem():
     def __init__(self, item, quantity=1):
         if type(quantity) != int:
-            raise QuantityNotIntegerException
+            raise ScannedQuantityNotIntegerException
         self.baseItem = item
         self.quantity = quantity
     
@@ -31,7 +31,7 @@ class ScannedWeightedItem(ScannedItem):
     def __init__(self, item, weight, quantity=1):
         super().__init__(item, quantity)
         if type(weight) != float:
-            raise WeightNotFloatException
+            raise ScannedWeightNotFloatException
         
 class Inventory():
     def __init__(self):
@@ -47,7 +47,7 @@ class Inventory():
         try:
             foundItem = self.storedItems[itemName]
         except:
-            raise InventoryException
+            raise NotFoundInInventoryException
         return foundItem
     
 class ScannedItemContainer():
@@ -60,11 +60,11 @@ class ScannedItemContainer():
     def addScannedItem(self, scannedItem):
         self.itemStack.append(scannedItem)
     
-class InventoryException(Exception):
+class NotFoundInInventoryException(Exception):
     pass
 
-class QuantityNotIntegerException(Exception):
+class ScannedQuantityNotIntegerException(Exception):
     pass
 
-class WeightNotFloatException(Exception):
+class ScannedWeightNotFloatException(Exception):
     pass

@@ -55,21 +55,21 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(self.inventory.getSize(), beforeSize+1, "Inventory size not incremented")
         
     def testInventoryGet(self):
-        with self.assertRaises(checkout.Items.InventoryException):
+        with self.assertRaises(checkout.Items.NotFoundInInventoryException):
             self.inventory.getItemByName("Nonsense Item")
         returnedItem = self.inventory.getItemByName("Soup")
         self.assertEqual(returnedItem.name, "Soup", "Did not return Soup")
 
-    def testScannedItemWithQuantity(self):
+    def testScannedItemWithQuantityConstruction(self):
         quantity = 2
         item = checkout.Items.ScannedItem(self.cerealItem, quantity)
-        with self.assertRaises(checkout.Items.QuantityNotIntegerException):
+        with self.assertRaises(checkout.Items.ScannedQuantityNotIntegerException):
             checkout.Items.ScannedItem(self.cerealItem, 1.2)
         
     def testScannedItemByWeightConstruction(self):
         weight = 1.09
         weightItem = checkout.Items.ScannedWeightedItem(self.beefItem, weight, 1)
-        with self.assertRaises(checkout.Items.WeightNotFloatException):
+        with self.assertRaises(checkout.Items.ScannedWeightNotFloatException):
             checkout.Items.ScannedWeightedItem(self.beefItem, 2)
 
         
