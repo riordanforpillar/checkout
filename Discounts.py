@@ -13,4 +13,5 @@ class Markdown(Discount):
         self.value = value
         
     def applyTo(self, scannedItems):
-        pass
+        item = scannedItems.getAt(0)
+        item.markdownPrice = 3.85

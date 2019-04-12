@@ -11,6 +11,8 @@ class ScannedItem():
             raise ScannedQuantityNotIntegerException
         self.baseItem = item
         self.quantity = quantity
+        
+        self.markdownPrice = self.baseItem.pricePerUnit*self.quantity
     
     def getName(self):
         return self.baseItem.name
@@ -22,7 +24,7 @@ class ScannedItem():
         return self.baseItem.pricePerUnit
     
     def getMarkdownPrice(self):
-        return 3.85
+        return self.markdownPrice
 
     def getDiscountPrice(self):
         return self.getMarkdownPrice()

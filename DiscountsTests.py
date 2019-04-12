@@ -15,9 +15,12 @@ class DiscountsTest(unittest.TestCase):
 
         self.cerealMarkdownValue = 0.40
         self.cerealItem = checkout.Items.Item("Cereal", 4.25)
-        self.markdown = checkout.Discounts.Markdown(self.cerealItem, self.cerealMarkdownValue)
-        
         self.scannedCereal = checkout.Items.ScannedItem(self.cerealItem)
+        self.cerealMarkdown = checkout.Discounts.Markdown(self.cerealItem, self.cerealMarkdownValue)
+        
+        self.beefItem = checkout.Items.Item("Beef", 2.35)
+        self.scannedBeef = checkout.Items.ScannedWeightedItem(self.beefItem, 3.25)
+        self.beefMarkdown = checkout.Discounts.Markdown(self.beefItem, 0.0)
         
         self.scannedItems.addScannedItem(self.scannedCereal)
 
@@ -39,7 +42,7 @@ class DiscountsTest(unittest.TestCase):
 
         
     def testMarkdownApplication(self):
-        self.markdown.applyTo(self.scannedItems)
+        self.cerealMarkdown.applyTo(self.scannedItems)
         scannedItem = self.scannedItems.getAt(0)
         self.assertEqual(scannedItem.getMarkdownPrice(), self.scannedCereal.getBasePrice() - self.cerealMarkdownValue, "Markdown not applied")
 
