@@ -126,6 +126,13 @@ class ItemsTest(unittest.TestCase):
         sizeAfter = self.scannedItemContainer.getSize()
         self.assertEqual(sizeAfter, sizeBefore+1, "ScannedItemContainer size not incremented")
 
+    def testScannedItemContainerRemoveLast(self):
+        self.scannedItemContainer.addScannedItem(self.cerealScanned)
+        self.scannedItemContainer.addScannedItem(self.soupScanned)
+        beforeSize = self.scannedItemContainer.getSize()
+        self.scannedItemContainer.removeLastItem()
+
+
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
