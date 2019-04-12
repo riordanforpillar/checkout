@@ -38,6 +38,9 @@ class Inventory():
             raise InventoryException
         return foundItem
     
+class ScannedItemContainer():
+    def __init__(self):
+        pass
     
 class InventoryException(Exception):
     pass

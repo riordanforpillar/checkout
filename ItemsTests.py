@@ -84,6 +84,9 @@ class ItemsTest(unittest.TestCase):
         
         for scanned, discountPrice in testCases:
             self.assertEqual(scanned.getDiscountPrice(), discountPrice, messageForm % discountPrice)
+            
+    def testScannedItemContainer(self):
+        scannedItemContainer = checkout.Items.ScannedItemContainer()
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
