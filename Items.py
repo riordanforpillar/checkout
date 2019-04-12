@@ -68,7 +68,7 @@ class ScannedItemContainer():
         self.itemStack.append(scannedItem)
         
     def removeLastItem(self):
-        pass
+        self.itemStack.pop()
     
 class NotFoundInInventoryException(Exception):
     pass

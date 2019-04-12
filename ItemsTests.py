@@ -131,6 +131,8 @@ class ItemsTest(unittest.TestCase):
         self.scannedItemContainer.addScannedItem(self.soupScanned)
         beforeSize = self.scannedItemContainer.getSize()
         self.scannedItemContainer.removeLastItem()
+        afterSize = self.scannedItemContainer.getSize()
+        self.assertEqual(afterSize, beforeSize-1, "Scanned item size not decremented")
 
 
 
