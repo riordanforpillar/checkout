@@ -32,7 +32,7 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(inventory.getSize(), 0, "Initial inventory not empty")
     
     def testInventoryAddition(self):
-        # Need to add unique item to avoid collission of adding existing item
+        # Need to add unique item to avoid collision of adding existing item
         # which will not increment inventory
         uniqueItem = checkout.Items.Item("Unique", 4.0)
         
@@ -41,7 +41,10 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(self.inventory.getSize(), beforeSize+1, "Inventory size not incremented")
         
     def testInventoryGet(self):
-        returnedItem = self.inventory.getItem("Soup")
+        with self.assertRaises(KeyError):
+            returnedItem = self.inventory.getItem("Cereal")
+        
+
 
 
 if __name__ == "__main__":

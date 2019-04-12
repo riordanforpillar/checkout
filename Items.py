@@ -17,4 +17,4 @@ class Inventory():
         self.storedItems[item.name] = item
         
     def getItem(self, itemName):
-        return 0
+        return self.storedItems[itemName]
