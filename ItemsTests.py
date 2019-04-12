@@ -124,7 +124,14 @@ class ItemsTest(unittest.TestCase):
         aScannedItemContainer = checkout.Items.ScannedItemContainer()
         aScannedItemContainer.addScannedItem(self.beefScanned)
         aScannedItemContainer.addScannedItem(self.cerealScanned)
-        scannedItem = aScannedItemContainer.getAt(0)
+        
+        testCases = ["Beef", "Cereal"]
+        messageForm =  "Scanned item name at index %d not %s"
+        
+        for i in range(len(testCases)):   
+            scannedItem = aScannedItemContainer.getAt(i)
+            caseName = testCases[i]
+            self.assertEqual(scannedItem.getName(), caseName, messageForm % (i,caseName))
         
     def testScannedItemContainerAdd(self):
         sizeBefore = self.scannedItemContainer.getSize()

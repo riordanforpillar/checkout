@@ -68,7 +68,7 @@ class ScannedItemContainer():
         self.itemStack.append(scannedItem)
         
     def getAt(self, index):
-        pass
+        return self.itemStack[index]
         
     def removeLastItem(self):
         self.itemStack.pop()
