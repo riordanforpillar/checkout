@@ -8,11 +8,11 @@ class Item(object):
         
 class Inventory():
     def __init__(self):
-        pass
+        self.storedItems = {}
     
     def getSize(self):
-        return 0
+        return len(self.storedItems.keys())
     
     def addItem(self, item):
-        pass
+        self.storedItems[item.name] = item
         

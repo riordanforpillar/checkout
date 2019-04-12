@@ -25,11 +25,12 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(self.anItem.name, self.itemName, "Name not set")
         self.assertEqual(self.anItem.pricePerUnit, self.itemPricePerUnit, "Price per unit not set")
         
-    def testInventory(self):
+    def testInventoryAddition(self):
         inventory = checkout.Items.Inventory()
-        self.assertEquals(inventory.getSize(), 0, "Initial inventory not empty")
+        self.assertEqual(inventory.getSize(), 0, "Initial inventory not empty")
         
         inventory.addItem(self.anItem)
+        self.assertEqual(inventory.getSize(), 1, "Inventory size not incremented")
         
 
 
