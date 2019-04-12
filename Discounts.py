@@ -6,3 +6,7 @@ class Discount(object):
      
     def applyTo(self, scannedItems):
         pass
+    
+class Markdown():
+    def __init__(self, item, value):
+        pass

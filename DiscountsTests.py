@@ -22,6 +22,11 @@ class DiscountsTest(unittest.TestCase):
     
     def testDiscountApply(self):
         self.discount.applyTo(self.scannedItems)
+        
+    def testMarkdownConstructor(self):
+        markdownValue = 0.40
+        cerealItem = checkout.Items.Item("Cereal", 4.25)
+        aMarkdown = checkout.Discounts.Markdown(cerealItem, markdownValue)
 
 
 if __name__ == "__main__":
