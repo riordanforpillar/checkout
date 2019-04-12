@@ -75,6 +75,15 @@ class ItemsTest(unittest.TestCase):
         
         for scanned, markdown in testCases:
             self.assertEqual(scanned.getMarkdownPrice(), markdown, messageForm % markdown)
+            
+    def testScannedDiscountPrice(self):
+        messageForm = "Discount price %f not found"
+        
+        testCases = [ (self.scannedItem,   self.soupPricePerUnit),\
+                      (self.cerealScanned, self.cerealPricePerUnit)]
+        
+        for scanned, discountPrice in testCases:
+            self.assertEqual(scanned.getDiscountPrice(), discountPrice, messageForm % discountPrice)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
