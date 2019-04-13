@@ -49,6 +49,7 @@ class BuyNGetMForPercentOffSpecial(Discount):
 class BuyNForXSpecial(Discount):
     def __init__(self, item, N, price):
         self.buyN = N
+        self.price = price
 
             
 

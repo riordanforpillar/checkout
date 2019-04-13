@@ -39,6 +39,8 @@ class DiscountsTest(unittest.TestCase):
 
         self.buy2Get1FreeSpecial = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, 2, 1, 100.0)
 
+        self.buyNprice = 5.0
+        self.buyNForXSpecial = checkout.Discounts.BuyNForXSpecial(self.countableItem, self.buyN, self.buyNprice)
 
     def tearDown(self):
         pass
@@ -104,6 +106,10 @@ class DiscountsTest(unittest.TestCase):
         price = 5.0
         special = checkout.Discounts.BuyNForXSpecial(self.countableItem, buyN, price )
         self.assertEqual(special.buyN, buyN, "Buy N not set correctly")
+        self.assertEqual(special.price, price, "Price not set correctly")
+
+    def testBuyNForXApplication(self):
+        self.buyNForXSpecial.applyTo(self.scannedItems)
 
 
 if __name__ == "__main__":
