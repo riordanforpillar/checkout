@@ -12,26 +12,13 @@ class ItemsTest(unittest.TestCase):
         self.singleItem = checkout.Items.Item(self.singleItemName, self.singleItemPPU)
         self.singleScanned = checkout.Items.ScannedItem(self.singleItem)
 
-        self.countableItemName = "Cereal"
-        self.countableItemPPU = 5.25
-        self.countableItem = checkout.Items.Item(self.countableItemName, self.countableItemPPU)
-        self.countableItemQuantity = 2
-        self.countableScanned = checkout.Items.ScannedItem(self.countableItem,2)
 
         self.weightedItemName = "Beef"
         self.weightedItemPPU = 4.09
         self.weightedItemWeight = 1.59
         self.weightedItem = checkout.Items.Item(self.weightedItemName, self.weightedItemPPU)
         self.weightedScanned = checkout.Items.ScannedWeightedItem(self.weightedItem, self.weightedItemWeight)
-        
-        self.weightedQtyName = "Apples"
-        self.weightedQtyPPU = 0.69
-        self.weightedQtyItemWeight = 1.59
-        self.weightedQtyItemQuantity = 4
-        self.weightedQtyItemTotal = self.weightedQtyItemWeight*self.weightedQtyItemQuantity
-        self.weightedQtyItem = checkout.Items.Item(self.weightedQtyName, self.weightedQtyPPU)
-        self.weightedQtyScanned = \
-            checkout.Items.ScannedWeightedItem(self.weightedQtyItem, self.weightedQtyItemWeight, self.weightedQtyItemQuantity)
+    
 
         self.inventory = checkout.Items.Inventory()
         self.inventory.addItem(self.singleItem)
@@ -70,17 +57,10 @@ class ItemsTest(unittest.TestCase):
         returnedItem = self.inventory.getItemByName(itemNameToGet)
         self.assertEqual(returnedItem.name, itemNameToGet, "Inventory did not return %s" % (itemNameToGet))
 
-    def testScannedItemWithQuantityConstruction(self):
-        quantity = 2
-        checkout.Items.ScannedItem(self.countableItem, quantity)
-        with self.assertRaises(checkout.Items.ScannedQuantityNotIntegerException):
-            checkout.Items.ScannedItem(self.countableItem, 1.2)
             
     def testScannedItemTotalQuantity(self):  
         testCases = [ (self.singleScanned,      1,                          "single"), 
-                      (self.countableScanned,   self.countableItemQuantity, "item with quantity"),
-                      (self.weightedScanned,    self.weightedItemWeight,    "item with weight"),
-                      (self.weightedQtyScanned, self.weightedQtyItemTotal,  "item with weight and quantity" )]
+                      (self.weightedScanned,    self.weightedItemWeight,    "item with weight")]
         
         for (item, expectedTotalQuantity, caseName) in testCases:
             failMessage = "Unexpected TotalQuantity for %s" % (caseName)
@@ -89,31 +69,22 @@ class ItemsTest(unittest.TestCase):
 
     def testScannedItemByWeightConstruction(self):
         weight = 1.09
-        checkout.Items.ScannedWeightedItem(self.weightedItem, weight, 1)
+        checkout.Items.ScannedWeightedItem(self.weightedItem, weight)
         with self.assertRaises(checkout.Items.ScannedWeightNotFloatException):
-            checkout.Items.ScannedWeightedItem(self.weightedItem, 2)
+            checkout.Items.ScannedWeightedItem(self.weightedItem, 1)
 
     def testScannedItemByWeightGetWeight(self):
         errorMessage = "Weight %f not close enough to %f " % (self.weightedItemWeight, self.weightedScanned.getWeight())
         self.assertAlmostEqual(self.weightedScanned.getWeight(), self.weightedItemWeight, 1e-3, errorMessage )
         
-    def testScannedItemQuantityRetreival(self):        
-        testCases = [ (self.singleScanned,      1,                            "single item"), 
-                      (self.countableScanned,   self.countableItemQuantity,   "countable itmes"),
-                      (self.weightedQtyScanned, self.weightedQtyItemQuantity, "weighted countable") ]
-
-        messageForm = "Quantity %d for %s not found"
-        
-        for (scanned, quantity, caseName) in testCases:
-            errorMessage = messageForm % (quantity, caseName)
-            self.assertEqual(scanned.getQuantity(), quantity, errorMessage)
 
     def testScannedBaseItemNameAndPrices(self):
         nameMessageForm = "%s not found"
         priceMessageForm = "Price %f not returned"
 
-        testCases = [ (self.singleScanned,   self.singleItemName,   self.singleItemPPU),\
-                      (self.countableScanned, self.countableItemName, self.countableItemPPU)]
+        testCases = [ (self.singleScanned,   self.singleItemName,   self.singleItemPPU),
+                      (self.weightedScanned, self.weightedItemName, self.weightedItemPPU) ]
+        
         for scanned, name, price in testCases:
             self.assertEqual(scanned.getName(),      name,  nameMessageForm %(name))
             self.assertEqual(scanned.getBasePrice(), price, priceMessageForm %(price))
@@ -122,7 +93,6 @@ class ItemsTest(unittest.TestCase):
         messageForm = "Markdown price %f not found"
         
         testCases = [ (self.singleScanned,    self.singleItemPPU),\
-                      (self.countableScanned, self.countableItemPPU*self.countableItemQuantity),
                       (self.weightedScanned,  self.weightedItemPPU*self.weightedItemWeight) ]
         
         for scanned, markdown in testCases:
@@ -132,7 +102,6 @@ class ItemsTest(unittest.TestCase):
         messageForm = "Discount price %f not found"
         
         testCases = [ (self.singleScanned,   self.singleItemPPU),\
-                      (self.countableScanned, self.countableItemPPU*self.countableItemQuantity),
                       (self.weightedScanned,   self.weightedItemPPU*self.weightedItemWeight)]
         
         for scanned, discountPrice in testCases:
@@ -145,7 +114,7 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(self.scannedItemContainer.getSize(), 0, "ScannedItemContainer not empty")
         
     def testScannedItemContainerGetIndex(self):
-        testCaseItems = [self.weightedScanned, self.countableScanned, self.countableScanned]
+        testCaseItems = [self.weightedScanned, self.singleScanned, self.singleScanned]
         testCaseNames = [item.getName() for item in testCaseItems]
         
         aScannedItemContainer = checkout.Items.ScannedItemContainer()
@@ -166,7 +135,7 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(sizeAfter, sizeBefore+1, "ScannedItemContainer size not incremented")
 
     def testGetLastItemFromScannedItemContainer(self):
-        itemsToAdd = [self.weightedQtyScanned, self.singleScanned, self.singleScanned]
+        itemsToAdd = [self.weightedScanned, self.singleScanned, self.singleScanned]
         
         for item in itemsToAdd:
             self.scannedItemContainer.addScannedItem(item)
@@ -175,10 +144,10 @@ class ItemsTest(unittest.TestCase):
 
 
     def testScannedItemContainerRemoveLast(self):
-        targetName = self.countableScanned.getName()
+        targetName = self.singleScanned.getName()
         
-        self.scannedItemContainer.addScannedItem(self.countableScanned)
         self.scannedItemContainer.addScannedItem(self.singleScanned)
+        self.scannedItemContainer.addScannedItem(self.weightedScanned)
         self.scannedItemContainer.removeLastItem()
         
         lastItem = self.scannedItemContainer.getLastItem()
@@ -189,7 +158,7 @@ class ItemsTest(unittest.TestCase):
             self.scannedItemContainer.removeLastItem()
 
     def testScannedItemContainerUniqueScannedItems(self):
-        mutableScannedItem = checkout.Items.ScannedItem(self.countableItem)
+        mutableScannedItem = checkout.Items.ScannedItem(self.singleItem)
         self.scannedItemContainer.addScannedItem(mutableScannedItem)
         originalItem = self.scannedItemContainer.getLastItem()
         
