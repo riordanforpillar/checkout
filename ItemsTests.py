@@ -141,16 +141,18 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(self.scannedItemContainer.getSize(), 0, "ScannedItemContainer not empty")
         
     def testScannedItemContainerGetIndex(self):
+        testCaseItems = [self.weightedScanned, self.countableScanned, self.countableScanned]
+        testCaseNames = [item.getName() for item in testCaseItems]
+        
         aScannedItemContainer = checkout.Items.ScannedItemContainer()
-        aScannedItemContainer.addScannedItem(self.weightedScanned)
-        aScannedItemContainer.addScannedItem(self.countableScanned)
-        
-        testCases = [self.weightedScanned.getName(), self.countableScanned.getName()]
+        for testItem in testCaseItems:
+            aScannedItemContainer.addScannedItem(testItem)
+
         messageForm =  "Scanned item name at index %d not %s"
-        
-        for i in range(len(testCases)):   
+                
+        for i in range(len(testCaseItems)):   
             scannedItem = aScannedItemContainer.getAt(i)
-            caseName = testCases[i]
+            caseName    = testCaseNames[i]
             self.assertEqual(scannedItem.getName(), caseName, messageForm % (i,caseName))
         
     def testScannedItemContainerAdd(self):
@@ -159,12 +161,17 @@ class ItemsTest(unittest.TestCase):
         sizeAfter = self.scannedItemContainer.getSize()
         self.assertEqual(sizeAfter, sizeBefore+1, "ScannedItemContainer size not incremented")
 
+    def testGetLastItemFromScannedItemContainer(self):
+        pass
+
     def testScannedItemContainerRemoveLast(self):
         targetName = self.countableScanned.getName()
+        
         self.scannedItemContainer.addScannedItem(self.countableScanned)
         self.scannedItemContainer.addScannedItem(self.singleScanned)
         self.scannedItemContainer.removeLastItem()
-        nItems = self.scannedItemContainer.getSize()
+        
+        nItems   = self.scannedItemContainer.getSize()
         lastItem = self.scannedItemContainer.getAt(nItems-1)
         self.assertEqual(lastItem.getName(), targetName, "ScannedItemContainer not removing last item correctly")
 
