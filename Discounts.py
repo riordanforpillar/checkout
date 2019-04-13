@@ -9,11 +9,11 @@ class Discount(object):
     
 class Markdown(Discount):
     def __init__(self, item, value):
-        self.itemtoMarkdown = item
+        self.itemToMarkdown = item
         self.value = value
 
     def itemMatchesMarkdown(self, scannedItem):
-        if scannedItem.getName() == self.itemtoMarkdown.name:
+        if scannedItem.getName() == self.itemToMarkdown.name:
             return True
         else:
             return False

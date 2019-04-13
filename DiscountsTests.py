@@ -14,15 +14,15 @@ class DiscountsTest(unittest.TestCase):
         self.scannedItems = checkout.Items.ScannedItemContainer()
 
         self.cerealMarkdownValue = 0.40
-        self.quantityItem = checkout.Items.Item("Cereal", 4.25)
-        self.scannedCereal = checkout.Items.ScannedItem(self.quantityItem)
-        self.cerealMarkdown = checkout.Discounts.Markdown(self.quantityItem, self.cerealMarkdownValue)
+        self.countableItem = checkout.Items.Item("Cereal", 4.25)
+        self.scannedCereal = checkout.Items.ScannedItem(self.countableItem)
+        self.cerealMarkdown = checkout.Discounts.Markdown(self.countableItem, self.cerealMarkdownValue)
         
         self.beefMarkdownValue = 0.1
-        self.weightItemWeight = 3.5
-        self.weightItem = checkout.Items.Item("Beef", 2.0)
-        self.scannedBeef = checkout.Items.ScannedWeightedItem(self.weightItem, self.weightItemWeight)
-        self.beefMarkdown = checkout.Discounts.Markdown(self.weightItem, self.beefMarkdownValue)
+        self.weightedItemWeight = 3.5
+        self.weightedItem = checkout.Items.Item("Beef", 2.0)
+        self.scannedBeef = checkout.Items.ScannedWeightedItem(self.weightedItem, self.weightedItemWeight)
+        self.beefMarkdown = checkout.Discounts.Markdown(self.weightedItem, self.beefMarkdownValue)
         
         self.scannedItems.addScannedItem(self.scannedCereal)
         self.scannedItems.addScannedItem(self.scannedBeef)
@@ -38,11 +38,9 @@ class DiscountsTest(unittest.TestCase):
         self.discount.applyTo(self.scannedItems)
         
     def testMarkdownConstructor(self):
-        markdownValue = 0.40
-        cerealItem = checkout.Items.Item("Cereal", 4.25)
-        aMarkdown = checkout.Discounts.Markdown(cerealItem, markdownValue)
-        self.assertEqual(aMarkdown.value, markdownValue, "Markdown value not set")
-        self.assertEqual(aMarkdown.itemtoMarkdown.name, cerealItem.name, "Markdown name not set")
+        aMarkdown = checkout.Discounts.Markdown(self.countableItem, self.cerealMarkdownValue)
+        self.assertEqual(aMarkdown.value, self.cerealMarkdownValue, "Markdown value not set")
+        self.assertEqual(aMarkdown.itemToMarkdown.name, self.countableItem.name, "Markdown name not set")
         
     def testMarkdownMatchItem(self):
         self.assertTrue(self.beefMarkdown.itemMatchesMarkdown(self.scannedBeef), "Markdown did not match scanned item")
@@ -55,13 +53,13 @@ class DiscountsTest(unittest.TestCase):
         targetCerealPrice = self.scannedCereal.getBasePrice() - self.cerealMarkdownValue
         self.assertEqual(scannedItem.getMarkdownPrice(), targetCerealPrice, "Cereal markdown not applied")
         scannedItem = self.scannedItems.getAt(1)
-        self.assertEqual(scannedItem.getMarkdownPrice(), self.scannedBeef.getBasePrice()*self.weightItemWeight, "Markdown misapplied")
+        self.assertEqual(scannedItem.getMarkdownPrice(), self.scannedBeef.getBasePrice()*self.weightedItemWeight, "Markdown misapplied")
         
         self.beefMarkdown.applyTo(self.scannedItems)
         scannedItem = self.scannedItems.getAt(0)
         self.assertEqual(scannedItem.getMarkdownPrice(), targetCerealPrice, "Cereal markdown undone")
         scannedItem = self.scannedItems.getAt(1)
-        targetBeefPrice = (self.scannedBeef.getBasePrice()-self.beefMarkdownValue)*self.weightItemWeight
+        targetBeefPrice = (self.scannedBeef.getBasePrice()-self.beefMarkdownValue)*self.weightedItemWeight
         self.assertEqual(scannedItem.getMarkdownPrice(), targetBeefPrice, "Beef markdown misapplied")
 
 
