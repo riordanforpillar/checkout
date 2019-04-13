@@ -47,8 +47,8 @@ class BuyNGetMForPercentOffSpecial(Discount):
 
 
 class BuyNForXSpecial(Discount):
-    def __init__(self, N, price):
-        pass
+    def __init__(self, item, N, price):
+        self.buyN = N
 
             
 

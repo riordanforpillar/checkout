@@ -102,7 +102,8 @@ class DiscountsTest(unittest.TestCase):
     def testBuyNForXConstruction(self):
         buyN = 3
         price = 5.0
-        special = checkout.Discounts.BuyNForXSpecial(self.countableItem, price )
+        special = checkout.Discounts.BuyNForXSpecial(self.countableItem, buyN, price )
+        self.assertEqual(special.buyN, buyN, "Buy N not set correctly")
 
 
 if __name__ == "__main__":
