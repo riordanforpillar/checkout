@@ -51,7 +51,8 @@ class BuyNForXSpecial(Discount):
         self.buyN = N
         self.price = price
 
-            
+    def applyTo(self, scannedItems):
+        scannedItems.getAt(0).discountPrice = 0.0
 
         
         

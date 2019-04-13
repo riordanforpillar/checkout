@@ -110,6 +110,9 @@ class DiscountsTest(unittest.TestCase):
 
     def testBuyNForXApplication(self):
         self.buyNForXSpecial.applyTo(self.scannedItems)
+        
+        zeroedItem = self.scannedItems.getAt(0)
+        self.assertEqual(zeroedItem.getDiscountPrice(), 0.0, "Zeroed item not zeroed")
 
 
 if __name__ == "__main__":
