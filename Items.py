@@ -78,8 +78,7 @@ class ScannedItemContainer():
         return self.itemStack[index]
     
     def getLastItem(self):
-        item = Item("Apples", 0)
-        return ScannedItem(item)
+        return self.itemStack[-1]
         
     def removeLastItem(self):
         self.itemStack.pop()
