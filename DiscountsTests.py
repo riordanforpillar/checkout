@@ -52,11 +52,8 @@ class DiscountsTest(unittest.TestCase):
     def testMarkdownConstructor(self):
         aMarkdown = checkout.Discounts.Markdown(self.countableItem, self.countableMarkdownValue)
         self.assertEqual(aMarkdown.value, self.countableMarkdownValue, "Markdown value not set")
-        self.assertEqual(aMarkdown.itemToMarkdown.name, self.countableItem.name, "Markdown name not set")
+        self.assertEqual(aMarkdown.itemToDiscount.name, self.countableItem.name, "Markdown name not set")
         
-    def testMarkdownMatchItem(self):
-        self.assertTrue(self.weightedMarkdown.itemMatchesMarkdown(self.weightedScanned), "Markdown did not match scanned item")
-        self.assertFalse(self.countableMarkdown.itemMatchesMarkdown(self.weightedScanned), "Markdown matched scanned item incorrectly")
 
     def testSpecialMatchItem(self):
         self.assertTrue(self.buy2Get1FreeSpecial.itemMatchesDiscount(self.countableScanned), "Markdown did not match scanned item")
@@ -92,15 +89,15 @@ class DiscountsTest(unittest.TestCase):
 
     def testBuyNGetMForPercentOffApplication(self):
         self.buyNgetMSpecial.applyTo(self.scannedItems)
-        specialItem = self.scannedItems.getAt(3)
-  #      self.assertAlmostEqual(specialItem.getMarkdownPrice()*(1.0-self.percentOff*0.01), specialItem.getDiscountPrice(), 3, "Special not applied")
+        specialItem = self.scannedItems.getAt(4)
+        self.assertAlmostEqual(specialItem.getMarkdownPrice()*(1.0-self.percentOff*0.01), specialItem.getDiscountPrice(), 3, "Special not applied")
         
-        unSpecialItem = self.scannedItems.getAt(4)
-  #      self.assertEqual(unSpecialItem.getMarkdownPrice(), unSpecialItem.getDiscountPrice(), "Markdown and special price do not match for nonspecial item")
+        unSpecialItem = self.scannedItems.getAt(5)
+        self.assertEqual(unSpecialItem.getMarkdownPrice(), unSpecialItem.getDiscountPrice(), "Markdown and special price do not match for nonspecial item")
 
         self.buy2Get1FreeSpecial.applyTo(self.scannedItems)
-        specialItem = self.scannedItems.getAt(2)
-  #      self.assertAlmostEqual(0.0, specialItem.getDiscountPrice(), 3, "Special not applied")
+        specialItem = self.scannedItems.getAt(3)
+        self.assertAlmostEqual(0.0, specialItem.getDiscountPrice(), 3, "Special not applied")
 
 
 
