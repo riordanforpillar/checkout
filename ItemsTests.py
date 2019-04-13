@@ -188,6 +188,19 @@ class ItemsTest(unittest.TestCase):
         with self.assertRaises(IndexError):
             self.scannedItemContainer.removeLastItem()
 
+    def testScannedItemContainerUniqueScannedItems(self):
+        mutableScannedItem = checkout.Items.ScannedItem(self.countableItem)
+        self.scannedItemContainer.addScannedItem(mutableScannedItem)
+        originalItem = self.scannedItemContainer.getLastItem()
+        
+        adjustedDiscountPrice = 0.01
+        mutableScannedItem.discountPrice = adjustedDiscountPrice
+        self.scannedItemContainer.addScannedItem(mutableScannedItem)
+        adjustedPriceItem = self.scannedItemContainer.getLastItem()
+
+        
+        self.assertNotEqual(originalItem.getDiscountPrice(), adjustedDiscountPrice, "Adjusted price propagated to other items")
+
 
 
 if __name__ == "__main__":

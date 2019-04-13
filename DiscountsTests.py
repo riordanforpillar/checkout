@@ -92,7 +92,7 @@ class DiscountsTest(unittest.TestCase):
         self.assertAlmostEqual(specialItem.getMarkdownPrice()*(1.0-self.percentOff*0.01), specialItem.getDiscountPrice(), 3, "Special not applied")
         
         unSpecialItem = self.scannedItems.getAt(4)
-        self.assertEqual(specialItem.getMarkdownPrice(), specialItem.getDiscountPrice(), "Markdown and special price do not match for nonspecial item")
+        self.assertEqual(unSpecialItem.getMarkdownPrice(), unSpecialItem.getDiscountPrice(), "Markdown and special price do not match for nonspecial item")
 
 
 if __name__ == "__main__":

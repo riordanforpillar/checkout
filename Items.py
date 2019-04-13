@@ -1,3 +1,4 @@
+import copy
 
 class Item(object):
 
@@ -74,7 +75,7 @@ class ScannedItemContainer():
         return len(self.itemStack)
     
     def addScannedItem(self, scannedItem):
-        self.itemStack.append(scannedItem)
+        self.itemStack.append(copy.copy(scannedItem))
         
     def getAt(self, index):
         return self.itemStack[index]
