@@ -30,7 +30,8 @@ class ItemsTest(unittest.TestCase):
         self.weightedQtyItemQuantity = 4
         self.weightedQtyItemTotal = self.weightedQtyItemWeight*self.weightedQtyItemQuantity
         self.weightedQtyItem = checkout.Items.Item(self.weightedQtyName, self.weightedQtyPPU)
-        self.weightedQtyScanned = checkout.Items.ScannedWeightedItem(self.weightedQtyItem, self.weightedQtyItemWeight, self.weightedQtyItemQuantity)
+        self.weightedQtyScanned = \
+            checkout.Items.ScannedWeightedItem(self.weightedQtyItem, self.weightedQtyItemWeight, self.weightedQtyItemQuantity)
 
         self.inventory = checkout.Items.Inventory()
         self.inventory.addItem(self.singleItem)
@@ -58,6 +59,9 @@ class ItemsTest(unittest.TestCase):
         beforeSize = self.inventory.getSize()
         self.inventory.addItem(uniqueItem)
         self.assertEqual(self.inventory.getSize(), beforeSize+1, "Inventory size not incremented")
+        
+        self.inventory.addItem(uniqueItem)
+        self.assertEqual(self.inventory.getSize(), beforeSize+1, "Inventory size not maintained with identical item")      
         
     def testInventoryGet(self):
         with self.assertRaises(checkout.Items.NotFoundInInventoryException):
