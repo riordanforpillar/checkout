@@ -20,11 +20,11 @@ class DiscountsTest(unittest.TestCase):
         self.weightedMarkdownValue = 0.1
         self.weightedItemWeight = 3.5
         self.weightedItem = checkout.Items.Item("Beef", 2.0)
-        self.weighteScanned = checkout.Items.ScannedWeightedItem(self.weightedItem, self.weightedItemWeight)
+        self.weightedScanned = checkout.Items.ScannedWeightedItem(self.weightedItem, self.weightedItemWeight)
         self.weightedMarkdown = checkout.Discounts.Markdown(self.weightedItem, self.weightedMarkdownValue)
         
         self.scannedItems.addScannedItem(self.countableScanned)
-        self.scannedItems.addScannedItem(self.weighteScanned)
+        self.scannedItems.addScannedItem(self.weightedScanned)
         self.scannedItems.addScannedItem(self.countableScanned)
         self.scannedItems.addScannedItem(self.countableScanned)
         self.scannedItems.addScannedItem(self.countableScanned)
@@ -37,6 +37,7 @@ class DiscountsTest(unittest.TestCase):
         self.percentOff = 70.0
         self.buyNgetMSpecial = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, self.buyN, self.getM, self.percentOff)
 
+        self.buy2Get1FreeSpecial = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, 2, 1, 100.0)
 
 
     def tearDown(self):
@@ -54,9 +55,12 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(aMarkdown.itemToMarkdown.name, self.countableItem.name, "Markdown name not set")
         
     def testMarkdownMatchItem(self):
-        self.assertTrue(self.weightedMarkdown.itemMatchesMarkdown(self.weighteScanned), "Markdown did not match scanned item")
-        self.assertFalse(self.countableMarkdown.itemMatchesMarkdown(self.weighteScanned), "Markdown matched scanned item incorrectly")
+        self.assertTrue(self.weightedMarkdown.itemMatchesMarkdown(self.weightedScanned), "Markdown did not match scanned item")
+        self.assertFalse(self.countableMarkdown.itemMatchesMarkdown(self.weightedScanned), "Markdown matched scanned item incorrectly")
 
+    def testSpecialMatchItem(self):
+        self.assertTrue(self.buy2Get1FreeSpecial.itemMatchesDiscount(self.countableScanned), "Markdown did not match scanned item")
+        self.assertFalse(self.buy2Get1FreeSpecial.itemMatchesDiscount(self.weightedScanned), "Markdown matched scanned item incorrectly")
         
     def testMarkdownApplication(self):
         self.countableMarkdown.applyTo(self.scannedItems)
@@ -64,7 +68,7 @@ class DiscountsTest(unittest.TestCase):
         targetPrice = self.countableScanned.getBasePrice() - self.countableMarkdownValue
         self.assertEqual(scannedItem.getMarkdownPrice(), targetPrice, "Countable  markdown not applied")
         scannedItem = self.scannedItems.getAt(1)
-        self.assertEqual(scannedItem.getMarkdownPrice(), self.weighteScanned.getBasePrice()*self.weightedItemWeight, "Markdown misapplied")
+        self.assertEqual(scannedItem.getMarkdownPrice(), self.weightedScanned.getBasePrice()*self.weightedItemWeight, "Markdown misapplied")
         
         scannedItem = self.scannedItems.getAt(0)
         unchangedPrice = scannedItem.getMarkdownPrice()
@@ -74,7 +78,7 @@ class DiscountsTest(unittest.TestCase):
         
         scannedItem = self.scannedItems.getAt(1)
         
-        newPrice = (self.weighteScanned.getBasePrice()-self.weightedMarkdownValue)*self.weightedItemWeight
+        newPrice = (self.weightedScanned.getBasePrice()-self.weightedMarkdownValue)*self.weightedItemWeight
         self.assertEqual(scannedItem.getMarkdownPrice(), newPrice, "Beef markdown misapplied")
 
     def testBuyNGetMForPercentOffConstruction(self):
@@ -93,6 +97,11 @@ class DiscountsTest(unittest.TestCase):
         
         unSpecialItem = self.scannedItems.getAt(4)
         self.assertEqual(unSpecialItem.getMarkdownPrice(), unSpecialItem.getDiscountPrice(), "Markdown and special price do not match for nonspecial item")
+
+        self.buy2Get1FreeSpecial.applyTo(self.scannedItems)
+        specialItem = self.scannedItems.getAt(2)
+        self.assertAlmostEqual(0.0, specialItem.getDiscountPrice(), 3, "Special not applied")
+
 
 
 if __name__ == "__main__":
