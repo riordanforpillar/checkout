@@ -34,7 +34,7 @@ class DiscountsTest(unittest.TestCase):
         
         self.buyN = 3
         self.getM = 1
-        self.percentOff = 50.0
+        self.percentOff = 70.0
         self.buyNgetMSpecial = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, self.buyN, self.getM, self.percentOff)
 
 
@@ -89,7 +89,11 @@ class DiscountsTest(unittest.TestCase):
     def testBuyNGetMForPercentOffApplication(self):
         self.buyNgetMSpecial.applyTo(self.scannedItems)
         specialItem = self.scannedItems.getAt(3)
-        self.assertEqual(specialItem.getMarkdownPrice()*self.percentOff*0.01, specialItem.getDiscountPrice(), "Special not applied")
+        self.assertAlmostEqual(specialItem.getMarkdownPrice()*(1.0-self.percentOff*0.01), specialItem.getDiscountPrice(), 3, "Special not applied")
+        
+        unSpecialItem = self.scannedItems.getAt(4)
+        self.assertEqual(specialItem.getMarkdownPrice(), specialItem.getDiscountPrice(), "Markdown and special price do not match for nonspecial item")
+
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

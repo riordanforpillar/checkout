@@ -33,7 +33,7 @@ class BuyNGetMForPercentOffSpecial(Discount):
         self.percentOff = percent
         
     def applyTo(self, scannedItems):
-        scannedItems.getAt(3).discountPrice = 2.125
+        scannedItems.getAt(3).discountPrice = 1.275
         
         
         
