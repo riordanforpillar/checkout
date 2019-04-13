@@ -10,14 +10,14 @@ class ScannedItem():
     def __init__(self, item):
         self.baseItem = item
         
-        self.markdownPrice = self.baseItem.pricePerUnit*self.getTotalQuantity()
+        self.markdownPrice = self.baseItem.pricePerUnit*self.getQuantity()
         self.discountPrice = self.markdownPrice
 
     
     def getName(self):
         return self.baseItem.name
     
-    def getTotalQuantity(self):
+    def getQuantity(self):
         return 1
     
     def getBasePrice(self):
@@ -39,7 +39,7 @@ class ScannedWeightedItem(ScannedItem):
     def getWeight(self):
         return self.weight
     
-    def getTotalQuantity(self):
+    def getQuantity(self):
         return self.weight
                 
         

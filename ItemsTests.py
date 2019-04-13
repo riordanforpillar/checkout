@@ -64,7 +64,7 @@ class ItemsTest(unittest.TestCase):
         
         for (item, expectedTotalQuantity, caseName) in testCases:
             failMessage = "Unexpected TotalQuantity for %s" % (caseName)
-            self.assertEqual(item.getTotalQuantity(), expectedTotalQuantity, failMessage)
+            self.assertEqual(item.getQuantity(), expectedTotalQuantity, failMessage)
 
 
     def testScannedItemByWeightConstruction(self):
