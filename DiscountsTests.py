@@ -25,11 +25,17 @@ class DiscountsTest(unittest.TestCase):
         
         self.scannedItems.addScannedItem(self.countableScanned)
         self.scannedItems.addScannedItem(self.weighteScanned)
+        self.scannedItems.addScannedItem(self.countableScanned)
+        self.scannedItems.addScannedItem(self.countableScanned)
+        self.scannedItems.addScannedItem(self.countableScanned)
+        self.scannedItems.addScannedItem(self.countableScanned)
+
+
         
         self.buyN = 3
         self.getM = 1
         self.percentOff = 50.0
-        self.buyNgetMSpecial = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.buyN, self.getM, self.percentOff)
+        self.buyNgetMSpecial = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, self.buyN, self.getM, self.percentOff)
 
 
 
@@ -75,7 +81,7 @@ class DiscountsTest(unittest.TestCase):
         buyN = 1
         getM = 1
         percentOff = 100.0
-        special = checkout.Discounts.BuyNGetMForPercentOffSpecial(buyN, getM, percentOff)
+        special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, buyN, getM, percentOff)
         self.assertEqual(special.buyN, buyN, "Buy N not set correctly")
         self.assertEqual(special.getM, getM, "Get M not set correctly")
         self.assertEqual(special.percentOff, percentOff, "Percent off not set correctly")

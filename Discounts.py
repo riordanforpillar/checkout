@@ -26,7 +26,7 @@ class Markdown(Discount):
                 scannedItem.markdownPrice = discountedPPU * scannedItem.getTotalQuantity()
 
 class BuyNGetMForPercentOffSpecial(Discount):
-    def __init__(self, N, M, percent):
+    def __init__(self, item, N, M, percent):
         self.buyN = N
         self.getM = M
         self.percentOff = percent
