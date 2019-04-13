@@ -183,6 +183,11 @@ class ItemsTest(unittest.TestCase):
         
         lastItem = self.scannedItemContainer.getLastItem()
         self.assertEqual(lastItem.getName(), targetName, "ScannedItemContainer not removing last item correctly")
+        
+        self.scannedItemContainer.removeLastItem()
+        with self.assertRaises(IndexError):
+            self.scannedItemContainer.removeLastItem()
+
 
 
 if __name__ == "__main__":
