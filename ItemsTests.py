@@ -162,7 +162,11 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(sizeAfter, sizeBefore+1, "ScannedItemContainer size not incremented")
 
     def testGetLastItemFromScannedItemContainer(self):
-        pass
+        self.scannedItemContainer.addScannedItem(self.weightedQtyScanned)
+        lastItem = self.scannedItemContainer.getLastItem()
+        self.assertEqual(lastItem.getName(), self.weightedQtyScanned.getName(), "Incorrect last item returned")
+
+
 
     def testScannedItemContainerRemoveLast(self):
         targetName = self.countableScanned.getName()
