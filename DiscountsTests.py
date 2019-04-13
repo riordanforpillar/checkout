@@ -65,6 +65,8 @@ class DiscountsTest(unittest.TestCase):
         newPrice = (self.weighteScanned.getBasePrice()-self.weightedMarkdownValue)*self.weightedItemWeight
         self.assertEqual(scannedItem.getMarkdownPrice(), newPrice, "Beef markdown misapplied")
 
+    def testBuyNGetMforPercentOffConstruction(self):
+        special = checkout.Discounts.BuyNGetMForPercentOffSpecial(1, 1, 100.0)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

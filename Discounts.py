@@ -24,3 +24,7 @@ class Markdown(Discount):
             if self.itemMatchesMarkdown(scannedItem):
                 discountedPPU = scannedItem.getBasePrice() - self.value
                 scannedItem.markdownPrice = discountedPPU * scannedItem.getTotalQuantity()
+
+class BuyNGetMForPercentOffSpecial:
+    def __init__(self, N, M, percent):
+        pass
