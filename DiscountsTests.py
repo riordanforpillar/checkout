@@ -25,6 +25,12 @@ class DiscountsTest(unittest.TestCase):
         
         self.scannedItems.addScannedItem(self.countableScanned)
         self.scannedItems.addScannedItem(self.weighteScanned)
+        
+        self.buyN = 3
+        self.getM = 1
+        self.percentOff = 50.0
+        self.buyNgetMSpecial = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.buyN, self.getM, self.percentOff)
+
 
 
     def tearDown(self):
@@ -65,12 +71,17 @@ class DiscountsTest(unittest.TestCase):
         newPrice = (self.weighteScanned.getBasePrice()-self.weightedMarkdownValue)*self.weightedItemWeight
         self.assertEqual(scannedItem.getMarkdownPrice(), newPrice, "Beef markdown misapplied")
 
-    def testBuyNGetMforPercentOffConstruction(self):
+    def testBuyNGetMForPercentOffConstruction(self):
         buyN = 1
         getM = 1
         percentOff = 100.0
         special = checkout.Discounts.BuyNGetMForPercentOffSpecial(buyN, getM, percentOff)
-        self.assertEqual(special.buyN, buyN, "Buy N not set correclty")
+        self.assertEqual(special.buyN, buyN, "Buy N not set correctly")
+        self.assertEqual(special.getM, getM, "Get M not set correctly")
+        self.assertEqual(special.percentOff, percentOff, "Percent off not set correctly")
+
+    def testBuyNGetMForPercentOffApplication(self):
+        self.buyNgetMSpecial.applyTo(self.scannedItems)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
