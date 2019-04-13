@@ -114,6 +114,11 @@ class DiscountsTest(unittest.TestCase):
         zeroedItem = self.scannedItems.getAt(0)
         self.assertEqual(zeroedItem.getDiscountPrice(), 0.0, "Zeroed item not zeroed")
 
+        sumPriceItem = self.scannedItems.getAt(3)
+
+        self.assertEqual(sumPriceItem.getDiscountPrice(), self.buyNprice, "Summed discount not applied")
+
+
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

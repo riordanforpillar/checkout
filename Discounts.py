@@ -53,6 +53,8 @@ class BuyNForXSpecial(Discount):
 
     def applyTo(self, scannedItems):
         scannedItems.getAt(0).discountPrice = 0.0
+        scannedItems.getAt(3).discountPrice = 5.0
+
 
         
         
