@@ -99,6 +99,10 @@ class DiscountsTest(unittest.TestCase):
         specialItem = self.scannedItems.getAt(3)
         self.assertAlmostEqual(0.0, specialItem.getDiscountPrice(), 3, "Special not applied")
 
+    def testBuyNForXConstruction(self):
+        buyN = 3
+        price = 5.0
+        special = checkout.Discounts.BuyNForXSpecial(self.countableItem, price )
 
 
 if __name__ == "__main__":

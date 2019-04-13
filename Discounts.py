@@ -45,8 +45,11 @@ class BuyNGetMForPercentOffSpecial(Discount):
                     item.discountPrice = item.markdownPrice*(1.0 - self.percentOff*0.01)
                 nPurchased += 1
 
-                    
-                    
+
+class BuyNForXSpecial(Discount):
+    def __init__(self, N, price):
+        pass
+
             
 
         
