@@ -40,10 +40,7 @@ class BuyNGetMForPercentOffSpecial(Discount):
         self.itemToDiscount = item
         
     def applyTo(self, scannedItems):
-        for index in range(scannedItems.getSize()):
-            scannedItem = scannedItems.getAt(index)
-            if self.itemMatchesDiscount(scannedItem):
-                pass
+        pass
 
         
         
