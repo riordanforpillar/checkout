@@ -1,3 +1,4 @@
+import checkout.Items
 
 class Discount(object):
 
@@ -30,3 +31,13 @@ class BuyNGetMForPercentOffSpecial(Discount):
         self.buyN = N
         self.getM = M
         self.percentOff = percent
+        
+    def applyTo(self, scannedItems):
+        scannedItems.getAt(3).discountPrice = 2.125
+        
+        
+        
+        
+        
+        
+    

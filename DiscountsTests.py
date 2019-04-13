@@ -88,6 +88,8 @@ class DiscountsTest(unittest.TestCase):
 
     def testBuyNGetMForPercentOffApplication(self):
         self.buyNgetMSpecial.applyTo(self.scannedItems)
+        specialItem = self.scannedItems.getAt(3)
+        self.assertEqual(specialItem.getMarkdownPrice()*self.percentOff*0.01, specialItem.getDiscountPrice(), "Special not applied")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
