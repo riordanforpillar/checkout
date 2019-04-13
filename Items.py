@@ -7,11 +7,8 @@ class Item(object):
         self.pricePerUnit = pricePerUnit
         
 class ScannedItem():
-    def __init__(self, item, quantity=1):
-        if type(quantity) != int:
-            raise ScannedQuantityNotIntegerException
+    def __init__(self, item):
         self.baseItem = item
-        self.quantity = quantity
         
         self.markdownPrice = self.baseItem.pricePerUnit*self.getTotalQuantity()
         self.discountPrice = self.markdownPrice
@@ -20,11 +17,8 @@ class ScannedItem():
     def getName(self):
         return self.baseItem.name
     
-    def getQuantity(self):
-        return self.quantity
-    
     def getTotalQuantity(self):
-        return self.quantity
+        return 1
     
     def getBasePrice(self):
         return self.baseItem.pricePerUnit
@@ -36,18 +30,17 @@ class ScannedItem():
         return self.discountPrice
     
 class ScannedWeightedItem(ScannedItem):
-    def __init__(self, item, weight, quantity=1):
+    def __init__(self, item, weight):
         if type(weight) != float:
             raise ScannedWeightNotFloatException
         self.weight = weight
-        super().__init__(item, quantity)
+        super().__init__(item)
 
-    
     def getWeight(self):
         return self.weight
     
     def getTotalQuantity(self):
-        return ScannedItem.getTotalQuantity(self)*self.weight
+        return self.weight
                 
         
 class Inventory():
@@ -87,9 +80,6 @@ class ScannedItemContainer():
         self.itemStack.pop()
     
 class NotFoundInInventoryException(Exception):
-    pass
-
-class ScannedQuantityNotIntegerException(Exception):
     pass
 
 class ScannedWeightNotFloatException(Exception):
