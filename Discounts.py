@@ -27,4 +27,4 @@ class Markdown(Discount):
 
 class BuyNGetMForPercentOffSpecial:
     def __init__(self, N, M, percent):
-        pass
+        self.buyN = N

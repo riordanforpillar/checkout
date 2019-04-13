@@ -66,8 +66,20 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(scannedItem.getMarkdownPrice(), newPrice, "Beef markdown misapplied")
 
     def testBuyNGetMforPercentOffConstruction(self):
-        special = checkout.Discounts.BuyNGetMForPercentOffSpecial(1, 1, 100.0)
+        buyN = 1
+        getM = 1
+        percentOff = 100.0
+        special = checkout.Discounts.BuyNGetMForPercentOffSpecial(buyN, getM, percentOff)
+        self.assertEqual(special.buyN, buyN, "Buy N not set correclty")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
+    
+    
+    
+    
+    
+    
+    
+    
