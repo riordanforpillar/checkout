@@ -207,8 +207,15 @@ class DiscountsTest(unittest.TestCase):
         special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 2, 1, discount, limit)
         self.assertEqual(special.limit, limit, "limit not set")
       
-
+        scannedItems = checkout.Items.ScannedItemContainer()
+        
+        for _ in range(6):
+            scannedItems.addScannedItem(self.weightedScanned)
+        
+        special.applyTo(scannedItems)
             
+        lastItem = scannedItems.getLastItem()
+        self.assertEqual(lastItem.getDiscountPrice(), lastItem.getMarkdownPrice(), "Limit in weighted special not imposed")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

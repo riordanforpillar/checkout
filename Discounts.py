@@ -78,7 +78,7 @@ class BuyNForXSpecial(Special):
 
         
 class BuyNWeightedGetMEqualOrLesserPercentOff(Special):
-    def __init__(self, item, N, M, percent, limit=1e9):
+    def __init__(self, item, N, M, percent, limit=10000):
         self.buyN = N
         self.getM = M
         self.percentOff = percent
@@ -93,6 +93,9 @@ class BuyNWeightedGetMEqualOrLesserPercentOff(Special):
                 purchased.append(item)
                 
         sortedPurchased = sorted(purchased, key=lambda item: item.getQuantity(), reverse=True)
+        
+        pastLimit = sortedPurchased[self.limit:]
+        sortedPurchased = sortedPurchased[:self.limit]
                 
         while len(sortedPurchased) > 0:
             regularPriceSet = sortedPurchased[0:self.buyN]
@@ -102,5 +105,7 @@ class BuyNWeightedGetMEqualOrLesserPercentOff(Special):
                 item.discountPrice = item.getMarkdownPrice()
             for item in discountSet:
                 item.discountPrice = item.getMarkdownPrice()*(1.0-self.percentOff*0.01)
-            
+        
+        for item in pastLimit:
+            item.discountPrice = item.getMarkdownPrice()   
             
