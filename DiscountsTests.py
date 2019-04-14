@@ -23,12 +23,9 @@ class DiscountsTest(unittest.TestCase):
         
         self.scannedItems.addScannedItem(self.countableScanned)
         self.scannedItems.addScannedItem(self.weightedScanned)
-        self.scannedItems.addScannedItem(self.countableScanned)
-        self.scannedItems.addScannedItem(self.countableScanned)
-        self.scannedItems.addScannedItem(self.countableScanned)
-        self.scannedItems.addScannedItem(self.countableScanned)
-        self.scannedItems.addScannedItem(self.countableScanned)
-        self.scannedItems.addScannedItem(self.countableScanned)
+        for _ in range(6):
+            self.scannedItems.addScannedItem(self.countableScanned)
+        
         
         self.discount = checkout.Discounts.Discount(self.countableItem)
 
@@ -62,6 +59,8 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(aMarkdown.value, value, "Markdown value not set")
         self.assertEqual(aMarkdown.itemToDiscount.name, self.countableItem.name, "Markdown name not set")
         
+    def testGetMatchedItems(self):
+        self.discount.getMatchedItems(self.scannedItems)
 
     def testSpecialMatchItem(self):
         self.assertTrue(self.buy2Get1FreeSpecial.itemMatchesDiscount(self.countableScanned), "Markdown did not match scanned item")

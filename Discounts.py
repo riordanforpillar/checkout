@@ -9,6 +9,9 @@ class Discount(object):
     def applyTo(self, scannedItems):
         pass
     
+    def getMatchedItems(self, scannedItems):
+        pass
+    
     def itemMatchesDiscount(self, scannedItem):
         if scannedItem.getName() == self.itemToDiscount.name:
             return True
