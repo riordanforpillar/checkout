@@ -92,23 +92,23 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(scannedItem.getMarkdownPrice(), newPrice, "Beef markdown misapplied")
     
     def testSpecialPartitionAroundLimit(self):
-        limit = 3
-        length = 8
-        
-        objectInList = 7
+        self.partitionTestRun(3, 8, "7")
+        self.partitionTestRun(7, 8, "a")
+
+        limit = 4
+        special = checkout.Discounts.Special(self.countableScanned, limit)
+        (below, _) = special.partitionAroundLimit([])
+        self.assertEqual(len(below), 0, "Paritioned number of empty list not zero")
+
+    def partitionTestRun(self, limit, length, objectInList):
         special = checkout.Discounts.Special(self.countableScanned, limit)
         listToParition = [objectInList]*length
         
         (below, above) = special.partitionAroundLimit(listToParition)
-        self.assertEqual(len(below), limit, "Paritioned number below limit not equal to limit")
+        self.assertEqual(len(below), limit,        "Paritioned number below limit not equal to limit")
         self.assertEqual(len(above), length-limit, "Paritioned number above limit not equal to remaining")
-        self.assertEqual(below[0], objectInList, "List returned not original")
-
-        (below, above) = special.partitionAroundLimit([])
-        self.assertEqual(len(below), 0, "Paritioned number of empty list not zero")
-
-
-
+        self.assertEqual(below[0],   objectInList, "List returned not original")
+        
     def testBuyNGetMForPercentOffConstruction(self):
         self.BuyNGetMForPercentOffConstructCheck(1, 1, 100.0)
         self.BuyNGetMForPercentOffConstructCheck(3, 4, 100.0)
