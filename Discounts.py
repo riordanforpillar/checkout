@@ -1,6 +1,7 @@
 import checkout.Items
 from checkout.Items import ScannedItem, Item
 
+
 class Discount(object):
 
     def __init__(self, item):
@@ -55,18 +56,16 @@ class Special(Discount):
      
     def applyTo(self, scannedItems):
         matchedItems = self.getMatchedItems(scannedItems)
-        
-        (belowLimitItems, aboveLimitItems) = self.partitionAroundLimit(matchedItems)
-        
-        self.applyToAboveAndBelowParitions(belowLimitItems, aboveLimitItems)
+        self.partitionAndApplyDiscounts(matchedItems)
     
-    def applyToAboveAndBelowParitions(self, belowLimitItems, aboveLimitItems):
+    def partitionAndApplyDiscounts(self, items):     
+        (belowLimitItems, aboveLimitItems) = self.partitionAroundLimit(items)        
         self.applyDiscountBelowLimit(belowLimitItems)
         self.applyDiscountAboveLimit(aboveLimitItems)
         
     def applyDiscountAboveLimit(self, aboveLimitItems):
         for item in aboveLimitItems:
-            item.discountPrice = item.markdownPrice
+            item.discountPrice = item.getMarkdownPrice()
         
 class PercentOffSpecial(Special):
     def __init__(self, item, percentOff, limit=None):
@@ -108,17 +107,29 @@ class BuyNForXSpecial(Special):
 
     def applyDiscountBelowLimit(self, belowLimitItems):
         lastN = []
-        for index in range(len(belowLimitItems)):
-            item = belowLimitItems[index]
-            if self.itemMatchesDiscount(item):
-                lastN.append(item)
-                if len(lastN) == self.buyN:
-                    for lastItem in lastN[:-1]:
-                        lastItem.discountPrice = 0.0
-                    lastN[-1].discountPrice = self.price
-                    lastN.clear()
-
-
+        for item in belowLimitItems:
+            lastN.append(item)
+            if self.haveFullSet(lastN):
+                self.applyDiscountToSet(lastN)
+                lastN.clear()
+                
+    def haveFullSet(self, discountSet):
+        if len(discountSet) == self.buyN:
+            return True
+        else:
+            return False
+              
+    def applyDiscountToSet(self, discountSet):
+        self.zeroOutDiscountPriceExceptLast(discountSet)
+        self.setPriceAtEndOfSet(discountSet)        
+        
+    def zeroOutDiscountPriceExceptLast(self, discountSet):
+        for item in discountSet[:-1]:
+            item.discountPrice = 0.0
+            
+    def setPriceAtEndOfSet(self, discountSet):
+        discountSet[-1].discountPrice = self.price
+        
         
 class BuyNWeightedGetMEqualOrLesserPercentOff(PercentOffSpecial):
     def __init__(self, item, N, M, percent, limit=None):
@@ -128,13 +139,12 @@ class BuyNWeightedGetMEqualOrLesserPercentOff(PercentOffSpecial):
         
     def applyTo(self, scannedItems):
         sortedItems = self.getMatchedItemsSortedByWeight(scannedItems)
-        (belowLimitItems, aboveLimitItems) = self.partitionAroundLimit(sortedItems)
-
-        self.applyToAboveAndBelowParitions(belowLimitItems, aboveLimitItems)
+        self.partitionAndApplyDiscounts(sortedItems)
         
     def getMatchedItemsSortedByWeight(self, scannedItems):
         matchedItems = self.getMatchedItems(scannedItems)      
         
         itemQuantitySortKey= lambda item: item.getQuantity()
-        sortedItems = sorted(matchedItems, key=itemQuantitySortKey, reverse=True)        
+        sortedItems = sorted(matchedItems, key=itemQuantitySortKey, reverse=True) 
+               
         return sortedItems
