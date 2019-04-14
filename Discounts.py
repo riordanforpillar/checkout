@@ -58,6 +58,9 @@ class Special(Discount):
         
         (belowLimitItems, aboveLimitItems) = self.partitionAroundLimit(matchedItems)
         
+        self.applyToAboveAndBelowParitions(belowLimitItems, aboveLimitItems)
+    
+    def applyToAboveAndBelowParitions(self, belowLimitItems, aboveLimitItems):
         self.applyDiscountBelowLimit(belowLimitItems)
         self.applyDiscountAboveLimit(aboveLimitItems)
         
@@ -75,13 +78,6 @@ class PercentOffSpecial(Special):
         discountFactor = 1.0 - self.percentOff*0.01
         return markdownPrice*discountFactor
 
-class BuyNGetMForPercentOffSpecial(PercentOffSpecial):
-    def __init__(self, item, N, M, percent, limit=None):
-        self.buyN = N
-        self.getM = M
-        super().__init__(item, percent, limit)
-        
-
     def applyDiscountBelowLimit(self, belowLimitItems):
         for index in range(len(belowLimitItems)):
             item = belowLimitItems[index]
@@ -96,6 +92,13 @@ class BuyNGetMForPercentOffSpecial(PercentOffSpecial):
             return False
         else:
             return True
+        
+class BuyNGetMForPercentOffSpecial(PercentOffSpecial):
+    def __init__(self, item, N, M, percent, limit=None):
+        self.buyN = N
+        self.getM = M
+        super().__init__(item, percent, limit)
+    
 
 class BuyNForXSpecial(Special):
     def __init__(self, item, N, price, limit=None):
@@ -118,28 +121,16 @@ class BuyNForXSpecial(Special):
 
         
 class BuyNWeightedGetMEqualOrLesserPercentOff(PercentOffSpecial):
-    def __init__(self, item, N, M, percent, limit=10000):
+    def __init__(self, item, N, M, percent, limit=None):
         self.buyN = N
         self.getM = M
         super().__init__(item, percent, limit)
         
     def applyTo(self, scannedItems):
-        matchedItems = self.getMatchedItems(scannedItems)                
-        sortedItems = sorted(matchedItems, key=lambda item: item.getQuantity(), reverse=True)
+        matchedItems = self.getMatchedItems(scannedItems)      
         
-        (itemsBelowLimit, itemsAboveLimit) = self.partitionAroundLimit(sortedItems)
+        itemQuantitySortKey= lambda item: item.getQuantity()
+        sortedItems = sorted(matchedItems, key=itemQuantitySortKey, reverse=True)
+        (belowLimitItems, aboveLimitItems) = self.partitionAroundLimit(sortedItems)
 
-        self.applyDiscountBelowLimit(itemsBelowLimit)
-        self.applyDiscountAboveLimit(itemsAboveLimit)
-        
-    def applyDiscountBelowLimit(self, itemsBelowLimit):
-        nInDiscountSet = self.buyN + self.getM
-        while len(itemsBelowLimit) > 0:
-            regularPriceSet = itemsBelowLimit[0:self.buyN]
-            discountSet = itemsBelowLimit[self.buyN:nInDiscountSet]
-            itemsBelowLimit = itemsBelowLimit[nInDiscountSet:]
-            for item in regularPriceSet:
-                item.discountPrice = item.getMarkdownPrice()
-            for item in discountSet:
-                item.discountPrice = item.getMarkdownPrice()*(1.0-self.percentOff*0.01)        
-           
+        self.applyToAboveAndBelowParitions(belowLimitItems, aboveLimitItems)
