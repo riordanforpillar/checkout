@@ -81,13 +81,15 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(scannedItem.getMarkdownPrice(), newPrice, "Beef markdown misapplied")
 
     def testBuyNGetMForPercentOffConstruction(self):
-        buyN = 1
-        getM = 1
-        percentOff = 100.0
+        self.BuyNGetMForPercentOffConstructCheck(1, 1, 100.0)
+        self.BuyNGetMForPercentOffConstructCheck(3, 4, 100.0)
+        
+    def BuyNGetMForPercentOffConstructCheck(self, buyN, getM, percentOff):
         special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, buyN, getM, percentOff)
         self.assertEqual(special.buyN, buyN, "Buy N not set correctly")
         self.assertEqual(special.getM, getM, "Get M not set correctly")
         self.assertEqual(special.percentOff, percentOff, "Percent off not set correctly")
+        
 
     def testBuyNGetMForPercentOffApplication(self):
         self.buyNgetMSpecial.applyTo(self.scannedItems)
@@ -111,12 +113,14 @@ class DiscountsTest(unittest.TestCase):
         self.assertAlmostEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), 3, "Limit not used")
 
     def testBuyNForXConstruction(self):
-        buyN = 3
-        price = 5.0
+        self.BuyNForXConstructCheck(3, 5.0)
+        self.BuyNForXConstructCheck(5, 2.2)
+        
+    def BuyNForXConstructCheck(self, buyN, price):
         special = checkout.Discounts.BuyNForXSpecial(self.countableItem, buyN, price )
         self.assertEqual(special.buyN, buyN, "Buy N not set correctly")
         self.assertEqual(special.price, price, "Price not set correctly")
-
+        
     def testBuyNForXApplication(self):
         self.buyNForXSpecial.applyTo(self.scannedItems)
         
@@ -145,23 +149,20 @@ class DiscountsTest(unittest.TestCase):
         nonDiscountedItem = self.scannedItems.getAt(4)
 
         self.assertAlmostEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), 3, "Limit not used")
+    
         
-    def testBuyNWeightedGetMLesserPercentOff(self):
-        buyN = 3
-        getM = 2
-        percentOff = 40.0
-        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, buyN, getM, percentOff)
+    def testBuyNWeightedGetMLesserPercentOffConstruction(self):
+        self.BuyNWeightedGetMLesserConstructCheck(3,2,40.0)
+        self.BuyNWeightedGetMLesserConstructCheck(2,1,10.0)
+        
+    def BuyNWeightedGetMLesserConstructCheck(self, buyN, getM, percent):
+        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, buyN, getM, percent)
         self.assertEqual(special.buyN, buyN, "Buy N for weighted special not set")
         self.assertEqual(special.getM, getM, "Get M for weighted special not set")
-        self.assertEqual(special.percentOff, percentOff, "Percent off for weighted special not set")
+        self.assertEqual(special.percentOff, percent, "Percent off for weighted special not set")        
         
-        buyN = 2
-        getM = 1
-        percentOff = 10.0
-        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, buyN, getM, percentOff)
-        self.assertEqual(special.buyN, buyN, "Buy N for weighted special not set")
-        self.assertEqual(special.getM, getM, "Get M for weighted special not set")
-        self.assertEqual(special.percentOff, percentOff, "Percent off for weighted special not set")
+    def testBuyNWeightedGetMLesserPercentOffApplication(self):
+        pass
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
