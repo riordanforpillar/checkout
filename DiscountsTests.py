@@ -52,7 +52,6 @@ class DiscountsTest(unittest.TestCase):
         checkout.Discounts.Markdown(self.countableItem, 5.00)
         checkout.Discounts.Markdown(self.countableItem, 0.30)
         
-        
     def MarkdownConstructionTest(self, value):
         aMarkdown = checkout.Discounts.Markdown(self.countableItem, value)
         self.assertEqual(aMarkdown.value, value, "Markdown value not set")
@@ -119,6 +118,8 @@ class DiscountsTest(unittest.TestCase):
     def testBuyNGetMForPercentOffConstruction(self):
         self.BuyNGetMForPercentOffConstructCheck(1, 1, 100.0)
         self.BuyNGetMForPercentOffConstructCheck(3, 4, 100.0)
+        self.assertIsInstance(self.buy2Get1FreeSpecial, checkout.Discounts.PercentOffSpecial, "Not subclass of PercentOffSpecial")
+
         
     def BuyNGetMForPercentOffConstructCheck(self, buyN, getM, percentOff):
         special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, buyN, getM, percentOff)
