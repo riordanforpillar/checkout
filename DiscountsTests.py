@@ -119,12 +119,14 @@ class DiscountsTest(unittest.TestCase):
         self.assertIsInstance(special, checkout.Discounts.Special, "PercentOff not a subclass of Special")
         
     def testCalculateDiscountInPercentOffSpecial(self):
-        percentOff = 40.0
+        (discountPrice, expectedDiscountPrice) = self.PercentOffTestFactory(40.0)
+        self.assertEqual(discountPrice, expectedDiscountPrice, "PercentOffSpecial discount calculator gives wrong price")
+        
+    def PercentOffTestFactory(self, percentOff):
         special = checkout.Discounts.PercentOffSpecial(self.countableItem, percentOff)
         discountPrice = special.calculateDiscount(self.countableScanned)
         expectedDiscountPrice = self.countableScanned.getMarkdownPrice()*(1.0-0.01*percentOff)
-        self.assertEqual(discountPrice, expectedDiscountPrice, "PercentOffSpecial discount calculator gives wrong price")
-        
+        return (discountPrice, expectedDiscountPrice)
         
     def testBuyNGetMForPercentOffConstruction(self):
         self.BuyNGetMForPercentOffConstructCheck(1, 1, 100.0)
