@@ -134,6 +134,10 @@ class ItemsTest(unittest.TestCase):
         sizeAfter = self.scannedItemContainer.getSize()
         self.assertEqual(sizeAfter, sizeBefore+1, "ScannedItemContainer size not incremented")
 
+    def testScannedItemContainerRequireWeight(self):
+        with self.assertRaises(checkout.Items.ScannedWeightedWithNotWeightException):
+            self.scannedItemContainer.addScannedItem(self.weightedScanned)
+
     def testGetLastItemFromScannedItemContainer(self):
         itemsToAdd = [self.weightedScanned, self.singleScanned, self.singleScanned]
         

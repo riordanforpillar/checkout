@@ -3,6 +3,7 @@
 import unittest
 import checkout.Discounts
 import checkout.Items
+from checkout.Items import ScannedItem
 
 class DiscountsTest(unittest.TestCase):
 
@@ -169,7 +170,11 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(special.percentOff, percent, "Percent off for weighted special not set")        
         
     def testBuyNWeightedGetMLesserPercentOffApplication(self):
-        pass
+        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 3, 2, 40.0)
+        
+        scannedItems = checkout.Items.ScannedItemContainer()
+        scannedItems.addScannedItem(self.weightedScanned)
+
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
