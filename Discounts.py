@@ -52,6 +52,18 @@ class Special(Discount):
             belowLimit = listToParition[:self.limit]
             aboveLimit = listToParition[self.limit:]
             return (belowLimit,aboveLimit)
+     
+    def applyTo(self, scannedItems):
+        matchedItems = self.getMatchedItems(scannedItems)
+        
+        (belowLimitItems, aboveLimitItems) = self.partitionAroundLimit(matchedItems)
+        
+        self.applyDiscountBelowLimit(belowLimitItems)
+        self.applyDiscountAboveLimit(aboveLimitItems)
+        
+    def applyDiscountAboveLimit(self, aboveLimitItems):
+        for item in aboveLimitItems:
+            item.discountPrice = item.markdownPrice
         
 class PercentOffSpecial(Special):
     def __init__(self, item, percentOff, limit=None):
@@ -69,16 +81,8 @@ class BuyNGetMForPercentOffSpecial(PercentOffSpecial):
         self.getM = M
         super().__init__(item, percent, limit)
         
-    def applyTo(self, scannedItems):
-        matchedItems = self.getMatchedItems(scannedItems)
-        
-        (belowLimitItems, aboveLimitItems) = self.partitionAroundLimit(matchedItems)
-        
-        self.applyDistcountBelowLimit(belowLimitItems)
-        self.applyDistcountAboveLimit(aboveLimitItems)
 
-
-    def applyDistcountBelowLimit(self, belowLimitItems):
+    def applyDiscountBelowLimit(self, belowLimitItems):
         for index in range(len(belowLimitItems)):
             item = belowLimitItems[index]
             if self.isDiscountPosition(index):
@@ -86,9 +90,7 @@ class BuyNGetMForPercentOffSpecial(PercentOffSpecial):
             else:
                 item.discountPrice = item.markdownPrice
                 
-    def applyDistcountAboveLimit(self, aboveLimitItems):
-        for item in aboveLimitItems:
-            item.discountPrice = item.markdownPrice
+
 
                 
     def isDiscountPosition(self, index):
@@ -99,27 +101,22 @@ class BuyNGetMForPercentOffSpecial(PercentOffSpecial):
             return True
 
 class BuyNForXSpecial(Special):
-    def __init__(self, item, N, price, limit=1e9):
-        self.buyN = N
+    def __init__(self, item, N, price, limit=None):
+        self.buyN  = N
         self.price = price
         super().__init__(item, limit)
 
-    def applyTo(self, scannedItems):
-        nPurchased = 0
+    def applyDiscountBelowLimit(self, belowLimitItems):
         lastN = []
-        for index in range(scannedItems.getSize()):
-            item = scannedItems.getAt(index)
+        for index in range(len(belowLimitItems)):
+            item = belowLimitItems[index]
             if self.itemMatchesDiscount(item):
-                if nPurchased > self.limit:
-                    item.discountPrice = item.markdownPrice
-                else:
-                    lastN.append(item)
-                    if len(lastN) == self.buyN:
-                        for lastItem in lastN[:-1]:
-                            lastItem.discountPrice = 0.0
-                        lastN[-1].discountPrice = self.price
-                        lastN.clear()
-                nPurchased += 1
+                lastN.append(item)
+                if len(lastN) == self.buyN:
+                    for lastItem in lastN[:-1]:
+                        lastItem.discountPrice = 0.0
+                    lastN[-1].discountPrice = self.price
+                    lastN.clear()
 
 
         
