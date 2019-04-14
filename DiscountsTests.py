@@ -147,7 +147,13 @@ class DiscountsTest(unittest.TestCase):
         self.assertAlmostEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), 3, "Limit not used")
         
     def testBuyNWeightedGetMLesserPercentOff(self):
-        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 3, 2, 40.0)
+        buyN = 3
+        getM = 2
+        percentOff = 40.0
+        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, buyN, getM, percentOff)
+        self.assertEqual(special.buyN, buyN, "Buy N for weighted special not set")
+        self.assertEqual(special.getM, getM, "Get M for weighted special not set")
+        self.assertEqual(special.percentOff, percentOff, "Percent off for weighted special not set")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

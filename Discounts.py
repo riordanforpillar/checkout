@@ -76,8 +76,9 @@ class BuyNForXSpecial(Discount):
         
 class BuyNWeightedGetMEqualOrLesserPercentOff():
     def __init__(self, item, N, M, percent):
-        pass
-        
+        self.buyN = 3
+        self.getM = 2
+        self.percentOff = 40.0
         
         
     
