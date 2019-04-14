@@ -106,12 +106,21 @@ class BuyNForXSpecial(Special):
         super().__init__(item, limit)
 
     def applyDiscountBelowLimit(self, belowLimitItems):        
-        lastN = []
-        for item in belowLimitItems:
-            lastN.append(item)
-            if self.haveFullSet(lastN):
-                self.applyDiscountToSet(lastN)
-                lastN.clear()
+        (fullSetItems, leftoverItems) = self.partitionFullAndLeftovers(belowLimitItems)
+        for index in range(len(fullSetItems)):
+            item = fullSetItems[index]
+            if self.isPricePosition(index):
+                item.discountPrice = self.price
+            else:
+                item.discountPrice = 0.0
+                
+        self.applyDiscountAboveLimit(leftoverItems)
+
+    def partitionFullAndLeftovers(self, items):
+        nFullSetItems = self.calcNumberOfFullSets(items)*self.buyN
+        fullSetItems = items[:nFullSetItems]
+        leftoverSetItems = items[nFullSetItems:]
+        return (fullSetItems, leftoverSetItems)
                 
     def calcNumberOfFullSets(self, matchedItems):
         length = len(matchedItems)
@@ -122,29 +131,6 @@ class BuyNForXSpecial(Special):
             return True
         else:
             return False
-        
-    def partitionFullAndLeftovers(self, items):
-        nFullSetItems = self.calcNumberOfFullSets(items)*self.buyN
-        fullSetItems = items[:nFullSetItems]
-        leftoverSetItems = items[nFullSetItems:]
-        return (fullSetItems, leftoverSetItems)
-        
-    def haveFullSet(self, discountSet):
-        if len(discountSet) == self.buyN:
-            return True
-        else:
-            return False
-              
-    def applyDiscountToSet(self, discountSet):
-        self.zeroOutDiscountPriceExceptLast(discountSet)
-        self.setPriceAtEndOfSet(discountSet)        
-        
-    def zeroOutDiscountPriceExceptLast(self, discountSet):
-        for item in discountSet[:-1]:
-            item.discountPrice = 0.0
-            
-    def setPriceAtEndOfSet(self, discountSet):
-        discountSet[-1].discountPrice = self.price
         
         
 class BuyNWeightedGetMEqualOrLesserPercentOff(PercentOffSpecial):

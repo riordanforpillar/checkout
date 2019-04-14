@@ -202,7 +202,7 @@ class DiscountsTest(unittest.TestCase):
         subThresholdScan.addScannedItem(self.countableScanned)
         
         nonZeroedItem = subThresholdScan.getAt(0)
- #       nonZeroedItem.discountPrice = 0.01
+        nonZeroedItem.discountPrice = 0.01
         self.buyNForXSpecial.applyTo(subThresholdScan)
         
         self.assertEqual(nonZeroedItem.getDiscountPrice(), nonZeroedItem.getMarkdownPrice(), "Nonzeroed item wrong price")
