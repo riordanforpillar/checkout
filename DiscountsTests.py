@@ -1,7 +1,6 @@
 import unittest
 import checkout.Discounts
 import checkout.Items
-from checkout.Items import ScannedItem
 
 class DiscountsTest(unittest.TestCase):
 
@@ -108,6 +107,12 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(len(below), limit,        "Paritioned number below limit not equal to limit")
         self.assertEqual(len(above), length-limit, "Paritioned number above limit not equal to remaining")
         self.assertEqual(below[0],   objectInList, "List returned not original")
+        
+    def testPercentOffSpecialConstruction(self):
+        percentOff = 40.0
+        limit = 3
+        special = checkout.Discounts.PercentOffSpecial(self.countableItem, percentOff, limit)
+        self.assertEqual(special.percentOff, percentOff, "PercentOff Special percent off not set")
         
     def testBuyNGetMForPercentOffConstruction(self):
         self.BuyNGetMForPercentOffConstructCheck(1, 1, 100.0)

@@ -52,6 +52,10 @@ class Special(Discount):
             belowLimit = listToParition[:self.limit]
             aboveLimit = listToParition[self.limit:]
             return (belowLimit,aboveLimit)
+        
+class PercentOffSpecial():
+    def __init__(self, item, percentOff, limit):
+        self.percentOff = percentOff
 
 class BuyNGetMForPercentOffSpecial(Special):
     def __init__(self, item, N, M, percent, limit=None):
