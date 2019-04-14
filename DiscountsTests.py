@@ -203,7 +203,9 @@ class DiscountsTest(unittest.TestCase):
 
     def testBuyNWeightedGetMLesserPercentOffLimit(self):
         discount = 40.0
-        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 2, 1, discount, 3)
+        limit = 3
+        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 2, 1, discount, limit)
+        self.assertEqual(special.limit, limit, "limit not set")
       
 
             

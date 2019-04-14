@@ -78,11 +78,11 @@ class BuyNForXSpecial(Special):
 
         
 class BuyNWeightedGetMEqualOrLesserPercentOff(Special):
-    def __init__(self, item, N, M, percent, limit=None):
+    def __init__(self, item, N, M, percent, limit=1e9):
         self.buyN = N
         self.getM = M
         self.percentOff = percent
-        super().__init__(item, 0)
+        super().__init__(item, limit)
         
     def applyTo(self, scannedItems):
         purchased = []
