@@ -154,6 +154,14 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(special.buyN, buyN, "Buy N for weighted special not set")
         self.assertEqual(special.getM, getM, "Get M for weighted special not set")
         self.assertEqual(special.percentOff, percentOff, "Percent off for weighted special not set")
+        
+        buyN = 2
+        getM = 1
+        percentOff = 10.0
+        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, buyN, getM, percentOff)
+        self.assertEqual(special.buyN, buyN, "Buy N for weighted special not set")
+        self.assertEqual(special.getM, getM, "Get M for weighted special not set")
+        self.assertEqual(special.percentOff, percentOff, "Percent off for weighted special not set")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
