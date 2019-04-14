@@ -92,10 +92,12 @@ class BuyNWeightedGetMEqualOrLesserPercentOff(Special):
             if self.itemMatchesDiscount(item):
                 purchased.append(item)
                 
-        while len(purchased) > 0:
-            regularPriceSet = purchased[0:self.buyN]
-            discountSet = purchased[self.buyN:nInDiscountSet]
-            purchased = purchased[nInDiscountSet:]
+        sortedPurchased = sorted(purchased, key=lambda item: item.getQuantity(), reverse=True)
+                
+        while len(sortedPurchased) > 0:
+            regularPriceSet = sortedPurchased[0:self.buyN]
+            discountSet = sortedPurchased[self.buyN:nInDiscountSet]
+            sortedPurchased = sortedPurchased[nInDiscountSet:]
             for item in regularPriceSet:
                 item.discountPrice = item.getMarkdownPrice()
             for item in discountSet:

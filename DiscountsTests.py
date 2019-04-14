@@ -173,18 +173,35 @@ class DiscountsTest(unittest.TestCase):
         
         scannedItems = checkout.Items.ScannedItemContainer()
         
-        for _ in range(6):
+ #      [MMMMHLMM]
+        for _ in range(4):
             scannedItems.addScannedItem(self.weightedScanned)
         
+        
+        heavyScannedItem = checkout.Items.ScannedWeightedItem(self.weightedItem, 5.5)
+        scannedItems.addScannedItem(heavyScannedItem)
+        
+        lightScannedItem = checkout.Items.ScannedWeightedItem(self.weightedItem, 0.5)
+        scannedItems.addScannedItem(lightScannedItem)
+        
+        for _ in range(2):
+            scannedItems.addScannedItem(self.weightedScanned)     
         special.applyTo(scannedItems)
         
-        discountedItem = scannedItems.getAt(4)
+        discountedItem = scannedItems.getAt(2)
         self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice()*(1.0-discount*0.01), "Discount not applied")
         
         special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 2, 1, discount)
         special.applyTo(scannedItems)
-        nonDiscountedItem = scannedItems.getAt(4)
+        discountedItem = scannedItems.getAt(1)
+        self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice()*(1.0-discount*0.01), "Discount not applied")        
+        
+        nonDiscountedItem = scannedItems.getAt(2)
         self.assertEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), "Discount misapplied")
+        discountedItem = scannedItems.getAt(5)
+        self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice(), "Discount misapplied")
+
+
             
 
 if __name__ == "__main__":
