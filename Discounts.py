@@ -82,8 +82,23 @@ class BuyNWeightedGetMEqualOrLesserPercentOff(Special):
         self.buyN = N
         self.getM = M
         self.percentOff = percent
+        super().__init__(item, 0)
         
     def applyTo(self, scannedItems):
-        scannedItems.getAt(4).discountPrice = 4.2
-        
-    
+        purchased = []
+        nInDiscountSet = self.buyN + self.getM
+        for index in range(scannedItems.getSize()):
+            item = scannedItems.getAt(index)
+            if self.itemMatchesDiscount(item):
+                purchased.append(item)
+                
+        while len(purchased) > 0:
+            regularPriceSet = purchased[0:self.buyN]
+            discountSet = purchased[self.buyN:nInDiscountSet]
+            purchased = purchased[nInDiscountSet:]
+            for item in regularPriceSet:
+                item.discountPrice = item.getMarkdownPrice()
+            for item in discountSet:
+                item.discountPrice = item.getMarkdownPrice()*(1.0-self.percentOff*0.01)
+            
+            

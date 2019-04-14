@@ -1,5 +1,3 @@
-
-
 import unittest
 import checkout.Discounts
 import checkout.Items
@@ -174,14 +172,19 @@ class DiscountsTest(unittest.TestCase):
         special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 3, 2, discount)
         
         scannedItems = checkout.Items.ScannedItemContainer()
-
+        
         for _ in range(6):
             scannedItems.addScannedItem(self.weightedScanned)
-
+        
         special.applyTo(scannedItems)
         
         discountedItem = scannedItems.getAt(4)
         self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice()*(1.0-discount*0.01), "Discount not applied")
+        
+        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 2, 1, discount)
+        special.applyTo(scannedItems)
+        nonDiscountedItem = scannedItems.getAt(4)
+        self.assertEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), "Discount misapplied")
             
 
 if __name__ == "__main__":
