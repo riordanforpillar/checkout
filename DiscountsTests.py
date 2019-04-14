@@ -90,6 +90,14 @@ class DiscountsTest(unittest.TestCase):
         
         newPrice = (self.weightedScanned.getBasePrice()-self.weightedMarkdownValue)*self.weightedItemWeight
         self.assertEqual(scannedItem.getMarkdownPrice(), newPrice, "Beef markdown misapplied")
+    
+    def testSpecialPartitionAroundLimit(self):
+        limit = 3
+        special = checkout.Discounts.Special(self.countableScanned, limit)
+        listToParition = [0]*8
+        
+        special.partitionAroundLimit(listToParition)
+
 
     def testBuyNGetMForPercentOffConstruction(self):
         self.BuyNGetMForPercentOffConstructCheck(1, 1, 100.0)

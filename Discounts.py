@@ -13,9 +13,12 @@ class Discount(object):
         matched = []
         for index in range(scannedItems.getSize()):
             item = scannedItems.getAt(index)
-            if self.itemMatchesDiscount(item):
-                matched.append(item)
+            self.appendIfMatchedItem(matched, item)
         return matched
+    
+    def appendIfMatchedItem(self, arrayOfMatched, item):
+        if self.itemMatchesDiscount(item):
+            arrayOfMatched.append(item)
     
     def itemMatchesDiscount(self, scannedItem):
         if scannedItem.getName() == self.itemToDiscount.name:
@@ -41,6 +44,9 @@ class Special(Discount):
     def __init__(self, item, limit=1e9):
         super().__init__(item)
         self.limit = limit
+        
+    def partitionAroundLimit(self, listToParition):
+        pass
 
 class BuyNGetMForPercentOffSpecial(Special):
     def __init__(self, item, N, M, percent, limit=1e9):
@@ -50,16 +56,17 @@ class BuyNGetMForPercentOffSpecial(Special):
         super().__init__(item, limit)
         
     def applyTo(self, scannedItems):
-        nPurchased = 0
-                
-        for index in range(scannedItems.getSize()):
-            item = scannedItems.getAt(index)
-            if self.itemMatchesDiscount(item) and nPurchased < self.limit:
+        nPurchased = 0      
+        matchedItems = self.getMatchedItems(scannedItems)
+        
+        for item in matchedItems:
+            if nPurchased < self.limit:
                 if nPurchased % (self.buyN + self.getM) < self.buyN:
                     item.discountPrice = item.markdownPrice
                 else:
                     item.discountPrice = item.markdownPrice*(1.0 - self.percentOff*0.01)
                 nPurchased += 1
+            
 
 
 class BuyNForXSpecial(Special):
