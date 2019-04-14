@@ -8,7 +8,6 @@ class DiscountsTest(unittest.TestCase):
 
 
     def setUp(self):
-        self.discount = checkout.Discounts.Discount()
         
         self.scannedItems = checkout.Items.ScannedItemContainer()
 
@@ -32,6 +31,9 @@ class DiscountsTest(unittest.TestCase):
         self.scannedItems.addScannedItem(self.countableScanned)
         self.scannedItems.addScannedItem(self.countableScanned)
         
+        self.discount = checkout.Discounts.Discount(self.countableItem)
+
+        
         self.buyN = 3
         self.getM = 1
         self.percentOff = 70.0
@@ -46,7 +48,7 @@ class DiscountsTest(unittest.TestCase):
         pass
 
     def testDiscountConstructor(self):
-        aDiscount = checkout.Discounts.Discount()
+        aDiscount = checkout.Discounts.Discount(self.countableItem)
     
     def testDiscountApply(self):
         self.discount.applyTo(self.scannedItems)

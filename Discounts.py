@@ -3,8 +3,8 @@ from checkout.Items import ScannedItem, Item
 
 class Discount(object):
 
-    def __init__(self):
-        pass
+    def __init__(self, item):
+        self.itemToDiscount = item
      
     def applyTo(self, scannedItems):
         pass
@@ -17,7 +17,7 @@ class Discount(object):
     
 class Markdown(Discount):
     def __init__(self, item, value):
-        self.itemToDiscount = item
+        super().__init__(item)
         self.value = value
 
     def applyTo(self, scannedItems):
@@ -26,6 +26,11 @@ class Markdown(Discount):
             if self.itemMatchesDiscount(scannedItem):
                 discountedPPU = scannedItem.getBasePrice() - self.value
                 scannedItem.markdownPrice = discountedPPU * scannedItem.getQuantity()
+
+class Special(Discount):
+    def __init__(self, item, limit=1e9):
+        self.itemToDiscount = item
+        self.limit = limit
 
 class BuyNGetMForPercentOffSpecial(Discount):
     def __init__(self, item, N, M, percent, limit=1e9):
