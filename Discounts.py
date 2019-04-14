@@ -32,13 +32,12 @@ class Special(Discount):
         self.itemToDiscount = item
         self.limit = limit
 
-class BuyNGetMForPercentOffSpecial(Discount):
+class BuyNGetMForPercentOffSpecial(Special):
     def __init__(self, item, N, M, percent, limit=1e9):
         self.buyN = N
         self.getM = M
         self.percentOff = percent
-        self.itemToDiscount = item
-        self.limit = limit
+        super().__init__(item, limit)
         
     def applyTo(self, scannedItems):
         nPurchased = 0
@@ -53,12 +52,11 @@ class BuyNGetMForPercentOffSpecial(Discount):
                 nPurchased += 1
 
 
-class BuyNForXSpecial(Discount):
+class BuyNForXSpecial(Special):
     def __init__(self, item, N, price, limit=1e9):
         self.buyN = N
         self.price = price
-        self.itemToDiscount = item
-        self.limit = limit
+        super().__init__(item, limit)
 
     def applyTo(self, scannedItems):
         nPurchased = 0
