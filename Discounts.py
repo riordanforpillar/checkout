@@ -1,4 +1,5 @@
 import checkout.Items
+from checkout.Items import ScannedItem, Item
 
 class Discount(object):
 
@@ -27,7 +28,7 @@ class Markdown(Discount):
                 scannedItem.markdownPrice = discountedPPU * scannedItem.getQuantity()
 
 class BuyNGetMForPercentOffSpecial(Discount):
-    def __init__(self, item, N, M, percent):
+    def __init__(self, item, N, M, percent, limit=None):
         self.buyN = N
         self.getM = M
         self.percentOff = percent
@@ -50,10 +51,19 @@ class BuyNForXSpecial(Discount):
     def __init__(self, item, N, price):
         self.buyN = N
         self.price = price
+        self.itemToDiscount = item
 
     def applyTo(self, scannedItems):
-        scannedItems.getAt(0).discountPrice = 0.0
-        scannedItems.getAt(3).discountPrice = 5.0
+        lastN = []
+        for index in range(scannedItems.getSize()):
+            item = scannedItems.getAt(index)
+            if self.itemMatchesDiscount(item):
+                lastN.append(item)
+                if len(lastN) == self.buyN:
+                    for lastItem in lastN[:-1]:
+                        lastItem.discountPrice = 0.0
+                    lastN[-1].discountPrice = self.price
+                    lastN.clear()
 
 
         

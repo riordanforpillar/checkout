@@ -29,6 +29,7 @@ class DiscountsTest(unittest.TestCase):
         self.scannedItems.addScannedItem(self.countableScanned)
         self.scannedItems.addScannedItem(self.countableScanned)
         self.scannedItems.addScannedItem(self.countableScanned)
+        self.scannedItems.addScannedItem(self.countableScanned)
 
 
         
@@ -101,6 +102,10 @@ class DiscountsTest(unittest.TestCase):
         specialItem = self.scannedItems.getAt(3)
         self.assertAlmostEqual(0.0, specialItem.getDiscountPrice(), 3, "Special not applied")
 
+    def testBuyNGetMForPercentOffLimitApplication(self):
+        self.buy2Get1FreeLimit3Special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, 2, 1, 100.0, 3)
+
+
     def testBuyNForXConstruction(self):
         buyN = 3
         price = 5.0
@@ -118,6 +123,15 @@ class DiscountsTest(unittest.TestCase):
 
         self.assertEqual(sumPriceItem.getDiscountPrice(), self.buyNprice, "Summed discount not applied")
 
+        subThresholdScan = checkout.Items.ScannedItemContainer()
+        subThresholdScan.addScannedItem(self.countableScanned)
+        subThresholdScan.addScannedItem(self.countableScanned)
+        
+        self.buyNForXSpecial.applyTo(subThresholdScan)
+        
+        nonZeroedItem = subThresholdScan.getAt(0)
+        self.assertEqual(nonZeroedItem.getDiscountPrice(), self.countableScanned.getDiscountPrice(), "Nonzeroed item wrong price")
+        
 
 
 if __name__ == "__main__":
