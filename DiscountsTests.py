@@ -201,6 +201,8 @@ class DiscountsTest(unittest.TestCase):
         discountedItem = scannedItems.getAt(5)
         self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice(), "Discount misapplied")
 
+    def testBuyNWeightedGetMLesserPercentOffLimit(self):
+        pass
 
             
 
