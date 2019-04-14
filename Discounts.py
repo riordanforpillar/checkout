@@ -49,22 +49,28 @@ class BuyNGetMForPercentOffSpecial(Discount):
 
 
 class BuyNForXSpecial(Discount):
-    def __init__(self, item, N, price):
+    def __init__(self, item, N, price, limit=1e9):
         self.buyN = N
         self.price = price
         self.itemToDiscount = item
+        self.limit = limit
 
     def applyTo(self, scannedItems):
+        nPurchased = 0
         lastN = []
         for index in range(scannedItems.getSize()):
             item = scannedItems.getAt(index)
             if self.itemMatchesDiscount(item):
-                lastN.append(item)
-                if len(lastN) == self.buyN:
-                    for lastItem in lastN[:-1]:
-                        lastItem.discountPrice = 0.0
-                    lastN[-1].discountPrice = self.price
-                    lastN.clear()
+                if nPurchased > self.limit:
+                    item.discountPrice = item.markdownPrice
+                else:
+                    lastN.append(item)
+                    if len(lastN) == self.buyN:
+                        for lastItem in lastN[:-1]:
+                            lastItem.discountPrice = 0.0
+                        lastN[-1].discountPrice = self.price
+                        lastN.clear()
+                nPurchased += 1
 
 
         

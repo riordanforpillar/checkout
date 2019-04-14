@@ -137,7 +137,15 @@ class DiscountsTest(unittest.TestCase):
         nonZeroedItem = subThresholdScan.getAt(0)
         self.assertEqual(nonZeroedItem.getDiscountPrice(), self.countableScanned.getDiscountPrice(), "Nonzeroed item wrong price")
         
+    def testBuyNForXLimitApplication(self):
+        price = 5.0
+        buy3ForXLimit3Special = checkout.Discounts.BuyNForXSpecial(self.countableItem, 3, price, 3)
 
+        buy3ForXLimit3Special.applyTo(self.scannedItems)
+        
+        nonDiscountedItem = self.scannedItems.getAt(4)
+
+        self.assertAlmostEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), 3, "Limit not used")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
