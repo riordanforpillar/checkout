@@ -122,6 +122,8 @@ class DiscountsTest(unittest.TestCase):
         percentOff = 40.0
         special = checkout.Discounts.PercentOffSpecial(self.countableItem, percentOff)
         discountPrice = special.calculateDiscount(self.countableScanned)
+        expectedDiscountPrice = self.countableScanned.getMarkdownPrice()*(1.0-0.01*percentOff)
+        self.assertEqual(discountPrice, expectedDiscountPrice, "PercentOffSpecial discount calculator gives wrong price")
         
         
     def testBuyNGetMForPercentOffConstruction(self):
