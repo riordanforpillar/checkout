@@ -96,7 +96,8 @@ class DiscountsTest(unittest.TestCase):
         special = checkout.Discounts.Special(self.countableScanned, limit)
         listToParition = [0]*8
         
-        special.partitionAroundLimit(listToParition)
+        (below, above) = special.partitionAroundLimit(listToParition)
+        self.assertEqual(len(below), limit, "Paritioned number below limit not equal to limit")
 
 
     def testBuyNGetMForPercentOffConstruction(self):

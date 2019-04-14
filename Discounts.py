@@ -46,7 +46,7 @@ class Special(Discount):
         self.limit = limit
         
     def partitionAroundLimit(self, listToParition):
-        pass
+        return ([0]*3, None)
 
 class BuyNGetMForPercentOffSpecial(Special):
     def __init__(self, item, N, M, percent, limit=1e9):
