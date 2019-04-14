@@ -29,7 +29,7 @@ class Markdown(Discount):
 
 class Special(Discount):
     def __init__(self, item, limit=1e9):
-        self.itemToDiscount = item
+        super().__init__(item)
         self.limit = limit
 
 class BuyNGetMForPercentOffSpecial(Special):
