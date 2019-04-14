@@ -30,8 +30,7 @@ class DiscountsTest(unittest.TestCase):
         self.scannedItems.addScannedItem(self.countableScanned)
         self.scannedItems.addScannedItem(self.countableScanned)
         self.scannedItems.addScannedItem(self.countableScanned)
-
-
+        self.scannedItems.addScannedItem(self.countableScanned)
         
         self.buyN = 3
         self.getM = 1
@@ -135,7 +134,7 @@ class DiscountsTest(unittest.TestCase):
         self.buyNForXSpecial.applyTo(subThresholdScan)
         
         nonZeroedItem = subThresholdScan.getAt(0)
-        self.assertEqual(nonZeroedItem.getDiscountPrice(), self.countableScanned.getDiscountPrice(), "Nonzeroed item wrong price")
+        self.assertEqual(nonZeroedItem.getDiscountPrice(), nonZeroedItem.getMarkdownPrice(), "Nonzeroed item wrong price")
         
     def testBuyNForXLimitApplication(self):
         price = 5.0
@@ -146,6 +145,9 @@ class DiscountsTest(unittest.TestCase):
         nonDiscountedItem = self.scannedItems.getAt(4)
 
         self.assertAlmostEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), 3, "Limit not used")
+        
+    def testBuyNWeightedGetMLesserPercentOff(self):
+        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 3, 2, 40.0)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
