@@ -170,7 +170,8 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(special.percentOff, percent, "Percent off for weighted special not set")        
         
     def testBuyNWeightedGetMLesserPercentOffApplication(self):
-        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 3, 2, 40.0)
+        discount = 40.0
+        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 3, 2, discount)
         
         scannedItems = checkout.Items.ScannedItemContainer()
 
@@ -178,6 +179,9 @@ class DiscountsTest(unittest.TestCase):
             scannedItems.addScannedItem(self.weightedScanned)
 
         special.applyTo(scannedItems)
+        
+        discountedItem = scannedItems.getAt(4)
+        self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice()*(1.0-discount*0.01), "Discount not applied")
             
 
 if __name__ == "__main__":

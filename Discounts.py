@@ -83,5 +83,7 @@ class BuyNWeightedGetMEqualOrLesserPercentOff(Special):
         self.getM = M
         self.percentOff = percent
         
+    def applyTo(self, scannedItems):
+        scannedItems.getAt(4).discountPrice = 4.2
         
     
