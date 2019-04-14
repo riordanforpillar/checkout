@@ -41,31 +41,40 @@ class Markdown(Discount):
         item.markdownPrice = discountedPPU * item.getQuantity()        
 
 class Special(Discount):
-    def __init__(self, item, limit=1e9):
+    def __init__(self, item, limit=None):
         super().__init__(item)
         self.limit = limit
         
     def partitionAroundLimit(self, listToParition):
-        return (listToParition[:self.limit], listToParition[self.limit:])
+        if self.limit == None:
+            return (listToParition, [])
+        else:
+            belowLimit = listToParition[:self.limit]
+            aboveLimit = listToParition[self.limit:]
+            return (belowLimit,aboveLimit)
 
 class BuyNGetMForPercentOffSpecial(Special):
-    def __init__(self, item, N, M, percent, limit=1e9):
+    def __init__(self, item, N, M, percent, limit=None):
         self.buyN = N
         self.getM = M
         self.percentOff = percent
         super().__init__(item, limit)
         
     def applyTo(self, scannedItems):
-        nPurchased = 0      
         matchedItems = self.getMatchedItems(scannedItems)
         
-        for item in matchedItems:
-            if nPurchased < self.limit:
-                if nPurchased % (self.buyN + self.getM) < self.buyN:
-                    item.discountPrice = item.markdownPrice
-                else:
-                    item.discountPrice = item.markdownPrice*(1.0 - self.percentOff*0.01)
-                nPurchased += 1
+        (belowLimit, aboveLimit) = self.partitionAroundLimit(matchedItems)
+        
+        nPurchased = 0
+        for item in belowLimit:
+            if nPurchased % (self.buyN + self.getM) < self.buyN:
+                item.discountPrice = item.markdownPrice
+            else:
+                item.discountPrice = item.markdownPrice*(1.0 - self.percentOff*0.01)
+            nPurchased += 1
+        for item in aboveLimit:
+            item.discountPrice = item.markdownPrice
+
             
 
 
