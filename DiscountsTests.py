@@ -62,6 +62,11 @@ class DiscountsTest(unittest.TestCase):
     def testGetMatchedItems(self):
         matchedItems = self.discount.getMatchedItems(self.scannedItems)
         self.assertEqual(len(matchedItems), 7, "Matched items length doesn't match expected")
+        
+        emptyScanned = checkout.Items.ScannedItemContainer()
+        matchedItems = self.discount.getMatchedItems(emptyScanned)
+        self.assertEqual(len(matchedItems), 0, "Matched items length doesn't match expected")        
+        
 
     def testSpecialMatchItem(self):
         self.assertTrue(self.buy2Get1FreeSpecial.itemMatchesDiscount(self.countableScanned), "Markdown did not match scanned item")

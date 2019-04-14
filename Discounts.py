@@ -10,7 +10,12 @@ class Discount(object):
         pass
     
     def getMatchedItems(self, scannedItems):
-        return list(range(7))
+        matched = []
+        for index in range(scannedItems.getSize()):
+            item = scannedItems.getAt(index)
+            if self.itemMatchesDiscount(item):
+                matched.append(item)
+        return matched
     
     def itemMatchesDiscount(self, scannedItem):
         if scannedItem.getName() == self.itemToDiscount.name:
