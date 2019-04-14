@@ -219,11 +219,17 @@ class DiscountsTest(unittest.TestCase):
         self.assertAlmostEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), 3, "Limit not used")
     
     def testGetNFullSetsForBuyNForXSpecial(self):
-        nMatched = 10
+        self.runFullSetCalcForN(10)
+        self.runFullSetCalcForN(20)
+        
+    def runFullSetCalcForN(self, nMatched):
         dummySet = [0]*nMatched
         nSets = self.buyNForXSpecial.calcNumberOfFullSets(dummySet)
         self.assertEqual(nSets, int(nMatched/self.buyN), "Number of sets incorrect")
         
+    def testIsPricePositionForBuyNForXSpecial(self):
+        self.assertFalse(self.buyNForXSpecial.isPricePosition(0), "Zeroed position for BuyNForXSpecial misidentified")
+               
     def testBuyNWeightedGetMLesserPercentOffConstruction(self):
         self.BuyNWeightedGetMLesserConstructCheck(3,2,40.0)
         self.BuyNWeightedGetMLesserConstructCheck(2,1,10.0)

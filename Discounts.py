@@ -113,8 +113,12 @@ class BuyNForXSpecial(Special):
                 self.applyDiscountToSet(lastN)
                 lastN.clear()
                 
-    def calcNumberOfFullSets(self, dummy):
-        return 3
+    def calcNumberOfFullSets(self, matchedItems):
+        length = len(matchedItems)
+        return int(length/self.buyN)
+    
+    def isPricePosition(self, index):
+        return False
                 
     def haveFullSet(self, discountSet):
         if len(discountSet) == self.buyN:
