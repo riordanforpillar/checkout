@@ -113,6 +113,8 @@ class DiscountsTest(unittest.TestCase):
         limit = 3
         special = checkout.Discounts.PercentOffSpecial(self.countableItem, percentOff, limit)
         self.assertEqual(special.percentOff, percentOff, "PercentOff Special percent off not set")
+        self.assertEqual(special.limit, limit, "PercentOff Special limit not set")
+        
         
     def testBuyNGetMForPercentOffConstruction(self):
         self.BuyNGetMForPercentOffConstructCheck(1, 1, 100.0)
