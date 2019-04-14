@@ -93,11 +93,20 @@ class DiscountsTest(unittest.TestCase):
     
     def testSpecialPartitionAroundLimit(self):
         limit = 3
+        length = 8
+        
+        objectInList = 7
         special = checkout.Discounts.Special(self.countableScanned, limit)
-        listToParition = [0]*8
+        listToParition = [objectInList]*length
         
         (below, above) = special.partitionAroundLimit(listToParition)
         self.assertEqual(len(below), limit, "Paritioned number below limit not equal to limit")
+        self.assertEqual(len(above), length-limit, "Paritioned number above limit not equal to remaining")
+        self.assertEqual(below[0], objectInList, "List returned not original")
+
+        (below, above) = special.partitionAroundLimit([])
+        self.assertEqual(len(below), 0, "Paritioned number of empty list not zero")
+
 
 
     def testBuyNGetMForPercentOffConstruction(self):
