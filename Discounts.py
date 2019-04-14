@@ -127,10 +127,14 @@ class BuyNWeightedGetMEqualOrLesserPercentOff(PercentOffSpecial):
         super().__init__(item, percent, limit)
         
     def applyTo(self, scannedItems):
-        matchedItems = self.getMatchedItems(scannedItems)      
-        
-        itemQuantitySortKey= lambda item: item.getQuantity()
-        sortedItems = sorted(matchedItems, key=itemQuantitySortKey, reverse=True)
+        sortedItems = self.getMatchedItemsSortedByWeight(scannedItems)
         (belowLimitItems, aboveLimitItems) = self.partitionAroundLimit(sortedItems)
 
         self.applyToAboveAndBelowParitions(belowLimitItems, aboveLimitItems)
+        
+    def getMatchedItemsSortedByWeight(self, scannedItems):
+        matchedItems = self.getMatchedItems(scannedItems)      
+        
+        itemQuantitySortKey= lambda item: item.getQuantity()
+        sortedItems = sorted(matchedItems, key=itemQuantitySortKey, reverse=True)        
+        return sortedItems
