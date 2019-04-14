@@ -228,8 +228,15 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(nSets, int(nMatched/self.buyN), "Number of sets incorrect")
         
     def testIsPricePositionForBuyNForXSpecial(self):
-        self.assertFalse(self.buyNForXSpecial.isPricePosition(0), "Zeroed position for BuyNForXSpecial misidentified")
-               
+        self.assertFalse(self.buyNForXSpecial.isPricePosition(0),           "Zeroed position for BuyNForXSpecial misidentified")
+        self.assertTrue( self.buyNForXSpecial.isPricePosition(self.buyN-1), "Price position for BuyNForXSpecial misidentified")
+        self.assertFalse(self.buyNForXSpecial.isPricePosition(4),           "Zeroed position for BuyNForXSpecial misidentified")
+    
+    def testPartitionFullAndLeftoversforBuyNForXSpecial(self):
+        special = checkout.Discounts.BuyNForXSpecial(self.countableItem, 3, 0.0)
+        dummy = [0]*8
+        special.partitionFullAndLeftovers(dummy)
+              
     def testBuyNWeightedGetMLesserPercentOffConstruction(self):
         self.BuyNWeightedGetMLesserConstructCheck(3,2,40.0)
         self.BuyNWeightedGetMLesserConstructCheck(2,1,10.0)

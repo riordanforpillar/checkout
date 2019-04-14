@@ -118,8 +118,14 @@ class BuyNForXSpecial(Special):
         return int(length/self.buyN)
     
     def isPricePosition(self, index):
-        return False
-                
+        if (index+1) % self.buyN == 0:
+            return True
+        else:
+            return False
+        
+    def partitionFullAndLeftovers(self, items):
+        pass
+        
     def haveFullSet(self, discountSet):
         if len(discountSet) == self.buyN:
             return True
