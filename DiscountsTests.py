@@ -138,13 +138,18 @@ class DiscountsTest(unittest.TestCase):
         special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, buyN, getM, percentOff)
         self.assertEqual(special.buyN, buyN, "Buy N not set correctly")
         self.assertEqual(special.getM, getM, "Get M not set correctly")
-        self.assertEqual(special.percentOff, percentOff, "Percent off not set correctly")
-        
+        self.assertEqual(special.percentOff, percentOff, "Percent off not set correctly")        
 
     def testBuyNGetMForPercentOffApplication(self):
+        changedDiscountPrice = 0.01
+        modifiedSpecialItem = self.scannedItems.getAt(0)
+        modifiedSpecialItem.discountPrice = changedDiscountPrice
+
         self.buyNgetMSpecial.applyTo(self.scannedItems)
         specialItem = self.scannedItems.getAt(4)
         self.assertAlmostEqual(specialItem.getMarkdownPrice()*(1.0-self.percentOff*0.01), specialItem.getDiscountPrice(), 3, "Special not applied")
+
+        self.assertAlmostEqual(modifiedSpecialItem.getMarkdownPrice(), modifiedSpecialItem.getBasePrice(), 3, "Undiscounted price not recalculated")
         
         unSpecialItem = self.scannedItems.getAt(5)
         self.assertEqual(unSpecialItem.getMarkdownPrice(), unSpecialItem.getDiscountPrice(), "Markdown and special price do not match for nonspecial item")
@@ -153,14 +158,16 @@ class DiscountsTest(unittest.TestCase):
         specialItem = self.scannedItems.getAt(3)
         self.assertAlmostEqual(0.0, specialItem.getDiscountPrice(), 3, "Special not applied")
 
+
     def testBuyNGetMForPercentOffLimitApplication(self):
         buy2Get1FreeLimit3Special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, 2, 1, 100.0, 3)
 
-        buy2Get1FreeLimit3Special.applyTo(self.scannedItems)
-        
         nonDiscountedItem = self.scannedItems.getAt(6)
+        changedDiscountPrice = 0.01
+        nonDiscountedItem.discountPrice = changedDiscountPrice
 
-        self.assertAlmostEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), 3, "Limit not used")
+        buy2Get1FreeLimit3Special.applyTo(self.scannedItems)
+        self.assertEqual(nonDiscountedItem.getMarkdownPrice(), nonDiscountedItem.getDiscountPrice(), "Markdown and special price do not match for nonspecial item past limit")
 
     def testBuyNGetMForPercentOffValidDiscountCheck(self):
         self.assertTrue( self.buy2Get1FreeSpecial.isDiscountPosition(2))

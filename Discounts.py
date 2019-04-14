@@ -75,18 +75,21 @@ class BuyNGetMForPercentOffSpecial(PercentOffSpecial):
         (belowLimitItems, aboveLimitItems) = self.partitionAroundLimit(matchedItems)
         
         self.applyDistcountBelowLimit(belowLimitItems)
-        for item in aboveLimitItems:
-            item.discountPrice = item.markdownPrice
+        self.applyDistcountAboveLimit(aboveLimitItems)
+
 
     def applyDistcountBelowLimit(self, belowLimitItems):
         for index in range(len(belowLimitItems)):
             item = belowLimitItems[index]
-            updatedDiscountPrice = item.markdownPrice*(1.0 - self.percentOff*0.01)
-            
             if self.isDiscountPosition(index):
-                item.discountPrice = updatedDiscountPrice
+                item.discountPrice = self.calculateDiscount(item)
             else:
                 item.discountPrice = item.markdownPrice
+                
+    def applyDistcountAboveLimit(self, aboveLimitItems):
+        for item in aboveLimitItems:
+            item.discountPrice = item.markdownPrice
+
                 
     def isDiscountPosition(self, index):
         nInDiscountSet = self.buyN + self.getM
