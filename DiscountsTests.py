@@ -118,6 +118,11 @@ class DiscountsTest(unittest.TestCase):
         
         self.assertIsInstance(special, checkout.Discounts.Special, "PercentOff not a subclass of Special")
         
+    def testCalculateDiscountInPercentOffSpecial(self):
+        percentOff = 40.0
+        special = checkout.Discounts.PercentOffSpecial(self.countableItem, percentOff)
+        discountPrice = special.calculateDiscount(self.countableScanned)
+        
         
     def testBuyNGetMForPercentOffConstruction(self):
         self.BuyNGetMForPercentOffConstructCheck(1, 1, 100.0)

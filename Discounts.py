@@ -57,6 +57,9 @@ class PercentOffSpecial(Special):
     def __init__(self, item, percentOff, limit=None):
         self.percentOff = percentOff
         super().__init__(item, limit)
+        
+    def calculateDiscount(self, item):
+        pass
 
 class BuyNGetMForPercentOffSpecial(PercentOffSpecial):
     def __init__(self, item, N, M, percent, limit=None):
