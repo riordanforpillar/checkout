@@ -173,8 +173,12 @@ class DiscountsTest(unittest.TestCase):
         special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 3, 2, 40.0)
         
         scannedItems = checkout.Items.ScannedItemContainer()
-        scannedItems.addScannedItem(self.weightedScanned)
 
+        for _ in range(6):
+            scannedItems.addScannedItem(self.weightedScanned)
+
+        special.applyTo(scannedItems)
+            
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
