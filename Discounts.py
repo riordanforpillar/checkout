@@ -59,7 +59,9 @@ class PercentOffSpecial(Special):
         super().__init__(item, limit)
         
     def calculateDiscount(self, item):
-        return 2.55
+        markdownPrice  = item.getMarkdownPrice()
+        discountFactor = 1.0 - self.percentOff*0.01
+        return markdownPrice*discountFactor
 
 class BuyNGetMForPercentOffSpecial(PercentOffSpecial):
     def __init__(self, item, N, M, percent, limit=None):
