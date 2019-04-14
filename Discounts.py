@@ -29,11 +29,10 @@ class Markdown(Discount):
         self.value = value
 
     def applyTo(self, scannedItems):
-        for index in range(scannedItems.getSize()):
-            scannedItem = scannedItems.getAt(index)
-            if self.itemMatchesDiscount(scannedItem):
-                discountedPPU = scannedItem.getBasePrice() - self.value
-                scannedItem.markdownPrice = discountedPPU * scannedItem.getQuantity()
+        matchedItems = self.getMatchedItems(scannedItems)
+        for item in matchedItems:
+            discountedPPU = item.getBasePrice() - self.value
+            item.markdownPrice = discountedPPU * item.getQuantity()
 
 class Special(Discount):
     def __init__(self, item, limit=1e9):
