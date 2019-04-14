@@ -74,13 +74,14 @@ class BuyNGetMForPercentOffSpecial(Special):
             item = belowLimitItems[index]
             updatedDiscountPrice = item.markdownPrice*(1.0 - self.percentOff*0.01)
             
-            if index % (self.buyN + self.getM) < self.buyN:
-                item.discountPrice = item.markdownPrice
-            else:
+            if self.isDiscountPosition(index):
                 item.discountPrice = updatedDiscountPrice
+            else:
+                item.discountPrice = item.markdownPrice
                 
     def isDiscountPosition(self, index):
-        if index <1 :
+        nInDiscountSet = self.buyN + self.getM
+        if index % nInDiscountSet < self.buyN:
             return False
         else:
             return True

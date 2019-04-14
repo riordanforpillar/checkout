@@ -145,6 +145,9 @@ class DiscountsTest(unittest.TestCase):
         self.assertTrue( self.buy2Get1FreeSpecial.isDiscountPosition(2))
         self.assertFalse(self.buy2Get1FreeSpecial.isDiscountPosition(0))
 
+        self.assertFalse(self.buyNgetMSpecial.isDiscountPosition(2))
+
+
 
     def testBuyNForXConstruction(self):
         self.BuyNForXConstructCheck(3, 5.0)
