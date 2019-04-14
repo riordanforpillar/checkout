@@ -124,7 +124,7 @@ class BuyNForXSpecial(Special):
             return False
         
     def partitionFullAndLeftovers(self, items):
-        pass
+        return ([0]*6, [0]*2)
         
     def haveFullSet(self, discountSet):
         if len(discountSet) == self.buyN:
