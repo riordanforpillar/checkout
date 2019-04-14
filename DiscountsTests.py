@@ -201,21 +201,28 @@ class DiscountsTest(unittest.TestCase):
         subThresholdScan.addScannedItem(self.countableScanned)
         subThresholdScan.addScannedItem(self.countableScanned)
         
+        nonZeroedItem = subThresholdScan.getAt(0)
+ #       nonZeroedItem.discountPrice = 0.01
         self.buyNForXSpecial.applyTo(subThresholdScan)
         
-        nonZeroedItem = subThresholdScan.getAt(0)
         self.assertEqual(nonZeroedItem.getDiscountPrice(), nonZeroedItem.getMarkdownPrice(), "Nonzeroed item wrong price")
         
     def testBuyNForXLimitApplication(self):
         price = 5.0
         buy3ForXLimit3Special = checkout.Discounts.BuyNForXSpecial(self.countableItem, 3, price, 3)
 
+ 
         buy3ForXLimit3Special.applyTo(self.scannedItems)
         
         nonDiscountedItem = self.scannedItems.getAt(4)
 
         self.assertAlmostEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), 3, "Limit not used")
     
+    def testGetNFullSetsForBuyNForXSpecial(self):
+        nMatched = 10
+        dummySet = [0]*nMatched
+        nSets = self.buyNForXSpecial.calcNumberOfFullSets(dummySet)
+        self.assertEqual(nSets, int(nMatched/self.buyN), "Number of sets incorrect")
         
     def testBuyNWeightedGetMLesserPercentOffConstruction(self):
         self.BuyNWeightedGetMLesserConstructCheck(3,2,40.0)

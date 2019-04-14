@@ -11,11 +11,11 @@ class Discount(object):
         pass
     
     def getMatchedItems(self, scannedItems):
-        matched = []
+        matchedSet = []
         for index in range(scannedItems.getSize()):
             item = scannedItems.getAt(index)
-            self.appendIfMatchedItem(matched, item)
-        return matched
+            self.appendIfMatchedItem(matchedSet, item)
+        return matchedSet
     
     def appendIfMatchedItem(self, arrayOfMatched, item):
         if self.itemMatchesDiscount(item):
@@ -105,13 +105,16 @@ class BuyNForXSpecial(Special):
         self.price = price
         super().__init__(item, limit)
 
-    def applyDiscountBelowLimit(self, belowLimitItems):
+    def applyDiscountBelowLimit(self, belowLimitItems):        
         lastN = []
         for item in belowLimitItems:
             lastN.append(item)
             if self.haveFullSet(lastN):
                 self.applyDiscountToSet(lastN)
                 lastN.clear()
+                
+    def calcNumberOfFullSets(self, dummy):
+        return 3
                 
     def haveFullSet(self, discountSet):
         if len(discountSet) == self.buyN:
