@@ -90,9 +90,6 @@ class BuyNGetMForPercentOffSpecial(PercentOffSpecial):
             else:
                 item.discountPrice = item.markdownPrice
                 
-
-
-                
     def isDiscountPosition(self, index):
         nInDiscountSet = self.buyN + self.getM
         if index % nInDiscountSet < self.buyN:
@@ -127,27 +124,22 @@ class BuyNWeightedGetMEqualOrLesserPercentOff(PercentOffSpecial):
         super().__init__(item, percent, limit)
         
     def applyTo(self, scannedItems):
-        purchased = []
-        nInDiscountSet = self.buyN + self.getM
-        for index in range(scannedItems.getSize()):
-            item = scannedItems.getAt(index)
-            if self.itemMatchesDiscount(item):
-                purchased.append(item)
-                
-        sortedPurchased = sorted(purchased, key=lambda item: item.getQuantity(), reverse=True)
+        matchedItems = self.getMatchedItems(scannedItems)                
+        sortedItems = sorted(matchedItems, key=lambda item: item.getQuantity(), reverse=True)
         
-        pastLimit = sortedPurchased[self.limit:]
-        sortedPurchased = sortedPurchased[:self.limit]
-                
-        while len(sortedPurchased) > 0:
-            regularPriceSet = sortedPurchased[0:self.buyN]
-            discountSet = sortedPurchased[self.buyN:nInDiscountSet]
-            sortedPurchased = sortedPurchased[nInDiscountSet:]
+        (itemsBelowLimit, itemsAboveLimit) = self.partitionAroundLimit(sortedItems)
+
+        self.applyDiscountBelowLimit(itemsBelowLimit)
+        self.applyDiscountAboveLimit(itemsAboveLimit)
+        
+    def applyDiscountBelowLimit(self, itemsBelowLimit):
+        nInDiscountSet = self.buyN + self.getM
+        while len(itemsBelowLimit) > 0:
+            regularPriceSet = itemsBelowLimit[0:self.buyN]
+            discountSet = itemsBelowLimit[self.buyN:nInDiscountSet]
+            itemsBelowLimit = itemsBelowLimit[nInDiscountSet:]
             for item in regularPriceSet:
                 item.discountPrice = item.getMarkdownPrice()
             for item in discountSet:
-                item.discountPrice = item.getMarkdownPrice()*(1.0-self.percentOff*0.01)
-        
-        for item in pastLimit:
-            item.discountPrice = item.getMarkdownPrice()   
-            
+                item.discountPrice = item.getMarkdownPrice()*(1.0-self.percentOff*0.01)        
+           
