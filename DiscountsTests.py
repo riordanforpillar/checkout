@@ -52,8 +52,13 @@ class DiscountsTest(unittest.TestCase):
         self.discount.applyTo(self.scannedItems)
         
     def testMarkdownConstructor(self):
-        aMarkdown = checkout.Discounts.Markdown(self.countableItem, self.countableMarkdownValue)
-        self.assertEqual(aMarkdown.value, self.countableMarkdownValue, "Markdown value not set")
+        checkout.Discounts.Markdown(self.countableItem, 5.00)
+        checkout.Discounts.Markdown(self.countableItem, 0.30)
+        
+        
+    def MarkdownConstructionTest(self, value):
+        aMarkdown = checkout.Discounts.Markdown(self.countableItem, value)
+        self.assertEqual(aMarkdown.value, value, "Markdown value not set")
         self.assertEqual(aMarkdown.itemToDiscount.name, self.countableItem.name, "Markdown name not set")
         
 
