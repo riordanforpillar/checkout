@@ -57,6 +57,7 @@ class DiscountsTest(unittest.TestCase):
         aMarkdown = checkout.Discounts.Markdown(self.countableItem, value)
         self.assertEqual(aMarkdown.value, value, "Markdown value not set")
         self.assertEqual(aMarkdown.itemToDiscount.name, self.countableItem.name, "Markdown name not set")
+        self.assertIsInstance(aMarkdown, checkout.Discounts.Discount, "Markdown is not a Discount subclass")
         
     def testGetMatchedItems(self):
         matchedItems = self.discount.getMatchedItems(self.scannedItems)
@@ -115,6 +116,8 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(special.percentOff, percentOff, "PercentOff Special percent off not set")
         self.assertEqual(special.limit, limit, "PercentOff Special limit not set")
         
+        self.assertIsInstance(special, checkout.Discounts.Special, "PercentOff not a subclass of Special")
+        
         
     def testBuyNGetMForPercentOffConstruction(self):
         self.BuyNGetMForPercentOffConstructCheck(1, 1, 100.0)
@@ -161,6 +164,7 @@ class DiscountsTest(unittest.TestCase):
     def testBuyNForXConstruction(self):
         self.BuyNForXConstructCheck(3, 5.0)
         self.BuyNForXConstructCheck(5, 2.2)
+        self.assertIsInstance(self.buyNForXSpecial, checkout.Discounts.Special, "BuyNForX not a subclass of Special")
         
     def BuyNForXConstructCheck(self, buyN, price):
         special = checkout.Discounts.BuyNForXSpecial(self.countableItem, buyN, price )
@@ -201,12 +205,15 @@ class DiscountsTest(unittest.TestCase):
         self.BuyNWeightedGetMLesserConstructCheck(3,2,40.0)
         self.BuyNWeightedGetMLesserConstructCheck(2,1,10.0)
         
+                
+        
     def BuyNWeightedGetMLesserConstructCheck(self, buyN, getM, percent):
         special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, buyN, getM, percent)
         self.assertEqual(special.buyN, buyN, "Buy N for weighted special not set")
         self.assertEqual(special.getM, getM, "Get M for weighted special not set")
-        self.assertEqual(special.percentOff, percent, "Percent off for weighted special not set")     
+        self.assertEqual(special.percentOff, percent, "Percent off for weighted special not set") 
         self.assertIsInstance(special, PercentOffSpecial, "BuyN for weighted not a subclass of PercentOffSpecial")   
+            
         
     def testBuyNWeightedGetMLesserPercentOffApplication(self):
         discount = 40.0
