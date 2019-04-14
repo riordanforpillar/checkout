@@ -234,13 +234,16 @@ class DiscountsTest(unittest.TestCase):
     
     def testPartitionFullAndLeftoversforBuyNForXSpecial(self):
         self.runPartitionForFullAndLeftovers(3, 8, 'a')
+        self.runPartitionForFullAndLeftovers(2, 3, 'b')
         
     def runPartitionForFullAndLeftovers(self, buyN, testLength, itemObject):
         special = checkout.Discounts.BuyNForXSpecial(self.countableItem, buyN, 0.0)
         dummy = [itemObject]*testLength
         (full, left) = special.partitionFullAndLeftovers(dummy)
         self.assertEqual(len(full), buyN*int(testLength/buyN), "Full set not right size")
-        self.assertEqual(len(left), testLength - buyN*int(testLength/buyN), "Leftover set not right size")        
+        self.assertEqual(len(left), testLength - buyN*int(testLength/buyN), "Leftover set not right size")
+        self.assertEqual(full[0], itemObject, "Full set item output not equal to input")        
+        self.assertEqual(left[0], itemObject, "Leftover set item output not equal to input")        
               
     def testBuyNWeightedGetMLesserPercentOffConstruction(self):
         self.BuyNWeightedGetMLesserConstructCheck(3,2,40.0)
