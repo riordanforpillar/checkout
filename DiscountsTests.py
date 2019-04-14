@@ -103,8 +103,13 @@ class DiscountsTest(unittest.TestCase):
         self.assertAlmostEqual(0.0, specialItem.getDiscountPrice(), 3, "Special not applied")
 
     def testBuyNGetMForPercentOffLimitApplication(self):
-        self.buy2Get1FreeLimit3Special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, 2, 1, 100.0, 3)
+        buy2Get1FreeLimit3Special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, 2, 1, 100.0, 3)
 
+        buy2Get1FreeLimit3Special.applyTo(self.scannedItems)
+        
+        nonDiscountedItem = self.scannedItems.getAt(6)
+
+        self.assertAlmostEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), 3, "Limit not used")
 
     def testBuyNForXConstruction(self):
         buyN = 3

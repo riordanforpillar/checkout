@@ -28,18 +28,19 @@ class Markdown(Discount):
                 scannedItem.markdownPrice = discountedPPU * scannedItem.getQuantity()
 
 class BuyNGetMForPercentOffSpecial(Discount):
-    def __init__(self, item, N, M, percent, limit=None):
+    def __init__(self, item, N, M, percent, limit=1e9):
         self.buyN = N
         self.getM = M
         self.percentOff = percent
         self.itemToDiscount = item
+        self.limit = limit
         
     def applyTo(self, scannedItems):
         nPurchased = 0
                 
         for index in range(scannedItems.getSize()):
             item = scannedItems.getAt(index)
-            if self.itemMatchesDiscount(item):
+            if self.itemMatchesDiscount(item) and nPurchased < self.limit:
                 if nPurchased % (self.buyN + self.getM) < self.buyN:
                     item.discountPrice = item.markdownPrice
                 else:
