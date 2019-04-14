@@ -107,13 +107,8 @@ class BuyNForXSpecial(Special):
 
     def applyDiscountBelowLimit(self, belowLimitItems):        
         (fullSetItems, leftoverItems) = self.partitionFullAndLeftovers(belowLimitItems)
-        for index in range(len(fullSetItems)):
-            item = fullSetItems[index]
-            if self.isPricePosition(index):
-                item.discountPrice = self.price
-            else:
-                item.discountPrice = 0.0
-                
+ 
+        self.applyDiscountToFullSetItems(fullSetItems)        
         self.applyDiscountAboveLimit(leftoverItems)
 
     def partitionFullAndLeftovers(self, items):
@@ -126,6 +121,18 @@ class BuyNForXSpecial(Special):
         length = len(matchedItems)
         return int(length/self.buyN)
     
+    def applyDiscountToFullSetItems(self, fullSetItems):
+        nFullItems = len(fullSetItems)
+        for index in range(nFullItems):
+            item = fullSetItems[index]
+            self.setPriceOrZeroOnPosition(item, index)
+                
+    def setPriceOrZeroOnPosition(self, item, index):
+        if self.isPricePosition(index):
+            item.discountPrice = self.price
+        else:
+            item.discountPrice = 0.0
+                    
     def isPricePosition(self, index):
         if (index+1) % self.buyN == 0:
             return True
