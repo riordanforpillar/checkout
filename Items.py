@@ -84,3 +84,4 @@ class NotFoundInInventoryException(Exception):
 
 class ScannedWeightNotFloatException(Exception):
     pass
+
