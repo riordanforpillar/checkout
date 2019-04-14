@@ -80,7 +80,10 @@ class BuyNGetMForPercentOffSpecial(Special):
                 item.discountPrice = updatedDiscountPrice
                 
     def isDiscountPosition(self, index):
-        return True
+        if index <1 :
+            return False
+        else:
+            return True
 
 class BuyNForXSpecial(Special):
     def __init__(self, item, N, price, limit=1e9):

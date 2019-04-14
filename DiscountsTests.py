@@ -142,7 +142,9 @@ class DiscountsTest(unittest.TestCase):
         self.assertAlmostEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), 3, "Limit not used")
 
     def testBuyNGetMForPercentOffValidDiscountCheck(self):
-        self.assertTrue(self.buy2Get1FreeSpecial.isDiscountPosition(2))
+        self.assertTrue( self.buy2Get1FreeSpecial.isDiscountPosition(2))
+        self.assertFalse(self.buy2Get1FreeSpecial.isDiscountPosition(0))
+
 
     def testBuyNForXConstruction(self):
         self.BuyNForXConstructCheck(3, 5.0)
