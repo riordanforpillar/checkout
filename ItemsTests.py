@@ -2,7 +2,6 @@
 
 import unittest
 import checkout.Items
-from sqlalchemy.testing.util import fail
 
 class ItemsTest(unittest.TestCase):
     

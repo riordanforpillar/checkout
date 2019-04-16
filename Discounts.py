@@ -46,13 +46,6 @@ class Special(Discount):
         super().__init__(item)
         self.limit = limit
         
-    def partitionAroundLimit(self, listToParition):
-        if self.limit == None:
-            return (listToParition, [])
-        else:
-            belowLimit = listToParition[:self.limit]
-            aboveLimit = listToParition[self.limit:]
-            return (belowLimit,aboveLimit)
      
     def applyTo(self, scannedItems):
         matchedItems = self.getMatchedItems(scannedItems)
@@ -62,6 +55,16 @@ class Special(Discount):
         (belowLimitItems, aboveLimitItems) = self.partitionAroundLimit(items)        
         self.applyDiscountBelowLimit(belowLimitItems)
         self.applyDiscountAboveLimit(aboveLimitItems)
+        
+    def partitionAroundLimit(self, listToParition):
+        if self.limit == None:
+            belowLimit = listToParition
+            aboveLimit = []
+        else:
+            belowLimit = listToParition[:self.limit]
+            aboveLimit = listToParition[self.limit:]
+        return (belowLimit,aboveLimit)    
+        
         
     def applyDiscountAboveLimit(self, aboveLimitItems):
         for item in aboveLimitItems:
@@ -112,9 +115,12 @@ class BuyNForXSpecial(Special):
         self.applyDiscountAboveLimit(leftoverItems)
 
     def partitionFullAndLeftovers(self, items):
-        nFullSetItems = self.calcNumberOfFullSets(items)*self.buyN
+        nFullSets = self.calcNumberOfFullSets(items)
+        nFullSetItems = nFullSets*self.buyN
+        
         fullSetItems = items[:nFullSetItems]
         leftoverSetItems = items[nFullSetItems:]
+        
         return (fullSetItems, leftoverSetItems)
                 
     def calcNumberOfFullSets(self, matchedItems):
@@ -125,9 +131,9 @@ class BuyNForXSpecial(Special):
         nFullItems = len(fullSetItems)
         for index in range(nFullItems):
             item = fullSetItems[index]
-            self.setPriceOrZeroOnPosition(item, index)
+            self.setPriceOrZeroOnPosition(index, item)
                 
-    def setPriceOrZeroOnPosition(self, item, index):
+    def setPriceOrZeroOnPosition(self, index, item):
         if self.isPricePosition(index):
             item.discountPrice = self.price
         else:

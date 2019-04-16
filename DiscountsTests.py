@@ -4,8 +4,7 @@ import checkout.Items
 from checkout.Discounts import PercentOffSpecial
 
 class DiscountsTest(unittest.TestCase):
-
-
+    
     def setUp(self):
         
         self.scannedItems = checkout.Items.ScannedItemContainer()
