@@ -48,7 +48,7 @@ class DiscountsTest(unittest.TestCase):
             scannedItems.addScannedItem(itemToAdd)
     
     def testDiscountConstructor(self):
-        aDiscount = checkout.Discounts.Discount(self.countableItem)
+        checkout.Discounts.Discount(self.countableItem)
     
     def testDiscountApply(self):
         self.discount.applyTo(self.scannedItems)
@@ -202,8 +202,6 @@ class DiscountsTest(unittest.TestCase):
 
         self.assertFalse(self.buy3get1Special.isDiscountPosition(2))
 
-
-
     def testBuyNForXConstruction(self):
         self.BuyNForXConstructCheck(3, 5.0)
         self.BuyNForXConstructCheck(5, 2.2)
@@ -272,8 +270,6 @@ class DiscountsTest(unittest.TestCase):
         self.BuyNWeightedGetMLesserConstructCheck(3,2,40.0)
         self.BuyNWeightedGetMLesserConstructCheck(2,1,10.0)
         
-                
-        
     def BuyNWeightedGetMLesserConstructCheck(self, buyN, getM, percent):
         special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, buyN, getM, percent)
         self.assertEqual(special.buy3, buyN, "Buy N for weighted special not set")
@@ -281,7 +277,6 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(special.seventyPercentOff, percent, "Percent off for weighted special not set") 
         self.assertIsInstance(special, PercentOffSpecial, "BuyN for weighted not a subclass of PercentOffSpecial")   
             
-        
     def testBuyNWeightedGetMLesserPercentOffApplication(self):
         discount = 40.0
         special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 3, 2, discount)
@@ -318,15 +313,13 @@ class DiscountsTest(unittest.TestCase):
 
     def testBuyNWeightedGetMLesserPercentOffLimit(self):
         discount = 40.0
-        limit = 3
-        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 2, 1, discount, limit)
+        limit = 5
+        buy2 = 3
+        get1 = 2
+        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, buy2, get1, discount, limit)
         self.assertEqual(special.limit, limit, "limit not set")
       
-        scannedItems = checkout.Items.ScannedItemContainer()
-        
-        for _ in range(6):
-            scannedItems.addScannedItem(self.weightedScanned)
-        
+        scannedItems = self.makeScannedSet(0, 10)
         special.applyTo(scannedItems)
             
         lastItem = scannedItems.getLastItem()
