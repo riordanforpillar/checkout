@@ -6,9 +6,6 @@ from checkout.Discounts import PercentOffSpecial
 class DiscountsTest(unittest.TestCase):
     
     def setUp(self):
-        
-        self.scannedItems = checkout.Items.ScannedItemContainer()
-
         self.countableMarkdownValue = 0.40
         self.countableItem = checkout.Items.Item("Cereal", 4.25)
         self.countableScanned = checkout.Items.ScannedItem(self.countableItem)
@@ -20,14 +17,10 @@ class DiscountsTest(unittest.TestCase):
         self.weightedScanned = checkout.Items.ScannedWeightedItem(self.weightedItem, self.weightedItemWeight)
         self.weightedMarkdown = checkout.Discounts.Markdown(self.weightedItem, self.weightedMarkdownValue)
         
-        self.scannedItems.addScannedItem(self.countableScanned)
-        self.scannedItems.addScannedItem(self.weightedScanned)
-        for _ in range(6):
-            self.scannedItems.addScannedItem(self.countableScanned)
-        
+        self.scannedItems = self.makeScannedSet(1, 1)
+        self.addNToScanned(self.scannedItems, self.countableScanned, 6)
         
         self.discount = checkout.Discounts.Discount(self.countableItem)
-
         
         self.buyN = 3
         self.getM = 1
@@ -41,7 +34,19 @@ class DiscountsTest(unittest.TestCase):
 
     def tearDown(self):
         pass
-
+    
+    def makeScannedSet(self, nCountable, nWeighted):
+        scannedSet = checkout.Items.ScannedItemContainer()
+        
+        self.addNToScanned(scannedSet, self.countableScanned, nCountable)
+        self.addNToScanned(scannedSet, self.weightedScanned, nWeighted)
+                
+        return scannedSet
+    
+    def addNToScanned(self, scannedItems, itemToAdd, nToAdd ):
+        for _ in range(nToAdd):
+            scannedItems.addScannedItem(itemToAdd)
+    
     def testDiscountConstructor(self):
         aDiscount = checkout.Discounts.Discount(self.countableItem)
     
@@ -65,18 +70,7 @@ class DiscountsTest(unittest.TestCase):
         emptyScanned = checkout.Items.ScannedItemContainer()        
         self.compareGetMatchedItems(emptyScanned, 0)
         
-    def makeScannedSet(self, nCountable, nOther):
-        scannedSet = checkout.Items.ScannedItemContainer()
-        
-        self.addNToScanned(scannedSet, self.countableScanned, nCountable)
-        self.addNToScanned(scannedSet, self.weightedScanned, nOther)
-                
-        return scannedSet
-    
-    def addNToScanned(self, scannedItems, itemToAdd, nToAdd ):
-        for _ in range(nToAdd):
-            scannedItems.addScannedItem(itemToAdd)
-    
+
     def compareGetMatchedItems(self, scannedSet, expectedMatchedLength):
         matchedItems = self.discount.getMatchedItems(scannedSet)
         self.assertEqual(len(matchedItems), expectedMatchedLength, "Matched items length doesn't match expected")       
@@ -86,13 +80,17 @@ class DiscountsTest(unittest.TestCase):
         self.assertTrue(self.buy2Get1FreeSpecial.itemMatchesDiscount(self.countableScanned), "Markdown did not match scanned item")
         self.assertFalse(self.buy2Get1FreeSpecial.itemMatchesDiscount(self.weightedScanned), "Markdown matched scanned item incorrectly")
         
-    def testMarkdownApplication(self):
+    def testMarkdownApplicationOnItem(self):
         self.countableMarkdown.applyTo(self.scannedItems)
         scannedItem = self.scannedItems.getAt(0)
-        targetPrice = self.countableScanned.getBasePrice() - self.countableMarkdownValue
-        self.assertEqual(scannedItem.getMarkdownPrice(), targetPrice, "Countable  markdown not applied")
+        targetPrice = self.calculateDiscountedPrice(self.countableScanned.getBasePrice(), self.countableMarkdownValue, 1.0)
+        self.assertEqual(scannedItem.getMarkdownPrice(), targetPrice, "Countable markdown not applied")
+        
+    def testMarkdownApplicationNotOnItem(self):
+        self.countableMarkdown.applyTo(self.scannedItems)
         scannedItem = self.scannedItems.getAt(1)
-        self.assertEqual(scannedItem.getMarkdownPrice(), self.weightedScanned.getBasePrice()*self.weightedItemWeight, "Markdown misapplied")
+        targetPrice = self.calculateDiscountedPrice(self.weightedScanned.getBasePrice(), 0.0, self.weightedItemWeight)
+        self.assertEqual(scannedItem.getMarkdownPrice(), targetPrice, "Markdown misapplied")
         
         scannedItem = self.scannedItems.getAt(0)
         unchangedPrice = scannedItem.getMarkdownPrice()
@@ -104,15 +102,16 @@ class DiscountsTest(unittest.TestCase):
         
         newPrice = (self.weightedScanned.getBasePrice()-self.weightedMarkdownValue)*self.weightedItemWeight
         self.assertEqual(scannedItem.getMarkdownPrice(), newPrice, "Beef markdown misapplied")
+        
+    def calculateDiscountedPrice(self, basePrice, discountToApply, weight=1):
+        discountedPPU = basePrice-discountToApply
+        discountedPrice = discountedPPU*weight
+        return discountedPrice
     
     def testSpecialPartitionAroundLimit(self):
         self.partitionTestRun(3, 8, "7")
         self.partitionTestRun(7, 8, "a")
 
-        limit = 4
-        special = checkout.Discounts.Special(self.countableScanned, limit)
-        (below, _) = special.partitionAroundLimit([])
-        self.assertEqual(len(below), 0, "Paritioned number of empty list not zero")
 
     def partitionTestRun(self, limit, length, objectInList):
         special = checkout.Discounts.Special(self.countableScanned, limit)
@@ -122,6 +121,12 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(len(below), limit,        "Paritioned number below limit not equal to limit")
         self.assertEqual(len(above), length-limit, "Paritioned number above limit not equal to remaining")
         self.assertEqual(below[0],   objectInList, "List returned not original")
+  
+    def testSpecialPartitionAroundLimitWithEmptySpecial(self):
+        limit = 4
+        special = checkout.Discounts.Special(self.countableScanned, limit)
+        (below, _) = special.partitionAroundLimit([])
+        self.assertEqual(len(below), 0, "Paritioned number of empty list not zero")
         
     def testPercentOffSpecialConstruction(self):
         percentOff = 40.0
