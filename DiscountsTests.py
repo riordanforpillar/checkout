@@ -17,14 +17,14 @@ class DiscountsTest(unittest.TestCase):
         self.weightedScanned = checkout.Items.ScannedWeightedItem(self.weightedItem, self.weightedItemWeight)
         self.weightedMarkdown = checkout.Discounts.Markdown(self.weightedItem, self.weightedMarkdownValue)
         
-        self.scannedItems = self.makeScannedSet(1, 1)
+        self.scannedItems = self.makeScannedSetOfCountableAndWeighted(1, 1)
         self.addNToScanned(self.scannedItems, self.countableScanned, 6)
         
         lightScannedItem = checkout.Items.ScannedWeightedItem(self.weightedItem, 0.5)   
         heavyScannedItem = checkout.Items.ScannedWeightedItem(self.weightedItem, 5.5)   
 
 #       [MMMMHLMM]
-        self.mixedWeightSet = self.makeScannedSet(0, 4)  
+        self.mixedWeightSet = self.makeScannedSetOfCountableAndWeighted(0, 4)  
         self.addNToScanned(self.mixedWeightSet, heavyScannedItem,     1) 
         self.addNToScanned(self.mixedWeightSet, lightScannedItem,     1)  
         self.addNToScanned(self.mixedWeightSet, self.weightedScanned, 2)          
@@ -54,7 +54,7 @@ class DiscountsTest(unittest.TestCase):
     def tearDown(self):
         pass
     
-    def makeScannedSet(self, nCountable, nWeighted):
+    def makeScannedSetOfCountableAndWeighted(self, nCountable, nWeighted):
         scannedSet = checkout.Items.ScannedItemContainer()
         
         self.addNToScanned(scannedSet, self.countableScanned, nCountable)
@@ -83,7 +83,7 @@ class DiscountsTest(unittest.TestCase):
         self.assertIsInstance(aMarkdown, checkout.Discounts.Discount, "Markdown is not a Discount subclass")
         
     def testGetMatchedItems(self):
-        scanned = self.makeScannedSet(7,3)
+        scanned = self.makeScannedSetOfCountableAndWeighted(7,3)
         self.compareGetMatchedItems(scanned, 7)
         
         emptyScanned = checkout.Items.ScannedItemContainer()        
@@ -246,7 +246,7 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(sumPriceItem.getDiscountPrice(), self.buy3price, "Summed discount not applied")
 
     def testBuyNForXApplicationToPartialSet(self):
-        subThresholdScan = self.makeScannedSet(2, 3)
+        subThresholdScan = self.makeScannedSetOfCountableAndWeighted(2, 3)
         
         nonZeroedItem = subThresholdScan.getAt(0)
         self.mangleDiscountPrice(nonZeroedItem)
@@ -317,7 +317,7 @@ class DiscountsTest(unittest.TestCase):
     def assertDiscountAndMarkdownWithDiscountEqualForIndexInSet(self, itemSet, index, percentOff, message = ""):
         item = itemSet.getAt(index)
         targetPrice = self.calculatePercentOffPrice(item.getMarkdownPrice(), percentOff)
-        self.assertEqual(item.getDiscountPrice(), targetPrice, message)
+        self.assertAlmostEqual(item.getDiscountPrice(), targetPrice, 3, message)
     
     def assertDiscountAndMarkdownEqualForIndexInSet(self, itemSet, index, message = ""):
         self.assertDiscountAndMarkdownWithDiscountEqualForIndexInSet(itemSet, index, 0.0, message)
@@ -327,7 +327,7 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(self.buy3WeightedGet2Limit5.limit, self.limit5, "limit not set")
  
     def testBuyNWeightedGetMLesserPercentOffWithLimit(self):  
-        scannedItems = self.makeScannedSet(0, 10)
+        scannedItems = self.makeScannedSetOfCountableAndWeighted(0, 10)
         self.buy3WeightedGet2Limit5.applyTo(scannedItems)
             
         lastItem = scannedItems.getLastItem()
