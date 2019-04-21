@@ -92,16 +92,19 @@ class DiscountsTest(unittest.TestCase):
         targetPrice = self.calculateDiscountedPrice(self.weightedScanned.getBasePrice(), 0.0, self.weightedItemWeight)
         self.assertEqual(scannedItem.getMarkdownPrice(), targetPrice, "Markdown misapplied")
         
+    def testMultipleMarkdownApplicationNotUndoingPreviousMarkdowns(self):
+        self.countableMarkdown.applyTo(self.scannedItems)
         scannedItem = self.scannedItems.getAt(0)
         unchangedPrice = scannedItem.getMarkdownPrice()
-        self.weightedMarkdown.applyTo(self.scannedItems)
         
+        self.weightedMarkdown.applyTo(self.scannedItems)        
         self.assertEqual(scannedItem.getMarkdownPrice(), unchangedPrice, "Countable markdown undone")
         
+    def testMarkdownOnWeighted(self):
+        self.weightedMarkdown.applyTo(self.scannedItems)
         scannedItem = self.scannedItems.getAt(1)
-        
-        newPrice = (self.weightedScanned.getBasePrice()-self.weightedMarkdownValue)*self.weightedItemWeight
-        self.assertEqual(scannedItem.getMarkdownPrice(), newPrice, "Beef markdown misapplied")
+        newPrice = self.calculateDiscountedPrice(self.weightedScanned.getBasePrice(), self.weightedMarkdownValue, self.weightedItemWeight)
+        self.assertEqual(scannedItem.getMarkdownPrice(), newPrice, "Weighted markdown misapplied")
         
     def calculateDiscountedPrice(self, basePrice, discountToApply, weight=1):
         discountedPPU = basePrice-discountToApply
