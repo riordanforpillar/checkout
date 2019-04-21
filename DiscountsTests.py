@@ -31,7 +31,8 @@ class DiscountsTest(unittest.TestCase):
         
         
         self.discount = checkout.Discounts.Discount(self.countableItem)
-        
+       
+        self.buy2 = 2 
         self.buy3 = 3
         self.get1 = 1
         self.get2 = 2
@@ -293,19 +294,20 @@ class DiscountsTest(unittest.TestCase):
         self.assertIsInstance(special, PercentOffSpecial, "BuyN for weighted not a subclass of PercentOffSpecial")   
             
     def testBuyNWeightedGetMLesserPercentOffApplication(self):
-
-
         self.buy3WeightedGet2Limit5.applyTo(self.mixedWeightSet)
-        
         discountedItem = self.mixedWeightSet.getAt(2)
         self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice()*(1.0-self.seventyPercentOff*0.01), "Discount not applied")
-        
-        discount = 40.0
-        buy2WeightedGet1 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 2, 1, discount)
+
+    def testBuyNWeightedGetMLesserPercentOffApplicationWithSmallN(self):        
+        buy2WeightedGet1 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy2, self.get1, self.seventyPercentOff)
         buy2WeightedGet1.applyTo(self.mixedWeightSet)
         discountedItem = self.mixedWeightSet.getAt(1)
-        self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice()*(1.0-discount*0.01), "Discount not applied")        
-        
+        self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice()*(1.0-self.seventyPercentOff*0.01), "Discount not applied")        
+ 
+    def testBuyNWeightedGetMLesserPercentOffApplicationWithSmallNNonApplication(self):        
+        buy2WeightedGet1 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy2, self.get1, self.seventyPercentOff)
+        buy2WeightedGet1.applyTo(self.mixedWeightSet)
+               
         nonDiscountedItem = self.mixedWeightSet.getAt(2)
         self.assertEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), "Discount misapplied")
         discountedItem = self.mixedWeightSet.getAt(5)
