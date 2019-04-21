@@ -34,7 +34,8 @@ class DiscountsTest(unittest.TestCase):
         self.buy3price = 5.0
         self.buy3For5DollarsSpecial = checkout.Discounts.BuyNForXSpecial(self.countableItem, self.buy3, self.buy3price)
         
-        self.buy3WeightedGet2Limit5 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy3, self.get2, self.seventyPercentOff)
+        self.limit5 = 5
+        self.buy3WeightedGet2Limit5 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy3, self.get2, self.seventyPercentOff, self.limit5)
 
     def tearDown(self):
         pass
@@ -307,16 +308,12 @@ class DiscountsTest(unittest.TestCase):
         discountedItem = scannedItems.getAt(5)
         self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice(), "Discount misapplied")
 
-    def testBuyNWeightedGetMLesserPercentOffLimit(self):
-        discount = 40.0
-        limit = 5
-        buy2 = 3
-        get1 = 2
-        special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, buy2, get1, discount, limit)
-        self.assertEqual(special.limit, limit, "limit not set")
-      
+    def testBuyNWeightedGetMLesserPercentOffWithLimitSettingLimit(self):
+        self.assertEqual(self.buy3WeightedGet2Limit5.limit, self.limit5, "limit not set")
+ 
+    def testBuyNWeightedGetMLesserPercentOffWithLimit(self):  
         scannedItems = self.makeScannedSet(0, 10)
-        special.applyTo(scannedItems)
+        self.buy3WeightedGet2Limit5.applyTo(scannedItems)
             
         lastItem = scannedItems.getLastItem()
         self.assertEqual(lastItem.getDiscountPrice(), lastItem.getMarkdownPrice(), "Limit in weighted special not imposed")
