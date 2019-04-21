@@ -66,17 +66,16 @@ class DiscountsTest(unittest.TestCase):
         self.compareGetMatchedItems(emptyScanned, 0)
         
     def makeScannedSet(self, nCountable, nOther):
-        otherItem = checkout.Items.Item("Something", 6.99)
-        otherScanned = checkout.Items.ScannedItem(otherItem)
-        
         scannedSet = checkout.Items.ScannedItemContainer()
         
-        for _ in range(nCountable):
-            scannedSet.addScannedItem(self.countableScanned)
-        for _ in range(nOther):
-            scannedSet.addScannedItem(otherScanned)
+        self.addNToScanned(scannedSet, self.countableScanned, nCountable)
+        self.addNToScanned(scannedSet, self.weightedScanned, nOther)
                 
         return scannedSet
+    
+    def addNToScanned(self, scannedItems, itemToAdd, nToAdd ):
+        for _ in range(nToAdd):
+            scannedItems.addScannedItem(itemToAdd)
     
     def compareGetMatchedItems(self, scannedSet, expectedMatchedLength):
         matchedItems = self.discount.getMatchedItems(scannedSet)
