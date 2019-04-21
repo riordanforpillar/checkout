@@ -162,10 +162,15 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(special.get1, getM, "Get M not set correctly")
         self.assertEqual(special.seventyPercentOff, percentOff, "Percent off not set correctly")        
 
-    def testBuyNGetMForPercentOffApplication(self):
+    def testBuy3Get1ForPercentOffApplication(self):
         self.buy3get1Special.applyTo(self.scannedItems)
         specialItem = self.scannedItems.getAt(4)
-        self.assertAlmostEqual(specialItem.getMarkdownPrice()*(1.0-self.seventyPercentOff*0.01), specialItem.getDiscountPrice(), 3, "Special not applied")
+        self.assertAlmostEqual(specialItem.getMarkdownPrice()*(1.0-self.seventyPercentOff*0.01), specialItem.getDiscountPrice(), 3, "Buy3Get1For70PercentOff Special not applied")
+    
+    def testBuy2Get1FreeApplication(self):    
+        self.buy2Get1FreeSpecial.applyTo(self.scannedItems)
+        specialItem = self.scannedItems.getAt(3)
+        self.assertAlmostEqual(0.0, specialItem.getDiscountPrice(), 3, "Buy2Get1Free Special not applied")
         
     def testBuyNGetMForPercentOffApplicationRecalculateNonSpecialItem(self):
         modifiedSpecialItem = self.scannedItems.getAt(0)
@@ -178,11 +183,6 @@ class DiscountsTest(unittest.TestCase):
         unSpecialItem = self.scannedItems.getAt(5)
         self.assertEqual(unSpecialItem.getMarkdownPrice(), unSpecialItem.getDiscountPrice(), "Markdown and special price do not match for nonspecial item")
 
-        self.buy2Get1FreeSpecial.applyTo(self.scannedItems)
-        specialItem = self.scannedItems.getAt(3)
-        self.assertAlmostEqual(0.0, specialItem.getDiscountPrice(), 3, "Special not applied")
-
-
     def testBuyNGetMForPercentOffPastLimitApplication(self):
         buy2Get1FreeLimit3Special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, 2, 1, 100.0, 3)
         nonDiscountedItem = self.scannedItems.getAt(6)
@@ -193,7 +193,7 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(nonDiscountedItem.getMarkdownPrice(), nonDiscountedItem.getDiscountPrice(), "Markdown and special price do not match for discounted item but past limit")
 
     def mangleDiscountPrice(self, item):
-        item.discountPrice = 0.01
+        item.discountPrice = item.discountPrice*5.21
        
 
     def testBuyNGetMForPercentOffValidDiscountCheck(self):
