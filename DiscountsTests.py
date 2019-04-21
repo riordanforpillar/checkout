@@ -1,7 +1,6 @@
 import unittest
 import checkout.Discounts
 import checkout.Items
-from checkout.Discounts import PercentOffSpecial
 
 class DiscountsTest(unittest.TestCase):
     
@@ -297,7 +296,7 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(special.buy3, buyN, "Buy N for weighted special not set")
         self.assertEqual(special.get1, getM, "Get M for weighted special not set")
         self.assertEqual(special.seventyPercentOff, percent, "Percent off for weighted special not set") 
-        self.assertIsInstance(special, PercentOffSpecial, "BuyN for weighted not a subclass of PercentOffSpecial")   
+        self.assertIsInstance(special, checkout.Discounts.PercentOffSpecial, "BuyN for weighted not a subclass of PercentOffSpecial")   
             
     def testBuyNWeightedGetMLesserPercentOffApplication(self):
         self.buy3WeightedGet2Limit5.applyTo(self.mixedWeightSet)
