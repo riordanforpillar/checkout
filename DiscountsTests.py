@@ -181,8 +181,8 @@ class DiscountsTest(unittest.TestCase):
         
     def BuyNGetMForPercentOffConstructCheck(self, buyN, getM, percentOff):
         special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, buyN, getM, percentOff)
-        self.assertEqual(special.buy3, buyN, "Buy N not set correctly")
-        self.assertEqual(special.get1, getM, "Get M not set correctly")
+        self.assertEqual(special.buyN, buyN, "Buy N not set correctly")
+        self.assertEqual(special.getM, getM, "Get M not set correctly")
         self.assertEqual(special.seventyPercentOff, percentOff, "Percent off not set correctly")        
 
     def testBuy3Get1ForPercentOffApplication(self):
@@ -231,7 +231,7 @@ class DiscountsTest(unittest.TestCase):
         
     def BuyNForXConstructCheck(self, buyN, price):
         special = checkout.Discounts.BuyNForXSpecial(self.countableItem, buyN, price )
-        self.assertEqual(special.buy3, buyN, "Buy N not set correctly")
+        self.assertEqual(special.buyN,  buyN,  "Buy N not set correctly")
         self.assertEqual(special.price, price, "Price not set correctly")
         
     def testBuyNForXApplicationZeroingOut(self):
@@ -293,8 +293,8 @@ class DiscountsTest(unittest.TestCase):
         
     def BuyNWeightedGetMLesserConstructCheck(self, buyN, getM, percent):
         special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, buyN, getM, percent)
-        self.assertEqual(special.buy3, buyN, "Buy N for weighted special not set")
-        self.assertEqual(special.get1, getM, "Get M for weighted special not set")
+        self.assertEqual(special.buyN, buyN, "Buy N for weighted special not set")
+        self.assertEqual(special.getM, getM, "Get M for weighted special not set")
         self.assertEqual(special.seventyPercentOff, percent, "Percent off for weighted special not set") 
         self.assertIsInstance(special, checkout.Discounts.PercentOffSpecial, "BuyN for weighted not a subclass of PercentOffSpecial")   
             
