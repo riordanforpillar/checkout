@@ -48,6 +48,9 @@ class DiscountsTest(unittest.TestCase):
         self.limit5 = 5
         self.buy3WeightedGet2Limit5 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy3, self.get2, self.seventyPercentOff, self.limit5)
 
+        self.buy2WeightedGet1 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy2, self.get1, self.seventyPercentOff)
+
+
     def tearDown(self):
         pass
     
@@ -299,19 +302,18 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice()*(1.0-self.seventyPercentOff*0.01), "Discount not applied")
 
     def testBuyNWeightedGetMLesserPercentOffApplicationWithSmallN(self):        
-        buy2WeightedGet1 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy2, self.get1, self.seventyPercentOff)
-        buy2WeightedGet1.applyTo(self.mixedWeightSet)
+        self.buy2WeightedGet1.applyTo(self.mixedWeightSet)
+        
         discountedItem = self.mixedWeightSet.getAt(1)
         self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice()*(1.0-self.seventyPercentOff*0.01), "Discount not applied")        
  
     def testBuyNWeightedGetMLesserPercentOffApplicationWithSmallNNonApplication(self):        
-        buy2WeightedGet1 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy2, self.get1, self.seventyPercentOff)
-        buy2WeightedGet1.applyTo(self.mixedWeightSet)
+        self.buy2WeightedGet1.applyTo(self.mixedWeightSet)
                
         nonDiscountedItem = self.mixedWeightSet.getAt(2)
         self.assertEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), "Discount misapplied")
-        discountedItem = self.mixedWeightSet.getAt(5)
-        self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice(), "Discount misapplied")
+        nonDiscountedItem = self.mixedWeightSet.getAt(5)
+        self.assertEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), "Discount misapplied")
 
     def testBuyNWeightedGetMLesserPercentOffWithLimitSettingLimit(self):
         self.assertEqual(self.buy3WeightedGet2Limit5.limit, self.limit5, "limit not set")
