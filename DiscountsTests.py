@@ -22,15 +22,15 @@ class DiscountsTest(unittest.TestCase):
         
         self.discount = checkout.Discounts.Discount(self.countableItem)
         
-        self.buyN = 3
-        self.getM = 1
-        self.percentOff = 70.0
-        self.buy3get1Special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, self.buyN, self.getM, self.percentOff)
+        self.buy3 = 3
+        self.get1 = 1
+        self.seventyPercentOff = 70.0
+        self.buy3get1Special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, self.buy3, self.get1, self.seventyPercentOff)
 
         self.buy2Get1FreeSpecial = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, 2, 1, 100.0)
 
-        self.buyNprice = 5.0
-        self.buyNForXSpecial = checkout.Discounts.BuyNForXSpecial(self.countableItem, self.buyN, self.buyNprice)
+        self.buy3price = 5.0
+        self.buy3For5DollarsSpecial = checkout.Discounts.BuyNForXSpecial(self.countableItem, self.buy3, self.buy3price)
 
     def tearDown(self):
         pass
@@ -135,7 +135,7 @@ class DiscountsTest(unittest.TestCase):
         percentOff = 40.0
         limit = 3
         special = checkout.Discounts.PercentOffSpecial(self.countableItem, percentOff, limit)
-        self.assertEqual(special.percentOff, percentOff, "PercentOff Special percent off not set")
+        self.assertEqual(special.seventyPercentOff, percentOff, "PercentOff Special percent off not set")
         self.assertEqual(special.limit, limit, "PercentOff Special limit not set")
         
         self.assertIsInstance(special, checkout.Discounts.Special, "PercentOff not a subclass of Special")
@@ -158,14 +158,14 @@ class DiscountsTest(unittest.TestCase):
         
     def BuyNGetMForPercentOffConstructCheck(self, buyN, getM, percentOff):
         special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, buyN, getM, percentOff)
-        self.assertEqual(special.buyN, buyN, "Buy N not set correctly")
-        self.assertEqual(special.getM, getM, "Get M not set correctly")
-        self.assertEqual(special.percentOff, percentOff, "Percent off not set correctly")        
+        self.assertEqual(special.buy3, buyN, "Buy N not set correctly")
+        self.assertEqual(special.get1, getM, "Get M not set correctly")
+        self.assertEqual(special.seventyPercentOff, percentOff, "Percent off not set correctly")        
 
     def testBuyNGetMForPercentOffApplication(self):
         self.buy3get1Special.applyTo(self.scannedItems)
         specialItem = self.scannedItems.getAt(4)
-        self.assertAlmostEqual(specialItem.getMarkdownPrice()*(1.0-self.percentOff*0.01), specialItem.getDiscountPrice(), 3, "Special not applied")
+        self.assertAlmostEqual(specialItem.getMarkdownPrice()*(1.0-self.seventyPercentOff*0.01), specialItem.getDiscountPrice(), 3, "Special not applied")
         
     def testBuyNGetMForPercentOffApplicationRecalculateNonSpecialItem(self):
         modifiedSpecialItem = self.scannedItems.getAt(0)
@@ -207,22 +207,22 @@ class DiscountsTest(unittest.TestCase):
     def testBuyNForXConstruction(self):
         self.BuyNForXConstructCheck(3, 5.0)
         self.BuyNForXConstructCheck(5, 2.2)
-        self.assertIsInstance(self.buyNForXSpecial, checkout.Discounts.Special, "BuyNForX not a subclass of Special")
+        self.assertIsInstance(self.buy3For5DollarsSpecial, checkout.Discounts.Special, "BuyNForX not a subclass of Special")
         
     def BuyNForXConstructCheck(self, buyN, price):
         special = checkout.Discounts.BuyNForXSpecial(self.countableItem, buyN, price )
-        self.assertEqual(special.buyN, buyN, "Buy N not set correctly")
+        self.assertEqual(special.buy3, buyN, "Buy N not set correctly")
         self.assertEqual(special.price, price, "Price not set correctly")
         
     def testBuyNForXApplication(self):
-        self.buyNForXSpecial.applyTo(self.scannedItems)
+        self.buy3For5DollarsSpecial.applyTo(self.scannedItems)
         
         zeroedItem = self.scannedItems.getAt(0)
         self.assertEqual(zeroedItem.getDiscountPrice(), 0.0, "Zeroed item not zeroed")
 
         sumPriceItem = self.scannedItems.getAt(3)
 
-        self.assertEqual(sumPriceItem.getDiscountPrice(), self.buyNprice, "Summed discount not applied")
+        self.assertEqual(sumPriceItem.getDiscountPrice(), self.buy3price, "Summed discount not applied")
 
         subThresholdScan = checkout.Items.ScannedItemContainer()
         subThresholdScan.addScannedItem(self.countableScanned)
@@ -230,7 +230,7 @@ class DiscountsTest(unittest.TestCase):
         
         nonZeroedItem = subThresholdScan.getAt(0)
         nonZeroedItem.discountPrice = 0.01
-        self.buyNForXSpecial.applyTo(subThresholdScan)
+        self.buy3For5DollarsSpecial.applyTo(subThresholdScan)
         
         self.assertEqual(nonZeroedItem.getDiscountPrice(), nonZeroedItem.getMarkdownPrice(), "Nonzeroed item wrong price")
         
@@ -251,13 +251,13 @@ class DiscountsTest(unittest.TestCase):
         
     def runFullSetCalcForN(self, nMatched):
         dummySet = [0]*nMatched
-        nSets = self.buyNForXSpecial.calcNumberOfFullSets(dummySet)
-        self.assertEqual(nSets, int(nMatched/self.buyN), "Number of sets incorrect")
+        nSets = self.buy3For5DollarsSpecial.calcNumberOfFullSets(dummySet)
+        self.assertEqual(nSets, int(nMatched/self.buy3), "Number of sets incorrect")
         
     def testIsPricePositionForBuyNForXSpecial(self):
-        self.assertFalse(self.buyNForXSpecial.isPricePosition(0),           "Zeroed position for BuyNForXSpecial misidentified")
-        self.assertTrue( self.buyNForXSpecial.isPricePosition(self.buyN-1), "Price position for BuyNForXSpecial misidentified")
-        self.assertFalse(self.buyNForXSpecial.isPricePosition(4),           "Zeroed position for BuyNForXSpecial misidentified")
+        self.assertFalse(self.buy3For5DollarsSpecial.isPricePosition(0),           "Zeroed position for BuyNForXSpecial misidentified")
+        self.assertTrue( self.buy3For5DollarsSpecial.isPricePosition(self.buy3-1), "Price position for BuyNForXSpecial misidentified")
+        self.assertFalse(self.buy3For5DollarsSpecial.isPricePosition(4),           "Zeroed position for BuyNForXSpecial misidentified")
     
     def testPartitionFullAndLeftoversforBuyNForXSpecial(self):
         self.runPartitionForFullAndLeftovers(3, 8, 'a')
@@ -280,9 +280,9 @@ class DiscountsTest(unittest.TestCase):
         
     def BuyNWeightedGetMLesserConstructCheck(self, buyN, getM, percent):
         special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, buyN, getM, percent)
-        self.assertEqual(special.buyN, buyN, "Buy N for weighted special not set")
-        self.assertEqual(special.getM, getM, "Get M for weighted special not set")
-        self.assertEqual(special.percentOff, percent, "Percent off for weighted special not set") 
+        self.assertEqual(special.buy3, buyN, "Buy N for weighted special not set")
+        self.assertEqual(special.get1, getM, "Get M for weighted special not set")
+        self.assertEqual(special.seventyPercentOff, percent, "Percent off for weighted special not set") 
         self.assertIsInstance(special, PercentOffSpecial, "BuyN for weighted not a subclass of PercentOffSpecial")   
             
         
