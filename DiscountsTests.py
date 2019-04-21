@@ -20,6 +20,16 @@ class DiscountsTest(unittest.TestCase):
         self.scannedItems = self.makeScannedSet(1, 1)
         self.addNToScanned(self.scannedItems, self.countableScanned, 6)
         
+        lightScannedItem = checkout.Items.ScannedWeightedItem(self.weightedItem, 0.5)   
+        heavyScannedItem = checkout.Items.ScannedWeightedItem(self.weightedItem, 5.5)   
+
+#       [MMMMHLMM]
+        self.mixedWeightSet = self.makeScannedSet(0, 4)  
+        self.addNToScanned(self.mixedWeightSet, heavyScannedItem,     1) 
+        self.addNToScanned(self.mixedWeightSet, lightScannedItem,     1)  
+        self.addNToScanned(self.mixedWeightSet, self.weightedScanned, 2)          
+        
+        
         self.discount = checkout.Discounts.Discount(self.countableItem)
         
         self.buy3 = 3
@@ -283,29 +293,22 @@ class DiscountsTest(unittest.TestCase):
         self.assertIsInstance(special, PercentOffSpecial, "BuyN for weighted not a subclass of PercentOffSpecial")   
             
     def testBuyNWeightedGetMLesserPercentOffApplication(self):
-        lightScannedItem = checkout.Items.ScannedWeightedItem(self.weightedItem, 0.5)   
-        heavyScannedItem = checkout.Items.ScannedWeightedItem(self.weightedItem, 5.5)   
 
-#       [MMMMHLMM]
-        scannedItems = self.makeScannedSet(0, 4)  
-        self.addNToScanned(scannedItems, heavyScannedItem,     1) 
-        self.addNToScanned(scannedItems, lightScannedItem,     1)  
-        self.addNToScanned(scannedItems, self.weightedScanned, 2)  
 
-        self.buy3WeightedGet2Limit5.applyTo(scannedItems)
+        self.buy3WeightedGet2Limit5.applyTo(self.mixedWeightSet)
         
-        discountedItem = scannedItems.getAt(2)
+        discountedItem = self.mixedWeightSet.getAt(2)
         self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice()*(1.0-self.seventyPercentOff*0.01), "Discount not applied")
         
         discount = 40.0
         buy2WeightedGet1 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, 2, 1, discount)
-        buy2WeightedGet1.applyTo(scannedItems)
-        discountedItem = scannedItems.getAt(1)
+        buy2WeightedGet1.applyTo(self.mixedWeightSet)
+        discountedItem = self.mixedWeightSet.getAt(1)
         self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice()*(1.0-discount*0.01), "Discount not applied")        
         
-        nonDiscountedItem = scannedItems.getAt(2)
+        nonDiscountedItem = self.mixedWeightSet.getAt(2)
         self.assertEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), "Discount misapplied")
-        discountedItem = scannedItems.getAt(5)
+        discountedItem = self.mixedWeightSet.getAt(5)
         self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice(), "Discount misapplied")
 
     def testBuyNWeightedGetMLesserPercentOffWithLimitSettingLimit(self):
