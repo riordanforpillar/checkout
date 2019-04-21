@@ -130,6 +130,10 @@ class DiscountsTest(unittest.TestCase):
         discountedPrice = discountedPPU*weight
         return discountedPrice
     
+    
+    def calculatePercentOffPrice(self, base, percentOff):
+        return base*(1.0-percentOff*0.01)
+    
     def testSpecialPartitionAroundLimit(self):
         self.partitionTestRun(3, 8, "7")
         self.partitionTestRun(7, 8, "a")
@@ -166,7 +170,8 @@ class DiscountsTest(unittest.TestCase):
     def PercentOffTestFactory(self, percentOff):
         special = checkout.Discounts.PercentOffSpecial(self.countableItem, percentOff)
         discountPrice = special.calculateDiscount(self.countableScanned)
-        expectedDiscountPrice = self.countableScanned.getMarkdownPrice()*(1.0-0.01*percentOff)
+        expectedDiscountPrice = self.calculatePercentOffPrice(self.countableScanned.getMarkdownPrice(), percentOff)
+
         self.assertEqual(discountPrice, expectedDiscountPrice, "PercentOffSpecial discount calculator gives wrong price")
         
     def testBuyNGetMForPercentOffConstruction(self):
@@ -184,7 +189,8 @@ class DiscountsTest(unittest.TestCase):
     def testBuy3Get1ForPercentOffApplication(self):
         self.buy3get1Special.applyTo(self.scannedItems)
         specialItem = self.scannedItems.getAt(4)
-        self.assertAlmostEqual(specialItem.getMarkdownPrice()*(1.0-self.seventyPercentOff*0.01), specialItem.getDiscountPrice(), 3, "Buy3Get1For70PercentOff Special not applied")
+        targetPrice = self.calculatePercentOffPrice(specialItem.getMarkdownPrice(), self.seventyPercentOff)
+        self.assertAlmostEqual(targetPrice, specialItem.getDiscountPrice(), 3, "Buy3Get1For70PercentOff Special not applied")
     
     def testBuy2Get1FreeApplication(self):    
         self.buy2Get1FreeSpecial.applyTo(self.scannedItems)
@@ -299,13 +305,15 @@ class DiscountsTest(unittest.TestCase):
     def testBuyNWeightedGetMLesserPercentOffApplication(self):
         self.buy3WeightedGet2Limit5.applyTo(self.mixedWeightSet)
         discountedItem = self.mixedWeightSet.getAt(2)
-        self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice()*(1.0-self.seventyPercentOff*0.01), "Discount not applied")
+        targetPrice = self.calculatePercentOffPrice(discountedItem.getMarkdownPrice(), self.seventyPercentOff)
+        self.assertEqual(discountedItem.getDiscountPrice(), targetPrice, "Discount not applied")
 
     def testBuyNWeightedGetMLesserPercentOffApplicationWithSmallN(self):        
         self.buy2WeightedGet1.applyTo(self.mixedWeightSet)
         
         discountedItem = self.mixedWeightSet.getAt(1)
-        self.assertEqual(discountedItem.getDiscountPrice(), discountedItem.getMarkdownPrice()*(1.0-self.seventyPercentOff*0.01), "Discount not applied")        
+        targetPrice = self.calculatePercentOffPrice(discountedItem.getMarkdownPrice(), self.seventyPercentOff)
+        self.assertEqual(discountedItem.getDiscountPrice(), targetPrice, "Discount not applied")        
  
     def testBuyNWeightedGetMLesserPercentOffApplicationWithSmallNNonApplication(self):        
         self.buy2WeightedGet1.applyTo(self.mixedWeightSet)
