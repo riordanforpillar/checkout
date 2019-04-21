@@ -59,12 +59,30 @@ class DiscountsTest(unittest.TestCase):
         self.assertIsInstance(aMarkdown, checkout.Discounts.Discount, "Markdown is not a Discount subclass")
         
     def testGetMatchedItems(self):
+        self.compareGetMatchedItems(self.scannedItems, 7)
         matchedItems = self.discount.getMatchedItems(self.scannedItems)
         self.assertEqual(len(matchedItems), 7, "Matched items length doesn't match expected")
         
         emptyScanned = checkout.Items.ScannedItemContainer()
         matchedItems = self.discount.getMatchedItems(emptyScanned)
-        self.assertEqual(len(matchedItems), 0, "Matched items length doesn't match expected")        
+        self.assertEqual(len(matchedItems), 0, "Matched items length doesn't match expected")     
+        
+    def makeScannedSet(self, nCountable, nOther):
+        otherItem = checkout.Items.Item("Something", 6.99)
+        otherScanned = checkout.Items.ScannedItem(otherItem)
+        
+        scannedSet = checkout.Items.ScannedItemContainer()
+        
+        for _ in range(nCountable):
+            scannedSet.addScannedItem(self.countableScanned)
+        for _ in range(nOther):
+            scannedSet.addScannedItem(otherScanned)
+                
+        return scannedSet
+    
+    def compareGetMatchedItems(self, scannedSet, expectedMatchedLength):
+        matchedItems = self.discount.getMatchedItems(scannedSet)
+        self.assertEqual(len(matchedItems), expectedMatchedLength, "Matched items length doesn't match expected")       
         
 
     def testSpecialMatchItem(self):
