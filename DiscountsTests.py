@@ -214,36 +214,32 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(special.buy3, buyN, "Buy N not set correctly")
         self.assertEqual(special.price, price, "Price not set correctly")
         
-    def testBuyNForXApplication(self):
+    def testBuyNForXApplicationZeroingOut(self):
         self.buy3For5DollarsSpecial.applyTo(self.scannedItems)
-        
         zeroedItem = self.scannedItems.getAt(0)
         self.assertEqual(zeroedItem.getDiscountPrice(), 0.0, "Zeroed item not zeroed")
 
+    def testBuyNForXApplicationSetPrice(self):
+        self.buy3For5DollarsSpecial.applyTo(self.scannedItems)
         sumPriceItem = self.scannedItems.getAt(3)
-
         self.assertEqual(sumPriceItem.getDiscountPrice(), self.buy3price, "Summed discount not applied")
 
-        subThresholdScan = checkout.Items.ScannedItemContainer()
-        subThresholdScan.addScannedItem(self.countableScanned)
-        subThresholdScan.addScannedItem(self.countableScanned)
+    def testBuyNForXApplicationToPartialSet(self):
+        subThresholdScan = self.makeScannedSet(2, 3)
         
         nonZeroedItem = subThresholdScan.getAt(0)
-        nonZeroedItem.discountPrice = 0.01
+        self.mangleDiscountPrice(nonZeroedItem)
         self.buy3For5DollarsSpecial.applyTo(subThresholdScan)
         
         self.assertEqual(nonZeroedItem.getDiscountPrice(), nonZeroedItem.getMarkdownPrice(), "Nonzeroed item wrong price")
         
     def testBuyNForXLimitApplication(self):
-        price = 5.0
-        buy3ForXLimit3Special = checkout.Discounts.BuyNForXSpecial(self.countableItem, 3, price, 3)
-
- 
+        limit = 3
+        price = 5.00
+        buy3ForXLimit3Special = checkout.Discounts.BuyNForXSpecial(self.countableItem, self.buy3, price, limit)
         buy3ForXLimit3Special.applyTo(self.scannedItems)
-        
         nonDiscountedItem = self.scannedItems.getAt(4)
-
-        self.assertAlmostEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), 3, "Limit not used")
+        self.assertAlmostEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), 3, "BuyNForX Limit not used")
     
     def testGetNFullSetsForBuyNForXSpecial(self):
         self.runFullSetCalcForN(10)
