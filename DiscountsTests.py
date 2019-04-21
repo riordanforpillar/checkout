@@ -188,9 +188,7 @@ class DiscountsTest(unittest.TestCase):
 
     def testBuy3Get1ForPercentOffApplication(self):
         self.buy3get1Special.applyTo(self.scannedItems)
-        specialItem = self.scannedItems.getAt(4)
-        targetPrice = self.calculatePercentOffPrice(specialItem.getMarkdownPrice(), self.seventyPercentOff)
-        self.assertAlmostEqual(targetPrice, specialItem.getDiscountPrice(), 3, "Buy3Get1For70PercentOff Special not applied")
+        self.assertDiscountAndMarkdownWithDiscountEqualForIndexInSet(self.scannedItems, 4, self.seventyPercentOff, "Buy3Get1For70PercentOff special not applied")
     
     def testBuy2Get1FreeApplication(self):    
         self.buy2Get1FreeSpecial.applyTo(self.scannedItems)
@@ -210,12 +208,12 @@ class DiscountsTest(unittest.TestCase):
 
     def testBuyNGetMForPercentOffPastLimitApplication(self):
         buy2Get1FreeLimit3Special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, 2, 1, 100.0, 3)
-        nonDiscountedItem = self.scannedItems.getAt(6)
         
+        nonDiscountedItem = self.scannedItems.getAt(6)   
         self.mangleDiscountPrice(nonDiscountedItem)
 
         buy2Get1FreeLimit3Special.applyTo(self.scannedItems)
-        self.assertEqual(nonDiscountedItem.getMarkdownPrice(), nonDiscountedItem.getDiscountPrice(), "Markdown and special price do not match for discounted item but past limit")
+        self.assertDiscountAndMarkdownEqualForIndexInSet(self.scannedItems, 6, "Markdown and special price do not match for discounted item but past limit")
 
     def mangleDiscountPrice(self, item):
         item.discountPrice = item.discountPrice*5.21
@@ -252,17 +250,16 @@ class DiscountsTest(unittest.TestCase):
         
         nonZeroedItem = subThresholdScan.getAt(0)
         self.mangleDiscountPrice(nonZeroedItem)
+        
         self.buy3For5DollarsSpecial.applyTo(subThresholdScan)
-        
-        self.assertEqual(nonZeroedItem.getDiscountPrice(), nonZeroedItem.getMarkdownPrice(), "Nonzeroed item wrong price")
-        
+        self.assertDiscountAndMarkdownEqualForIndexInSet(subThresholdScan, 0, "Nonzeroed item wrong price")
+                
     def testBuyNForXLimitApplication(self):
         limit = 3
         price = 5.00
         buy3ForXLimit3Special = checkout.Discounts.BuyNForXSpecial(self.countableItem, self.buy3, price, limit)
         buy3ForXLimit3Special.applyTo(self.scannedItems)
-        nonDiscountedItem = self.scannedItems.getAt(4)
-        self.assertAlmostEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), 3, "BuyNForX Limit not used")
+        self.assertDiscountAndMarkdownEqualForIndexInSet(self.scannedItems, 4, "BuyNForX Limit not used")
     
     def testGetNFullSetsForBuyNForXSpecial(self):
         self.runFullSetCalcForN(10)
@@ -304,24 +301,27 @@ class DiscountsTest(unittest.TestCase):
             
     def testBuyNWeightedGetMLesserPercentOffApplication(self):
         self.buy3WeightedGet2Limit5.applyTo(self.mixedWeightSet)
-        discountedItem = self.mixedWeightSet.getAt(2)
-        targetPrice = self.calculatePercentOffPrice(discountedItem.getMarkdownPrice(), self.seventyPercentOff)
-        self.assertEqual(discountedItem.getDiscountPrice(), targetPrice, "Discount not applied")
+        self.assertDiscountAndMarkdownWithDiscountEqualForIndexInSet(self.mixedWeightSet, 2, self.seventyPercentOff)      
+
 
     def testBuyNWeightedGetMLesserPercentOffApplicationWithSmallN(self):        
         self.buy2WeightedGet1.applyTo(self.mixedWeightSet)
-        
-        discountedItem = self.mixedWeightSet.getAt(1)
-        targetPrice = self.calculatePercentOffPrice(discountedItem.getMarkdownPrice(), self.seventyPercentOff)
-        self.assertEqual(discountedItem.getDiscountPrice(), targetPrice, "Discount not applied")        
+        self.assertDiscountAndMarkdownWithDiscountEqualForIndexInSet(self.mixedWeightSet, 1, self.seventyPercentOff, "BuyNWeightedMLesserPercentOff discount not applied")      
  
     def testBuyNWeightedGetMLesserPercentOffApplicationWithSmallNNonApplication(self):        
         self.buy2WeightedGet1.applyTo(self.mixedWeightSet)
                
-        nonDiscountedItem = self.mixedWeightSet.getAt(2)
-        self.assertEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), "Discount misapplied")
-        nonDiscountedItem = self.mixedWeightSet.getAt(5)
-        self.assertEqual(nonDiscountedItem.getDiscountPrice(), nonDiscountedItem.getMarkdownPrice(), "Discount misapplied")
+        self.assertDiscountAndMarkdownEqualForIndexInSet(self.mixedWeightSet, 2, "BuyNWeightedMLesserPercentOff discount misapplied")
+        self.assertDiscountAndMarkdownEqualForIndexInSet(self.mixedWeightSet, 5, "BuyNWeightedMLesserPercentOff discount misapplied")
+
+    def assertDiscountAndMarkdownWithDiscountEqualForIndexInSet(self, itemSet, index, percentOff, message = ""):
+        item = itemSet.getAt(index)
+        targetPrice = self.calculatePercentOffPrice(item.getMarkdownPrice(), percentOff)
+        self.assertEqual(item.getDiscountPrice(), targetPrice, message)
+    
+    def assertDiscountAndMarkdownEqualForIndexInSet(self, itemSet, index, message = ""):
+        self.assertDiscountAndMarkdownWithDiscountEqualForIndexInSet(itemSet, index, 0.0, message)
+       
 
     def testBuyNWeightedGetMLesserPercentOffWithLimitSettingLimit(self):
         self.assertEqual(self.buy3WeightedGet2Limit5.limit, self.limit5, "limit not set")
