@@ -15,7 +15,9 @@ class RegisterTest(unittest.TestCase):
 
     def testRegisterConstruction(self):
         inventory = checkout.Items.Inventory()
-        register = checkout.Register.Register(inventory)
+        markdowns = checkout.Discounts.DiscountContainer()
+        specials = checkout.Discounts.DiscountContainer()
+        register = checkout.Register.Register(inventory, markdowns, specials)
 
 
 if __name__ == "__main__":
