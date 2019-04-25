@@ -345,6 +345,9 @@ class DiscountsTest(unittest.TestCase):
 
     def testDiscountContainerGetSize(self):
         self.assertEqual(0, self.container.getSize(), "Not initialized to zero")
+        self.container.addDiscount(self.buy2Get1FreeSpecial)
+        self.assertEqual(1, self.container.getSize(), "Not incremented size")
+       
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
