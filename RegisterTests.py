@@ -1,4 +1,5 @@
 import unittest
+import checkout.Register
 
 
 class RegisterTest(unittest.TestCase):
@@ -12,8 +13,8 @@ class RegisterTest(unittest.TestCase):
         pass
 
 
-    def testName(self):
-        pass
+    def testRegisterConstruction(self):
+        register = checkout.Register.Register()
 
 
 if __name__ == "__main__":
