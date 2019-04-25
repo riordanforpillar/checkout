@@ -106,17 +106,17 @@ class DiscountsTest(unittest.TestCase):
         
     def testMarkdownApplicationNotOnItem(self):
         self.countableMarkdown.applyTo(self.scannedItems)
-        scannedItem = self.scannedItems.getAt(1)
         targetPrice = self.calculateDiscountedPrice(self.weightedScanned.getBasePrice(), 0.0, self.weightedItemWeight)
-        self.assertEqual(scannedItem.getMarkdownPrice(), targetPrice, "Markdown misapplied")
+        self.assertMarkdownAndPriceEqualForIndexInSet(self.scannedItems, 1, targetPrice, "Markdown misapplied")
         
     def testMultipleMarkdownApplicationNotUndoingPreviousMarkdowns(self):
         self.countableMarkdown.applyTo(self.scannedItems)
         scannedItem = self.scannedItems.getAt(0)
         unchangedPrice = scannedItem.getMarkdownPrice()
-        
         self.weightedMarkdown.applyTo(self.scannedItems)        
-        self.assertEqual(scannedItem.getMarkdownPrice(), unchangedPrice, "Countable markdown undone")
+
+        self.assertMarkdownAndPriceEqualForIndexInSet(self.scannedItems, 0, unchangedPrice, "Countable markdown undone")
+
         
     def testMarkdownOnWeighted(self):
         self.weightedMarkdown.applyTo(self.scannedItems)
