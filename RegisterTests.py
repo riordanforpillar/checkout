@@ -28,12 +28,15 @@ class RegisterTest(unittest.TestCase):
         markdowns = checkout.Discounts.DiscountContainer()
         specials  = checkout.Discounts.DiscountContainer()
         register  = checkout.Register.Register(inventory, markdowns, specials)
+
+    def testRegisterScanItem(self):
+        self.register.scanItemByName(self.singleItemName)
         
     def testRegisterGetTotal(self):
         self.assertAlmostEqual(0.0, self.register.getTotal(), 3, "Empty register total not 0")
-        
-    def testRegisterScanItem(self):
-        self.register.scanItemByName("Soup")
+        self.register.scanItemByName(self.singleItemName)
+        self.assertAlmostEqual(self.singleItemPPU, self.register.getTotal(), 3, "Scanned item not totaling")
+
 
     def testRegisterScanItemAndItemIsMissing(self):
         with self.assertRaises(checkout.Items.NotFoundInInventoryException):
