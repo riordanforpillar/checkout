@@ -24,3 +24,6 @@ class Register(object):
         item = self.inventory.getItemByName(name)
         scannedItem = checkout.Items.ScannedWeightedItem(item, weight)
         self.scannedItems.addScannedItem(scannedItem)
+        
+class ScannedNonWeightedItemWithWeight(Exception):
+    pass

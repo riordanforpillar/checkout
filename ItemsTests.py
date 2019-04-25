@@ -63,6 +63,9 @@ class ItemsTest(unittest.TestCase):
             failMessage = "Unexpected TotalQuantity for %s" % (caseName)
             self.assertEqual(item.getQuantity(), expectedTotalQuantity, failMessage)
 
+    def testWeightedItemConstruction(self):
+        weightedItem = checkout.Items.WeightedItem("Chicken", 4.9)
+
 
     def testScannedItemByWeightConstruction(self):
         weight = 1.09

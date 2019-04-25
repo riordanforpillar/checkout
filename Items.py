@@ -5,7 +5,11 @@ class Item(object):
     def __init__(self, name, pricePerUnit):
         self.name = name
         self.pricePerUnit = pricePerUnit
-        
+
+class WeightedItem(object):
+    def __init__(self, name, pricePerUnit):
+        pass        
+
 class ScannedItem():
     def __init__(self, item):
         self.baseItem = item

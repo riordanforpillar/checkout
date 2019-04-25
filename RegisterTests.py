@@ -45,6 +45,10 @@ class RegisterTest(unittest.TestCase):
         self.register.scanItemByNameWithWeight(self.weightedItemName, aWeight)
         self.assertAlmostEqual(expectedPrice, self.register.getTotal(), 3, "Scanned weighted item not totaling")
         
+  
+    def testRegisterScanNonWeightedItemWithWeight(self):
+        with self.assertRaises(checkout.Register.ScannedNonWeightedItemWithWeight):
+            self.register.scanItemByNameWithWeight(self.singleItemName, 4.0)
         
     def testRegisterGetTotal(self):
         self.assertAlmostEqual(0.0, self.register.getTotal(), 3, "Empty register total not 0")
