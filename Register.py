@@ -6,4 +6,6 @@ class Register(object):
         '''
         Constructor
         '''
-        
+    
+    def getTotal(self):
+        return 0.0

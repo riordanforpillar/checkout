@@ -6,7 +6,10 @@ class RegisterTest(unittest.TestCase):
 
 
     def setUp(self):
-        pass
+        inventory = checkout.Items.Inventory()
+        markdowns = checkout.Discounts.DiscountContainer()
+        specials  = checkout.Discounts.DiscountContainer()
+        self.register  = checkout.Register.Register(inventory, markdowns, specials)
 
 
     def tearDown(self):
@@ -16,8 +19,11 @@ class RegisterTest(unittest.TestCase):
     def testRegisterConstruction(self):
         inventory = checkout.Items.Inventory()
         markdowns = checkout.Discounts.DiscountContainer()
-        specials = checkout.Discounts.DiscountContainer()
-        register = checkout.Register.Register(inventory, markdowns, specials)
+        specials  = checkout.Discounts.DiscountContainer()
+        register  = checkout.Register.Register(inventory, markdowns, specials)
+        
+    def testRegisterGetTotal(self):
+        self.assertAlmostEqual(0.0, self.register.getTotal(), 3, "Empty register total not 0")
 
 
 if __name__ == "__main__":
