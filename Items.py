@@ -6,7 +6,7 @@ class Item(object):
         self.name = name
         self.pricePerUnit = pricePerUnit
 
-class WeightedItem(object):
+class WeightedItem(Item):
     def __init__(self, name, pricePerUnit):
         pass        
 

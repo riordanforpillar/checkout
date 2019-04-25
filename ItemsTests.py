@@ -65,6 +65,7 @@ class ItemsTest(unittest.TestCase):
 
     def testWeightedItemConstruction(self):
         weightedItem = checkout.Items.WeightedItem("Chicken", 4.9)
+        self.assertIsInstance(weightedItem, checkout.Items.Item, "WeightedItem not a subclass")
 
 
     def testScannedItemByWeightConstruction(self):
