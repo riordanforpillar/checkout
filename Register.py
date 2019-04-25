@@ -9,3 +9,6 @@ class Register(object):
     
     def getTotal(self):
         return 0.0
+    
+    def scanItemByName(self, name):
+        pass

@@ -24,6 +24,9 @@ class RegisterTest(unittest.TestCase):
         
     def testRegisterGetTotal(self):
         self.assertAlmostEqual(0.0, self.register.getTotal(), 3, "Empty register total not 0")
+        
+    def testRegisterScanItem(self):
+        self.register.scanItemByName("Soup")
 
 
 if __name__ == "__main__":
