@@ -340,8 +340,11 @@ class DiscountsTest(unittest.TestCase):
     def testDiscountContainerConstruction(self):
         container = checkout.Discounts.DiscountContainer()
         
-    def testDiscountContainerAddI(self):
+    def testDiscountContainerAdd(self):
         self.container.addDiscount(self.buy3For5DollarsSpecial)
+
+    def testDiscountContainerGetSize(self):
+        self.assertEqual(0, self.container.getSize(), "Not initialized to zero")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

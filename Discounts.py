@@ -33,6 +33,9 @@ class DiscountContainer():
     def addDiscount(self, aThing):
         pass
     
+    def getSize(self):
+        return 0
+    
 class Markdown(Discount):
     def __init__(self, item, value):
         super().__init__(item)
