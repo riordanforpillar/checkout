@@ -334,6 +334,9 @@ class DiscountsTest(unittest.TestCase):
             
         lastItem = scannedItems.getLastItem()
         self.assertEqual(lastItem.getDiscountPrice(), lastItem.getMarkdownPrice(), "Limit in weighted special not imposed")
+        
+    def testDiscountContainerConstruction(self):
+        pass
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
