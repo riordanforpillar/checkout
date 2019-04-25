@@ -12,7 +12,7 @@ class DiscountsTest(unittest.TestCase):
         
         self.weightedMarkdownValue = 0.1
         self.weightedItemWeight = 3.5
-        self.weightedItem = checkout.Items.Item("Beef", 2.0)
+        self.weightedItem = checkout.Items.WeightedItem("Beef", 2.0)
         self.weightedScanned = checkout.Items.ScannedWeightedItem(self.weightedItem, self.weightedItemWeight)
         self.weightedMarkdown = checkout.Discounts.Markdown(self.weightedItem, self.weightedMarkdownValue)
         

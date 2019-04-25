@@ -14,7 +14,7 @@ class RegisterTest(unittest.TestCase):
         self.weightedItemName = "Beef"
         self.weightedItemPPU = 4.09
         self.weightedItemWeight = 1.59
-        self.weightedItem = checkout.Items.Item(self.weightedItemName, self.weightedItemPPU)
+        self.weightedItem = checkout.Items.WeightedItem(self.weightedItemName, self.weightedItemPPU)
                 
         inventory = checkout.Items.Inventory()
         inventory.addItem(self.singleItem)
