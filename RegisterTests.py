@@ -32,6 +32,11 @@ class RegisterTest(unittest.TestCase):
     def testRegisterScanItem(self):
         self.register.scanItemByName(self.singleItemName)
         
+    def testRegisterScanItemWithWeight(self):
+        aWeight = 1.3
+        self.register.scanItemByNameWithWeight(self.singleItemName, aWeight)
+        
+        
     def testRegisterGetTotal(self):
         self.assertAlmostEqual(0.0, self.register.getTotal(), 3, "Empty register total not 0")
         self.register.scanItemByName(self.singleItemName)
