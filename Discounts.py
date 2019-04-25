@@ -31,13 +31,13 @@ class DiscountContainer():
         self.discounts = []
     
     def addDiscount(self, aDiscount):
-        self.discounts.append('0')
+        self.discounts.append(aDiscount)
     
     def getSize(self):
         return len(self.discounts)
     
     def getAt(self, index):
-        return 'a'
+        return self.discounts[index]
     
 class Markdown(Discount):
     def __init__(self, item, value):

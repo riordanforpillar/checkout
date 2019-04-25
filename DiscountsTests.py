@@ -351,7 +351,10 @@ class DiscountsTest(unittest.TestCase):
     def testDiscountGetAt(self):
         testThing = 'a'
         self.container.addDiscount(testThing)
-        self.assertEqual(self.container.getAt(0), testThing)
+        self.assertEqual(self.container.getAt(0), 'a')
+        testThing = 'b'
+        self.container.addDiscount(testThing)
+        self.assertEqual(self.container.getAt(1), 'b')        
        
 
 if __name__ == "__main__":
