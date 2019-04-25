@@ -120,9 +120,12 @@ class DiscountsTest(unittest.TestCase):
         
     def testMarkdownOnWeighted(self):
         self.weightedMarkdown.applyTo(self.scannedItems)
-        scannedItem = self.scannedItems.getAt(1)
         newPrice = self.calculateDiscountedPrice(self.weightedScanned.getBasePrice(), self.weightedMarkdownValue, self.weightedItemWeight)
-        self.assertEqual(scannedItem.getMarkdownPrice(), newPrice, "Weighted markdown misapplied")
+        self.assertMarkdownAndPriceEqualForIndexInSet(self.scannedItems, 1, newPrice, "Weighted markdown misapplied")
+        
+    def assertMarkdownAndPriceEqualForIndexInSet(self, itemSet, index, price, message = ""):
+        item = itemSet.getAt(index)
+        self.assertAlmostEqual(item.getMarkdownPrice(), price, 3, message)
         
     def calculateDiscountedPrice(self, basePrice, discountToApply, weight=1):
         discountedPPU = basePrice-discountToApply
@@ -163,10 +166,10 @@ class DiscountsTest(unittest.TestCase):
         self.assertIsInstance(special, checkout.Discounts.Special, "PercentOff not a subclass of Special")
         
     def testCalculateDiscountInPercentOffSpecial(self):
-        self.PercentOffTestFactory(40.0)
-        self.PercentOffTestFactory(10.0)
+        self.PercentOffGeneralTest(40.0)
+        self.PercentOffGeneralTest(10.0)
         
-    def PercentOffTestFactory(self, percentOff):
+    def PercentOffGeneralTest(self, percentOff):
         special = checkout.Discounts.PercentOffSpecial(self.countableItem, percentOff)
         discountPrice = special.calculateDiscount(self.countableScanned)
         expectedDiscountPrice = self.calculatePercentOffPrice(self.countableScanned.getMarkdownPrice(), percentOff)
