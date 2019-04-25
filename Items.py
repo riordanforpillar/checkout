@@ -8,7 +8,7 @@ class Item(object):
 
 class WeightedItem(Item):
     def __init__(self, name, pricePerUnit):
-        pass        
+        super(WeightedItem, self).__init__(name, pricePerUnit)
 
 class ScannedItem():
     def __init__(self, item):
@@ -37,6 +37,8 @@ class ScannedWeightedItem(ScannedItem):
     def __init__(self, item, weight):
         if type(weight) != float:
             raise ScannedWeightNotFloatException
+        if type(item) != WeightedItem:
+            raise ScannedNonWeightedItemWithWeight
         self.weight = weight
         super().__init__(item)
 
@@ -89,3 +91,5 @@ class NotFoundInInventoryException(Exception):
 class ScannedWeightNotFloatException(Exception):
     pass
 
+class ScannedNonWeightedItemWithWeight(Exception):
+    pass

@@ -47,7 +47,7 @@ class RegisterTest(unittest.TestCase):
         
   
     def testRegisterScanNonWeightedItemWithWeight(self):
-        with self.assertRaises(checkout.Register.ScannedNonWeightedItemWithWeight):
+        with self.assertRaises(checkout.Items.ScannedNonWeightedItemWithWeight):
             self.register.scanItemByNameWithWeight(self.singleItemName, 4.0)
         
     def testRegisterGetTotal(self):

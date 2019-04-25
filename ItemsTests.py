@@ -13,7 +13,7 @@ class ItemsTest(unittest.TestCase):
         self.weightedItemName = "Beef"
         self.weightedItemPPU = 4.09
         self.weightedItemWeight = 1.59
-        self.weightedItem = checkout.Items.Item(self.weightedItemName, self.weightedItemPPU)
+        self.weightedItem = checkout.Items.WeightedItem(self.weightedItemName, self.weightedItemPPU)
         self.weightedScanned = checkout.Items.ScannedWeightedItem(self.weightedItem, self.weightedItemWeight)
     
 
@@ -73,6 +73,11 @@ class ItemsTest(unittest.TestCase):
         checkout.Items.ScannedWeightedItem(self.weightedItem, weight)
         with self.assertRaises(checkout.Items.ScannedWeightNotFloatException):
             checkout.Items.ScannedWeightedItem(self.weightedItem, 1)
+
+    def testScanUnweightedItemByWeightConstruction(self):
+        weight = 4.09
+        with self.assertRaises(checkout.Items.ScannedNonWeightedItemWithWeight):        
+            checkout.Items.ScannedWeightedItem(self.singleItem, weight)
 
     def testScannedItemByWeightGetWeight(self):
         errorMessage = "Weight %f not close enough to %f " % (self.weightedItemWeight, self.weightedScanned.getWeight())
