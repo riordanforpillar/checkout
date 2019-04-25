@@ -48,6 +48,8 @@ class DiscountsTest(unittest.TestCase):
         self.buy3WeightedGet2Limit5 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy3, self.get2, self.seventyPercentOff, self.limit5)
 
         self.buy2WeightedGet1 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy2, self.get1, self.seventyPercentOff)
+        
+        self.container = checkout.Discounts.DiscountContainer()
 
 
     def tearDown(self):
@@ -337,6 +339,9 @@ class DiscountsTest(unittest.TestCase):
         
     def testDiscountContainerConstruction(self):
         container = checkout.Discounts.DiscountContainer()
+        
+    def testDiscountContainerAddI(self):
+        self.container.addDiscount(self.buy3For5DollarsSpecial)
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
