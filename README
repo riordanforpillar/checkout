@@ -1,0 +1,9 @@
+Checkout kata
+
+To run all tests
+
+./runAllTests.sh
+
+To run an example
+
+./runExample.sh
