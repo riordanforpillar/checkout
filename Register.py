@@ -6,11 +6,16 @@ class Register(object):
         self.inventory = inventory
         self.scannedItems = checkout.Items.ScannedItemContainer()
         self.markdowns = markdowns
+        self.specials = specials
     
     def getTotal(self):
         for index in range(self.markdowns.getSize()):
             markdown = self.markdowns.getAt(index)
             markdown.applyTo(self.scannedItems)
+
+        for index in range(self.specials.getSize()):
+            special = self.specials.getAt(index)
+            special.applyTo(self.scannedItems)
                                                     
         total = 0.0
         nScannedItems = self.scannedItems.getSize()

@@ -19,14 +19,15 @@ class RegisterTest(unittest.TestCase):
         self.countableMarkdownValue = 0.40
         self.countableMarkdown = checkout.Discounts.Markdown(self.countableItem, self.countableMarkdownValue)   
    
-                
+        self.buy2Get1FreeSpecial = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, 2, 1, 100.0)
+               
         inventory = checkout.Items.Inventory()
         inventory.addItem(self.countableItem)
         inventory.addItem(self.weightedItem)
        
         self.markdowns = checkout.Discounts.DiscountContainer()
-        specials  = checkout.Discounts.DiscountContainer()
-        self.register  = checkout.Register.Register(inventory, self.markdowns, specials)
+        self.specials  = checkout.Discounts.DiscountContainer()
+        self.register  = checkout.Register.Register(inventory, self.markdowns, self.specials)
 
 
     def tearDown(self):
@@ -66,6 +67,14 @@ class RegisterTest(unittest.TestCase):
         self.register.scanItemByName(self.countableItemName)
         markedDownPrice = self.countableItemPPU-self.countableMarkdownValue
         self.assertAlmostEqual(self.register.getTotal(), markedDownPrice, 3, "Markdown not applied")
+        
+    def testRegisterWithSpecial(self):
+        self.specials.addDiscount(self.buy2Get1FreeSpecial)
+        self.register.scanItemByName(self.countableItemName)
+        self.register.scanItemByName(self.countableItemName)
+        self.register.scanItemByName(self.countableItemName)
+        self.assertAlmostEqual(self.register.getTotal(), self.countableItemPPU*2, 3, "Special not applied")
+       
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
