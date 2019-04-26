@@ -75,6 +75,16 @@ class RegisterTest(unittest.TestCase):
     def testRegisterRemoveLastScannedWithNoScanned(self):
         with self.assertRaises(IndexError):
             self.register.removeLastScanned()
+            
+    def testRegisterRemoveItemAtWithNoScanned(self):
+        with self.assertRaises(IndexError):
+            self.register.removeScannedAt(3)        
+
+    def testRegisterRemoveItemAt(self):
+        self.register.scanItemByName(self.weightedItemName)
+        self.register.scanItemByName(self.countableItemName)
+        self.register.removeScannedAt(0)        
+
        
     def testRegisterRemoveLastScanned(self):
         self.register.scanItemByName(self.countableItemName)

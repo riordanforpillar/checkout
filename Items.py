@@ -13,10 +13,8 @@ class WeightedItem(Item):
 class ScannedItem():
     def __init__(self, item):
         self.baseItem = item
-        
         self.markdownPrice = self.baseItem.pricePerUnit*self.getQuantity()
         self.discountPrice = self.markdownPrice
-
     
     def getName(self):
         return self.baseItem.name
@@ -83,6 +81,9 @@ class ScannedItemContainer():
         return self.itemStack[-1]
         
     def removeLastItem(self):
+        self.itemStack.pop()
+        
+    def removeAt(self, index):
         self.itemStack.pop()
     
 class NotFoundInInventoryException(Exception):

@@ -40,5 +40,8 @@ class Register(object):
         scannedItem = checkout.Items.ScannedWeightedItem(item, weight)
         self.scannedItems.addScannedItem(scannedItem)
         
+    def removeScannedAt(self, index):
+        raise IndexError
+        
     def removeLastScanned(self):
         self.scannedItems.removeLastItem()

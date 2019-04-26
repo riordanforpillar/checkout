@@ -155,10 +155,20 @@ class ItemsTest(unittest.TestCase):
         
         lastItem = self.scannedItemContainer.getLastItem()
         self.assertEqual(lastItem.getName(), targetName, "ScannedItemContainer not removing last item correctly")
-        
-        self.scannedItemContainer.removeLastItem()
+ 
+    def testScannedItemContainerRemoveLastWithEmptyContainer(self):       
         with self.assertRaises(IndexError):
             self.scannedItemContainer.removeLastItem()
+            
+    def testScanedItemContainerRemoveAtEmptyContainer(self):
+        with self.assertRaises(IndexError):
+            self.scannedItemContainer.removeAt(4)
+            
+    def testScanedItemContainerRemoveAt(self):
+        self.scannedItemContainer.addScannedItem(self.singleScanned)
+        self.scannedItemContainer.addScannedItem(self.weightedScanned)
+        self.scannedItemContainer.removeAt(0)
+
 
     def testScannedItemContainerUniqueScannedItems(self):
         mutableScannedItem = checkout.Items.ScannedItem(self.countableItem)
