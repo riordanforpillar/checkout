@@ -81,9 +81,11 @@ class RegisterTest(unittest.TestCase):
             self.register.removeScannedAt(3)        
 
     def testRegisterRemoveItemAt(self):
-        self.register.scanItemByName(self.weightedItemName)
+        weight = 1.03
+        self.register.scanItemByNameWithWeight(self.weightedItemName, weight)
         self.register.scanItemByName(self.countableItemName)
-        self.register.removeScannedAt(0)        
+        self.register.removeScannedAt(0)
+        self.assertAlmostEqual(self.register.getTotal(), self.countableItemPPU, 3, "Removed wrong item")       
 
        
     def testRegisterRemoveLastScanned(self):

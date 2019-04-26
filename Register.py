@@ -41,7 +41,7 @@ class Register(object):
         self.scannedItems.addScannedItem(scannedItem)
         
     def removeScannedAt(self, index):
-        self.scannedItems.removeAt(0)
+        self.scannedItems.removeAt(index)
         
     def removeLastScanned(self):
         self.scannedItems.removeLastItem()
