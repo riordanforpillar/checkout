@@ -41,5 +41,4 @@ class Register(object):
         self.scannedItems.addScannedItem(scannedItem)
         
     def removeLastScanned(self):
-        raise IndexError
-        
+        self.scannedItems.removeLastItem()

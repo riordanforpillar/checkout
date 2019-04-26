@@ -76,7 +76,12 @@ class RegisterTest(unittest.TestCase):
         with self.assertRaises(IndexError):
             self.register.removeLastScanned()
        
-
+    def testRegisterRemoveLastScanned(self):
+        self.register.scanItemByName(self.countableItemName)
+        self.register.removeLastScanned()
+        self.assertAlmostEqual(self.register.getTotal(), 0.0, 3, "Special not applied")
+            
+            
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
