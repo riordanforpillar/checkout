@@ -9,10 +9,12 @@ class Register(object):
         self.specials = specials
     
     def getTotal(self):
-        self.applyDiscounts(self.markdowns)
-        self.applyDiscounts(self.specials)
-                                                    
+        self.applyMarkdownsAndSpecialsInOrder()
         return self.calculateSumOfDiscountPrices()
+    
+    def applyMarkdownsAndSpecialsInOrder(self):
+        self.applyDiscounts(self.markdowns)
+        self.applyDiscounts(self.specials)          
     
     def calculateSumOfDiscountPrices(self):
         total = 0.0
