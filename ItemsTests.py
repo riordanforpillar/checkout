@@ -169,6 +169,8 @@ class ItemsTest(unittest.TestCase):
         self.scannedItemContainer.addScannedItem(self.weightedScanned)
         self.scannedItemContainer.removeAt(0)
 
+        lastItem = self.scannedItemContainer.getLastItem()
+        self.assertEqual(lastItem.getName(), self.weightedItemName, "RemoveAt Did not remove correct item")
 
     def testScannedItemContainerUniqueScannedItems(self):
         mutableScannedItem = checkout.Items.ScannedItem(self.countableItem)

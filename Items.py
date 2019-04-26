@@ -84,7 +84,7 @@ class ScannedItemContainer():
         self.itemStack.pop()
         
     def removeAt(self, index):
-        self.itemStack.pop()
+        self.itemStack.pop(index)
     
 class NotFoundInInventoryException(Exception):
     pass
