@@ -40,3 +40,6 @@ class Register(object):
         scannedItem = checkout.Items.ScannedWeightedItem(item, weight)
         self.scannedItems.addScannedItem(scannedItem)
         
+    def removeLastScanned(self):
+        pass
+        

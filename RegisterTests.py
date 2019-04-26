@@ -4,8 +4,7 @@ import checkout.Items
 
 
 class RegisterTest(unittest.TestCase):
-
-
+    
     def setUp(self):
         self.countableItemName = "Soup"
         self.countableItemPPU = 1.25
@@ -48,8 +47,7 @@ class RegisterTest(unittest.TestCase):
         aWeight = 1.3
         expectedPrice = aWeight*self.weightedItemPPU
         self.register.scanItemByNameWithWeight(self.weightedItemName, aWeight)
-        self.assertAlmostEqual(expectedPrice, self.register.getTotal(), 3, "Scanned weighted item not totaling")
-        
+        self.assertAlmostEqual(expectedPrice, self.register.getTotal(), 3, "Scanned weighted item not totaling")      
   
     def testRegisterScanNonWeightedItemWithWeight(self):
         with self.assertRaises(checkout.Items.ScannedNonWeightedItemWithWeight):
@@ -70,10 +68,12 @@ class RegisterTest(unittest.TestCase):
         
     def testRegisterWithSpecial(self):
         self.specials.addDiscount(self.buy2Get1FreeSpecial)
-        self.register.scanItemByName(self.countableItemName)
-        self.register.scanItemByName(self.countableItemName)
-        self.register.scanItemByName(self.countableItemName)
+        for _ in range(3):
+            self.register.scanItemByName(self.countableItemName)
         self.assertAlmostEqual(self.register.getTotal(), self.countableItemPPU*2, 3, "Special not applied")
+        
+    def testRegisterRemoveLastScanned(self):
+        self.register.removeLastScanned()
        
 
 if __name__ == "__main__":

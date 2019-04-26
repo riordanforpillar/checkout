@@ -168,7 +168,6 @@ class ItemsTest(unittest.TestCase):
         adjustedDiscountPrice = 0.01
         mutableScannedItem.discountPrice = adjustedDiscountPrice
         self.scannedItemContainer.addScannedItem(mutableScannedItem)
-        adjustedPriceItem = self.scannedItemContainer.getLastItem()
 
         self.assertNotEqual(originalItem.getDiscountPrice(), adjustedDiscountPrice, "Adjusted price propagated to other items")
 
