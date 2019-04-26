@@ -45,13 +45,19 @@ class RegisterTest(unittest.TestCase):
        
     def testRegisterScanItemWithWeight(self):
         aWeight = 1.3
-        expectedPrice = aWeight*self.weightedItemPPU
+        expectedPrice = round(aWeight*self.weightedItemPPU,2)
         self.register.scanItemByNameWithWeight(self.weightedItemName, aWeight)
         self.assertAlmostEqual(expectedPrice, self.register.getTotal(), 3, "Scanned weighted item not totaling")      
   
     def testRegisterScanNonWeightedItemWithWeight(self):
         with self.assertRaises(checkout.Items.ScannedNonWeightedItemWithWeight):
             self.register.scanItemByNameWithWeight(self.countableItemName, 4.0)
+            
+    def testScanItemLimitTotalPrecision(self):
+        highPrecisionWeight = 0.501
+        lowPrecisionPrice = round(highPrecisionWeight*self.weightedItemPPU,2)
+        self.register.scanItemByNameWithWeight(self.weightedItemName, highPrecisionWeight)
+        self.assertAlmostEqual(lowPrecisionPrice, self.register.getTotal(), 3, "Too much precision in total")
         
     def testRegisterGetTotal(self):
         self.assertAlmostEqual(0.0, self.register.getTotal(), 3, "Empty register total not 0")

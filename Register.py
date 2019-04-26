@@ -10,7 +10,7 @@ class Register(object):
     
     def getTotal(self):
         self.applyMarkdownsAndSpecialsInOrder()
-        return self.calculateSumOfDiscountPrices()
+        return round(self.calculateSumOfDiscountPrices(),2)
     
     def applyMarkdownsAndSpecialsInOrder(self):
         self.applyDiscounts(self.markdowns)
