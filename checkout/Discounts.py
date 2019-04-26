@@ -86,12 +86,12 @@ class Special(Discount):
         
 class PercentOffSpecial(Special):
     def __init__(self, item, percentOff, limit=None):
-        self.seventyPercentOff = percentOff
+        self.percentOff = percentOff
         super().__init__(item, limit)
         
     def calculateDiscount(self, item):
         markdownPrice  = item.getMarkdownPrice()
-        discountFactor = 1.0 - self.seventyPercentOff*0.01
+        discountFactor = 1.0 - self.percentOff*0.01
         return markdownPrice*discountFactor
 
     def applyDiscountBelowLimit(self, belowLimitItems):
