@@ -110,6 +110,7 @@ class DiscountsTest(unittest.TestCase):
         self.countableMarkdown.applyTo(self.scannedItems)
         targetPrice = self.calculateDiscountedPrice(self.weightedScanned.getBasePrice(), 0.0, self.weightedItemWeight)
         self.assertMarkdownAndPriceEqualForIndexInSet(self.scannedItems, 1, targetPrice, "Markdown misapplied")
+        self.assertDiscountAndMarkdownEqualForIndexInSet(self.scannedItems, 0, "Discount price not set with Markdown")
         
     def testMultipleMarkdownApplicationNotUndoingPreviousMarkdowns(self):
         self.countableMarkdown.applyTo(self.scannedItems)
@@ -128,6 +129,14 @@ class DiscountsTest(unittest.TestCase):
     def assertMarkdownAndPriceEqualForIndexInSet(self, itemSet, index, price, message = ""):
         item = itemSet.getAt(index)
         self.assertAlmostEqual(item.getMarkdownPrice(), price, 3, message)
+        
+    def assertDiscountAndMarkdownWithDiscountEqualForIndexInSet(self, itemSet, index, percentOff, message = ""):
+        item = itemSet.getAt(index)
+        targetPrice = self.calculatePercentOffPrice(item.getMarkdownPrice(), percentOff)
+        self.assertAlmostEqual(item.getDiscountPrice(), targetPrice, 3, message)
+    
+    def assertDiscountAndMarkdownEqualForIndexInSet(self, itemSet, index, message = ""):
+        self.assertDiscountAndMarkdownWithDiscountEqualForIndexInSet(itemSet, index, 0.0, message)
         
     def calculateDiscountedPrice(self, basePrice, discountToApply, weight=1):
         discountedPPU = basePrice-discountToApply
@@ -318,13 +327,7 @@ class DiscountsTest(unittest.TestCase):
         self.assertDiscountAndMarkdownEqualForIndexInSet(self.mixedWeightSet, 2, "BuyNWeightedMLesserPercentOff discount misapplied")
         self.assertDiscountAndMarkdownEqualForIndexInSet(self.mixedWeightSet, 5, "BuyNWeightedMLesserPercentOff discount misapplied")
 
-    def assertDiscountAndMarkdownWithDiscountEqualForIndexInSet(self, itemSet, index, percentOff, message = ""):
-        item = itemSet.getAt(index)
-        targetPrice = self.calculatePercentOffPrice(item.getMarkdownPrice(), percentOff)
-        self.assertAlmostEqual(item.getDiscountPrice(), targetPrice, 3, message)
-    
-    def assertDiscountAndMarkdownEqualForIndexInSet(self, itemSet, index, message = ""):
-        self.assertDiscountAndMarkdownWithDiscountEqualForIndexInSet(itemSet, index, 0.0, message)
+
        
 
     def testBuyNWeightedGetMLesserPercentOffWithLimitSettingLimit(self):

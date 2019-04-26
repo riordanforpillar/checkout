@@ -7,22 +7,26 @@ class RegisterTest(unittest.TestCase):
 
 
     def setUp(self):
-        self.singleItemName = "Soup"
-        self.singleItemPPU = 1.25
-        self.singleItem = checkout.Items.Item(self.singleItemName, self.singleItemPPU)
+        self.countableItemName = "Soup"
+        self.countableItemPPU = 1.25
+        self.countableItem = checkout.Items.Item(self.countableItemName, self.countableItemPPU)
  
         self.weightedItemName = "Beef"
         self.weightedItemPPU = 4.09
         self.weightedItemWeight = 1.59
         self.weightedItem = checkout.Items.WeightedItem(self.weightedItemName, self.weightedItemPPU)
+   
+        self.countableMarkdownValue = 0.40
+        self.countableMarkdown = checkout.Discounts.Markdown(self.countableItem, self.countableMarkdownValue)   
+   
                 
         inventory = checkout.Items.Inventory()
-        inventory.addItem(self.singleItem)
+        inventory.addItem(self.countableItem)
         inventory.addItem(self.weightedItem)
        
-        markdowns = checkout.Discounts.DiscountContainer()
+        self.markdowns = checkout.Discounts.DiscountContainer()
         specials  = checkout.Discounts.DiscountContainer()
-        self.register  = checkout.Register.Register(inventory, markdowns, specials)
+        self.register  = checkout.Register.Register(inventory, self.markdowns, specials)
 
 
     def tearDown(self):
@@ -36,8 +40,8 @@ class RegisterTest(unittest.TestCase):
         register  = checkout.Register.Register(inventory, markdowns, specials)
 
     def testRegisterScanItem(self):
-        self.register.scanItemByName(self.singleItemName)
-        self.assertAlmostEqual(self.singleItemPPU, self.register.getTotal(), 3, "Scanned item not totaling")
+        self.register.scanItemByName(self.countableItemName)
+        self.assertAlmostEqual(self.countableItemPPU, self.register.getTotal(), 3, "Scanned item not totaling")
        
     def testRegisterScanItemWithWeight(self):
         aWeight = 1.3
@@ -48,15 +52,20 @@ class RegisterTest(unittest.TestCase):
   
     def testRegisterScanNonWeightedItemWithWeight(self):
         with self.assertRaises(checkout.Items.ScannedNonWeightedItemWithWeight):
-            self.register.scanItemByNameWithWeight(self.singleItemName, 4.0)
+            self.register.scanItemByNameWithWeight(self.countableItemName, 4.0)
         
     def testRegisterGetTotal(self):
         self.assertAlmostEqual(0.0, self.register.getTotal(), 3, "Empty register total not 0")
 
-
     def testRegisterScanItemAndItemIsMissing(self):
         with self.assertRaises(checkout.Items.NotFoundInInventoryException):
             self.register.scanItemByName("No item here")
+            
+    def testRegisterWithMarkdown(self):
+        self.markdowns.addDiscount(self.countableMarkdown)
+        self.register.scanItemByName(self.countableItemName)
+        markedDownPrice = self.countableItemPPU-self.countableMarkdownValue
+        self.assertAlmostEqual(self.register.getTotal(), markedDownPrice, 3, "Markdown not applied")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']

@@ -51,7 +51,9 @@ class Markdown(Discount):
             
     def markdownItem(self, item):
         discountedPPU      = item.getBasePrice() - self.value
-        item.markdownPrice = discountedPPU * item.getQuantity()        
+        discountedForTotalQuantity = discountedPPU * item.getQuantity()
+        item.markdownPrice = discountedForTotalQuantity
+        item.discountPrice = discountedForTotalQuantity
 
 class Special(Discount):
     def __init__(self, item, limit=None):
