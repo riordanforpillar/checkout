@@ -72,8 +72,9 @@ class RegisterTest(unittest.TestCase):
             self.register.scanItemByName(self.countableItemName)
         self.assertAlmostEqual(self.register.getTotal(), self.countableItemPPU*2, 3, "Special not applied")
         
-    def testRegisterRemoveLastScanned(self):
-        self.register.removeLastScanned()
+    def testRegisterRemoveLastScannedWithNoScanned(self):
+        with self.assertRaises(IndexError):
+            self.register.removeLastScanned()
        
 
 if __name__ == "__main__":

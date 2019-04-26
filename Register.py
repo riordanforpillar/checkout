@@ -41,5 +41,5 @@ class Register(object):
         self.scannedItems.addScannedItem(scannedItem)
         
     def removeLastScanned(self):
-        pass
+        raise IndexError
         
