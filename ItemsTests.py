@@ -9,17 +9,14 @@ class ItemsTest(unittest.TestCase):
         self.countableItem = checkout.Items.Item(self.countableItemName, self.countableItemPPU)
         self.singleScanned = checkout.Items.ScannedItem(self.countableItem)
 
-
         self.weightedItemName = "Beef"
         self.weightedItemPPU = 4.09
         self.weightedItemWeight = 1.59
         self.weightedItem = checkout.Items.WeightedItem(self.weightedItemName, self.weightedItemPPU)
         self.weightedScanned = checkout.Items.ScannedWeightedItem(self.weightedItem, self.weightedItemWeight)
-    
 
         self.inventory = checkout.Items.Inventory()
         self.inventory.addItem(self.countableItem)
-
 
         self.scannedItemContainer = checkout.Items.ScannedItemContainer()
 
@@ -173,9 +170,7 @@ class ItemsTest(unittest.TestCase):
         self.scannedItemContainer.addScannedItem(mutableScannedItem)
         adjustedPriceItem = self.scannedItemContainer.getLastItem()
 
-        
         self.assertNotEqual(originalItem.getDiscountPrice(), adjustedDiscountPrice, "Adjusted price propagated to other items")
-
 
 
 if __name__ == "__main__":

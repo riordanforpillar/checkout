@@ -9,20 +9,24 @@ class Register(object):
         self.specials = specials
     
     def getTotal(self):
-        for index in range(self.markdowns.getSize()):
-            markdown = self.markdowns.getAt(index)
-            markdown.applyTo(self.scannedItems)
-
-        for index in range(self.specials.getSize()):
-            special = self.specials.getAt(index)
-            special.applyTo(self.scannedItems)
+        self.applyDiscounts(self.markdowns)
+        self.applyDiscounts(self.specials)
                                                     
+        return self.calculateSumOfDiscountPrices()
+    
+    def calculateSumOfDiscountPrices(self):
         total = 0.0
         nScannedItems = self.scannedItems.getSize()
         for index in range(nScannedItems):
             scannedItem = self.scannedItems.getAt(index)
             total += scannedItem.getDiscountPrice()
-        return total
+        return total        
+        
+    def applyDiscounts(self, discounts):
+        for index in range(discounts.getSize()):
+            discount = discounts.getAt(index)
+            discount.applyTo(self.scannedItems)    
+    
     
     def scanItemByName(self, name):
         item = self.inventory.getItemByName(name)
