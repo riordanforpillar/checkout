@@ -14,7 +14,7 @@ class WeightedItem(ItemBase):
     def __init__(self, name, pricePerUnit):
         super(WeightedItem, self).__init__(name, pricePerUnit)
 
-class ScannedBaseItem():
+class ScannedItemBase():
     def __init__(self, item):
         self.baseItem = item
         self.markdownPrice = self.baseItem.pricePerUnit*self.getQuantity()
@@ -35,13 +35,13 @@ class ScannedBaseItem():
     def getDiscountPrice(self):
         return self.discountPrice
     
-class ScannedItem(ScannedBaseItem):
+class ScannedItem(ScannedItemBase):
     def __init__(self, item):
         if type(item) != Item:
             raise ScannedWeightedItemWithoutWeight
         super().__init__(item)
     
-class ScannedWeightedItem(ScannedBaseItem):
+class ScannedWeightedItem(ScannedItemBase):
     def __init__(self, item, weight):
         if type(weight) != float:
             raise ScannedWeightNotFloatException

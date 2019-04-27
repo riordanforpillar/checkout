@@ -65,7 +65,7 @@ class ItemsTest(unittest.TestCase):
 
     def testScannedItemConstruction(self):
         self.assertIsInstance(self.singleScanned, checkout.Items.ScannedItem, "No such class as ScannedItem")
-        self.assertIsInstance(self.singleScanned, checkout.Items.ScannedBaseItem, "ScannedItem does not derive from ScannedBaseItem")
+        self.assertIsInstance(self.singleScanned, checkout.Items.ScannedItemBase, "ScannedItem does not derive from ScannedItemBase")
 
 
     def testWeightedItemConstruction(self):
