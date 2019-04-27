@@ -2,4 +2,4 @@
 
 export PYTHONPATH=$PYTHONPATH:'.'
 
-python checkout/Example.py
+python3 checkout/Example.py
