@@ -6,7 +6,7 @@ class ItemsTest(unittest.TestCase):
     def setUp(self):
         self.countableItemName = "Soup"
         self.countableItemPPU = 1.25
-        self.countableItem = checkout.Items.Item(self.countableItemName, self.countableItemPPU)
+        self.countableItem = checkout.Items.ItemBase(self.countableItemName, self.countableItemPPU)
         self.singleScanned = checkout.Items.ScannedItem(self.countableItem)
 
         self.weightedItemName = "Beef"
@@ -35,7 +35,7 @@ class ItemsTest(unittest.TestCase):
     def testInventoryAddition(self):
         # Need to add unique item to avoid collision of adding existing item
         # which will not increment inventory
-        uniqueItem = checkout.Items.Item("Unique", 4.0)
+        uniqueItem = checkout.Items.ItemBase("Unique", 4.0)
         
         beforeSize = self.inventory.getSize()
         self.inventory.addItem(uniqueItem)
@@ -46,7 +46,7 @@ class ItemsTest(unittest.TestCase):
         
     def testInventoryGet(self):
         with self.assertRaises(checkout.Items.NotFoundInInventoryException):
-            self.inventory.getItemByName("Nonsense Item")
+            self.inventory.getItemByName("Nonsense ItemBase")
         itemNameToGet = "Soup"
         returnedItem = self.inventory.getItemByName(itemNameToGet)
         self.assertEqual(returnedItem.name, itemNameToGet, "Inventory did not return %s" % (itemNameToGet))
@@ -62,7 +62,7 @@ class ItemsTest(unittest.TestCase):
 
     def testWeightedItemConstruction(self):
         weightedItem = checkout.Items.WeightedItem("Chicken", 4.9)
-        self.assertIsInstance(weightedItem, checkout.Items.Item, "WeightedItem not a subclass")
+        self.assertIsInstance(weightedItem, checkout.Items.ItemBase, "WeightedItem not a subclass")
 
 
     def testScannedItemByWeightConstruction(self):

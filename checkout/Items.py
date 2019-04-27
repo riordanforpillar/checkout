@@ -1,12 +1,12 @@
 import copy
 
-class Item(object):
+class ItemBase(object):
 
     def __init__(self, name, pricePerUnit):
         self.name = name
         self.pricePerUnit = pricePerUnit
 
-class WeightedItem(Item):
+class WeightedItem(ItemBase):
     def __init__(self, name, pricePerUnit):
         super(WeightedItem, self).__init__(name, pricePerUnit)
 
