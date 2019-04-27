@@ -32,7 +32,7 @@ class Register(object):
     
     def scanItemByName(self, name):
         item = self.inventory.getItemByName(name)
-        scannedItem = checkout.Items.ScannedItem(item)
+        scannedItem = checkout.Items.ScannedBaseItem(item)
         self.scannedItems.addScannedItem(scannedItem)
         
     def scanItemByNameWithWeight(self, name, weight):

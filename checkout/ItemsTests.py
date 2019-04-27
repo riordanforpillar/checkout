@@ -30,8 +30,6 @@ class ItemsTest(unittest.TestCase):
         
     def testItemConstruction(self):
         self.assertIsInstance(self.countableItem, checkout.Items.ItemBase, "Item does not derive from ItemBase")
-
-
         
     def testInventoryConstruct(self):
         inventory = checkout.Items.Inventory()
@@ -65,6 +63,11 @@ class ItemsTest(unittest.TestCase):
             failMessage = "Unexpected TotalQuantity for %s" % (caseName)
             self.assertEqual(item.getQuantity(), expectedTotalQuantity, failMessage)
 
+    def testScannedItemConstruction(self):
+        self.assertIsInstance(self.singleScanned, checkout.Items.ScannedItem, "No such class as ScannedItem")
+        self.assertIsInstance(self.singleScanned, checkout.Items.ScannedBaseItem, "ScannedItem does not derive from ScannedBaseItem")
+
+
     def testWeightedItemConstruction(self):
         weightedItem = checkout.Items.WeightedItem("Chicken", 4.9)
         self.assertIsInstance(weightedItem, checkout.Items.ItemBase, "WeightedItem not a subclass")
@@ -81,16 +84,16 @@ class ItemsTest(unittest.TestCase):
         with self.assertRaises(checkout.Items.ScannedNonWeightedItemWithWeight):        
             checkout.Items.ScannedWeightedItem(self.countableItem, weight)
             
-    def testScanWeightedItemWithoutWeight(self):
-        with self.assertRaises(checkout.Items.ScannedWeightedItemWithoutWeight):
-            checkout.Items.ScannedItem(self.weightedItem)
+#    def testScanWeightedItemWithoutWeight(self):
+#        with self.assertRaises(checkout.Items.ScannedWeightedItemWithoutWeight):
+#            checkout.Items.ScannedBaseItem(self.weightedItem)
 
     def testScannedItemByWeightGetWeight(self):
         errorMessage = "Weight %f not close enough to %f " % (self.weightedItemWeight, self.weightedScanned.getWeight())
         self.assertAlmostEqual(self.weightedScanned.getWeight(), self.weightedItemWeight, 1e-3, errorMessage )
         
 
-    def testScannedBaseItemNameAndPrices(self):
+    def testScannedItemNameAndPrices(self):
         nameMessageForm = "%s not found"
         priceMessageForm = "Price %f not returned"
 
@@ -182,7 +185,7 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(lastItem.getName(), self.weightedItemName, "removeAt Did not remove correct item")
 
     def testScannedItemContainerUniqueScannedItems(self):
-        mutableScannedItem = checkout.Items.ScannedItem(self.countableItem)
+        mutableScannedItem = checkout.Items.ScannedBaseItem(self.countableItem)
         self.scannedItemContainer.addScannedItem(mutableScannedItem)
         originalItem = self.scannedItemContainer.getLastItem()
         
