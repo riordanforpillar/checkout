@@ -37,6 +37,8 @@ class ScannedBaseItem():
     
 class ScannedItem(ScannedBaseItem):
     def __init__(self, item):
+        if type(item) != Item:
+            raise ScannedWeightedItemWithoutWeight
         super().__init__(item)
     
 class ScannedWeightedItem(ScannedBaseItem):

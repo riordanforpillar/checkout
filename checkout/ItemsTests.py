@@ -84,9 +84,9 @@ class ItemsTest(unittest.TestCase):
         with self.assertRaises(checkout.Items.ScannedNonWeightedItemWithWeight):        
             checkout.Items.ScannedWeightedItem(self.countableItem, weight)
             
-#    def testScanWeightedItemWithoutWeight(self):
-#        with self.assertRaises(checkout.Items.ScannedWeightedItemWithoutWeight):
-#            checkout.Items.ScannedBaseItem(self.weightedItem)
+    def testScanWeightedItemWithoutWeight(self):
+        with self.assertRaises(checkout.Items.ScannedWeightedItemWithoutWeight):
+            checkout.Items.ScannedItem(self.weightedItem)
 
     def testScannedItemByWeightGetWeight(self):
         errorMessage = "Weight %f not close enough to %f " % (self.weightedItemWeight, self.weightedScanned.getWeight())
@@ -185,7 +185,7 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(lastItem.getName(), self.weightedItemName, "removeAt Did not remove correct item")
 
     def testScannedItemContainerUniqueScannedItems(self):
-        mutableScannedItem = checkout.Items.ScannedBaseItem(self.countableItem)
+        mutableScannedItem = checkout.Items.ScannedItem(self.countableItem)
         self.scannedItemContainer.addScannedItem(mutableScannedItem)
         originalItem = self.scannedItemContainer.getLastItem()
         
