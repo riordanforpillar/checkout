@@ -8,7 +8,7 @@ class RegisterTest(unittest.TestCase):
     def setUp(self):
         self.countableItemName = "Soup"
         self.countableItemPPU = 1.25
-        self.countableItem = checkout.Items.ItemBase(self.countableItemName, self.countableItemPPU)
+        self.countableItem = checkout.Items.Item(self.countableItemName, self.countableItemPPU)
  
         self.weightedItemName = "Beef"
         self.weightedItemPPU = 4.09

@@ -6,7 +6,7 @@ class DiscountsTest(unittest.TestCase):
     
     def setUp(self):
         self.countableMarkdownValue = 0.40
-        self.countableItem = checkout.Items.ItemBase("Cereal", 4.25)
+        self.countableItem = checkout.Items.Item("Cereal", 4.25)
         self.countableScanned = checkout.Items.ScannedItem(self.countableItem)
         self.countableMarkdown = checkout.Discounts.Markdown(self.countableItem, self.countableMarkdownValue)
         
