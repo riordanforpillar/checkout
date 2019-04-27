@@ -31,6 +31,7 @@ class ItemsTest(unittest.TestCase):
     def testItemConstruction(self):
         self.assertIsInstance(self.countableItem, checkout.Items.ItemBase, "Item does not derive from ItemBase")
 
+
         
     def testInventoryConstruct(self):
         inventory = checkout.Items.Inventory()
@@ -79,6 +80,10 @@ class ItemsTest(unittest.TestCase):
         weight = 4.09
         with self.assertRaises(checkout.Items.ScannedNonWeightedItemWithWeight):        
             checkout.Items.ScannedWeightedItem(self.countableItem, weight)
+            
+    def testScanWeightedItemWithoutWeight(self):
+        with self.assertRaises(checkout.Items.ScannedWeightedItemWithoutWeight):
+            checkout.Items.ScannedItem(self.weightedItem)
 
     def testScannedItemByWeightGetWeight(self):
         errorMessage = "Weight %f not close enough to %f " % (self.weightedItemWeight, self.weightedScanned.getWeight())

@@ -98,3 +98,6 @@ class ScannedWeightNotFloatException(Exception):
 
 class ScannedNonWeightedItemWithWeight(Exception):
     pass
+
+class ScannedWeightedItemWithoutWeight(Exception):
+    pass
