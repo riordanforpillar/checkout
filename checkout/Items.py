@@ -6,10 +6,9 @@ class ItemBase(object):
         self.name = name
         self.pricePerUnit = pricePerUnit
         
-class Item(object):
+class Item(ItemBase):
     def __init__(self, name, pricePerUnit):
-        self.name = name
-        self.pricePerUnit = pricePerUnit
+        super(Item, self).__init__(name, pricePerUnit)
 
 class WeightedItem(ItemBase):
     def __init__(self, name, pricePerUnit):

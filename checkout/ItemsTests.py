@@ -1,6 +1,5 @@
 import unittest
 import checkout.Items
-from checkout.Items import ItemBase
 
 class ItemsTest(unittest.TestCase):
     
@@ -30,7 +29,7 @@ class ItemsTest(unittest.TestCase):
         self.assertEqual(self.countableItem.pricePerUnit, self.countableItemPPU, "Price per unit not set")
         
     def testItemConstruction(self):
-        self.assertIsInstance(self.countableItem, checkout.Items.Item, "Item does not derive from ItemBase")
+        self.assertIsInstance(self.countableItem, checkout.Items.ItemBase, "Item does not derive from ItemBase")
 
         
     def testInventoryConstruct(self):
@@ -51,7 +50,7 @@ class ItemsTest(unittest.TestCase):
         
     def testInventoryGet(self):
         with self.assertRaises(checkout.Items.NotFoundInInventoryException):
-            self.inventory.getItemByName("Nonsense ItemBase")
+            self.inventory.getItemByName("Nonsense Item")
         itemNameToGet = "Soup"
         returnedItem = self.inventory.getItemByName(itemNameToGet)
         self.assertEqual(returnedItem.name, itemNameToGet, "Inventory did not return %s" % (itemNameToGet))
