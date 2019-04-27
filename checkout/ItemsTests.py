@@ -1,12 +1,13 @@
 import unittest
 import checkout.Items
+from checkout.Items import ItemBase
 
 class ItemsTest(unittest.TestCase):
     
     def setUp(self):
         self.countableItemName = "Soup"
         self.countableItemPPU = 1.25
-        self.countableItem = checkout.Items.ItemBase(self.countableItemName, self.countableItemPPU)
+        self.countableItem = checkout.Items.Item(self.countableItemName, self.countableItemPPU)
         self.singleScanned = checkout.Items.ScannedItem(self.countableItem)
 
         self.weightedItemName = "Beef"
@@ -24,9 +25,13 @@ class ItemsTest(unittest.TestCase):
         pass
 
 
-    def testItemConstruction(self):
+    def testItemBaseConstruction(self):
         self.assertEqual(self.countableItem.name, self.countableItemName, "Name not set")
         self.assertEqual(self.countableItem.pricePerUnit, self.countableItemPPU, "Price per unit not set")
+        
+    def testItemConstruction(self):
+        self.assertIsInstance(self.countableItem, checkout.Items.Item, "Item does not derive from ItemBase")
+
         
     def testInventoryConstruct(self):
         inventory = checkout.Items.Inventory()
@@ -35,7 +40,7 @@ class ItemsTest(unittest.TestCase):
     def testInventoryAddition(self):
         # Need to add unique item to avoid collision of adding existing item
         # which will not increment inventory
-        uniqueItem = checkout.Items.ItemBase("Unique", 4.0)
+        uniqueItem = checkout.Items.Item("Unique", 4.0)
         
         beforeSize = self.inventory.getSize()
         self.inventory.addItem(uniqueItem)
