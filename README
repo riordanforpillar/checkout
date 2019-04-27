@@ -1,9 +1,23 @@
 Checkout kata
 
-To run all tests
+
+Linux:
+
+To run all tests 
 
 ./runAllTests.sh
 
-To run an example
+To run a simple example
 
 ./runExample.sh
+
+
+Windows from the command line
+
+To run all tests 
+
+./runAllTests.bat
+
+To run a simple example
+
+./runExample.bat
