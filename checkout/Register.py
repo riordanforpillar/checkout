@@ -1,4 +1,3 @@
-import checkout.Discounts
 import checkout.Items
 
 class Register(object):
@@ -27,17 +26,20 @@ class Register(object):
     def applyDiscounts(self, discounts):
         for index in range(discounts.getSize()):
             discount = discounts.getAt(index)
-            discount.applyTo(self.scannedItems)    
-    
+            discount.applyTo(self.scannedItems)
     
     def scanItemByName(self, name):
-        item = self.inventory.getItemByName(name)
-        scannedItem = checkout.Items.ScannedItemBase(item)
-        self.scannedItems.addScannedItem(scannedItem)
+        self.scanAndAdd(name)
         
     def scanItemByNameWithWeight(self, name, weight):
+        self.scanAndAdd(name, weight)
+        
+    def scanAndAdd(self, name, weight = None):
         item = self.inventory.getItemByName(name)
-        scannedItem = checkout.Items.ScannedWeightedItem(item, weight)
+        if weight == None:
+            scannedItem = checkout.Items.ScannedItem(item)
+        else:
+            scannedItem = checkout.Items.ScannedWeightedItem(item, weight)
         self.scannedItems.addScannedItem(scannedItem)
         
     def removeScannedAt(self, index):
