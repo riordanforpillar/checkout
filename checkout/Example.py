@@ -7,7 +7,7 @@ def runScanSequence(register, scanSequence):
         scan(register, itemName, weight) 
         printItemStep(itemName, register.getTotal())
        
-    remove(register, 3)
+    removeAtIndex(register, 3)
     
     printFooter(register.getTotal())
 
@@ -17,7 +17,7 @@ def scan(register, itemName, weight):
     else:
         register.scanItemByNameWithWeight(itemName, weight) 
 
-def remove(register, index):
+def removeAtIndex(register, index):
     printRemoveStep(index)
     register.removeScannedAt(index)   
 
