@@ -28,7 +28,7 @@ def printFooter(total):
     print("   Total %6.2f" % total)
     
 def printItemStep(itemName, total):
-        print("%8s %6.2f" % (itemName, total))
+    print("%8s %6.2f" % (itemName, total))
         
 def printRemoveStep(index):
     print("Removing item at index %d" % index)
