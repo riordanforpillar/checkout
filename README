@@ -7,21 +7,21 @@ and in the PATH environment variable for execution
 
 Linux (and presumably OS X, not tested):
 
-To run all tests 
+To run all tests:
 
 ./runAllTests.sh
 
-To run a simple example
+To run a simple example:
 
 ./runExample.sh
 
 
 Windows from the command line
 
-To run all tests 
+To run all tests:
 
-./runAllTests.bat
+runAllTests.bat
 
-To run a simple example
+To run a simple example:
 
-./runExample.bat
+runExample.bat
