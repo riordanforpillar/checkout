@@ -22,7 +22,7 @@ class DiscountsTest(unittest.TestCase):
         lightScannedItem = checkout.Items.ScannedWeightedItem(self.weightedItem, 0.5)   
         heavyScannedItem = checkout.Items.ScannedWeightedItem(self.weightedItem, 5.5)   
 
-#       [MMMMHLMM]
+#       Mixed weight set ordered by [MMMMHLMM],  L = light M = medium H = heavy item
         self.mixedWeightSet = self.makeScannedSetOfCountableAndWeighted(0, 4)  
         self.addNToScanned(self.mixedWeightSet, heavyScannedItem,     1) 
         self.addNToScanned(self.mixedWeightSet, lightScannedItem,     1)  
@@ -59,7 +59,7 @@ class DiscountsTest(unittest.TestCase):
         scannedSet = checkout.Items.ScannedItemContainer()
         
         self.addNToScanned(scannedSet, self.countableScanned, nCountable)
-        self.addNToScanned(scannedSet, self.weightedScanned, nWeighted)
+        self.addNToScanned(scannedSet, self.weightedScanned,  nWeighted)
                 
         return scannedSet
     
@@ -341,7 +341,7 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(lastItem.getDiscountPrice(), lastItem.getMarkdownPrice(), "Limit in weighted special not imposed")
         
     def testDiscountContainerConstruction(self):
-        container = checkout.Discounts.DiscountContainer()
+        checkout.Discounts.DiscountContainer()
         
     def testDiscountContainerAdd(self):
         self.container.addDiscount(self.buy3For5DollarsSpecial)
@@ -364,11 +364,4 @@ class DiscountsTest(unittest.TestCase):
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
-    
-    
-    
-    
-    
-    
-    
     
