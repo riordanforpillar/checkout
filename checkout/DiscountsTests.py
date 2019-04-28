@@ -132,8 +132,8 @@ class DiscountsTest(unittest.TestCase):
         unchangedPrice = scannedItem.getMarkdownPrice()
         self.weightedMarkdown.applyTo(self.scannedItems)        
 
-        self.assertMarkdownForIndexInSetEqualTo(self.scannedItems, self.firstCountableItemIndex,
-                                                unchangedPrice, "Countable markdown undone after different applied markdown")
+        self.assertMarkdownForIndexInSetEqualTo(self.scannedItems, self.firstCountableItemIndex, unchangedPrice, 
+                                                "Countable markdown undone after different applied markdown")
 
     def testMarkdownOnWeightedItem(self):
         self.weightedMarkdown.applyTo(self.scannedItems)
@@ -247,7 +247,7 @@ class DiscountsTest(unittest.TestCase):
 
         buy2Get1FreeLimit3Special.applyTo(self.scannedItems)
         self.assertDiscountAndMarkdownEqualForIndexInSet(self.scannedItems, 6, 
-                            "BuyNGetMForPercentOff Markdown and special price do not match for discounted item but past limit")
+                    "BuyNGetMForPercentOff Markdown and special price do not match for discounted item but past limit")
 
     def mangleDiscountPrice(self, item):
         item.discountPrice = item.discountPrice*5.21
