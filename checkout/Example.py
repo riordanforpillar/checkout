@@ -56,7 +56,7 @@ if __name__ == '__main__':
         
         register  = checkout.Register.Register(inventory, markdowns, specials)
         
-        scanSequence = [ ("Soup", None), ("Soup", None), ("Beef", 2.1), ("Cereal", None),
+        scanSequence = [ ("Soup", None), ("Soup", None), ("Beef", 2.05), ("Cereal", None),
                         ("Soup", None), ("Soup", None), ("Soup", None), ("Soup", None)]
         
         runScanSequence(register, scanSequence)

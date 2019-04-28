@@ -1,7 +1,8 @@
 Checkout kata from
 https://github.com/PillarTechnology/kata-checkout-order-total
 
-This code is written in python3 and it is assumed that python3 is installed and in the path
+This code is written in python3 and it is assumed that python3 is installed
+and in the PATH environment variable for execution
 
 
 Linux (and presumably OS X, not tested):
