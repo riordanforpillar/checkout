@@ -1,20 +1,37 @@
 import checkout.Items, checkout.Discounts, checkout.Register
 
 def runScanSequence(register, scanSequence):
-    print("%8s %6s" % ("", "Total"))  
-
+    printHeader()
+    
     for itemName, weight in scanSequence:
-        if weight == None:
-            register.scanItemByName(itemName)
-        else:
-            register.scanItemByNameWithWeight(itemName, weight)
-        print("%8s %6.2f" % (itemName, register.getTotal()))  
+        scan(register, itemName, weight) 
+        printItemStep(itemName, register.getTotal())
+       
+    remove(register, 3)
+    
+    printFooter(register.getTotal())
+
+def scan(register, itemName, weight):
+    if weight == None:
+        register.scanItemByName(itemName)
+    else:
+        register.scanItemByNameWithWeight(itemName, weight) 
+
+def remove(register, index):
+    printRemoveStep(index)
+    register.removeScannedAt(index)   
+
+def printHeader():
+    print("%8s %6s" % ("", "Total"))                
+
+def printFooter(total):
+    print("   Total %6.2f" % total)
+    
+def printItemStep(itemName, total):
+        print("%8s %6.2f" % (itemName, total))
         
-    indexToRemove = 3
-    print("Removing item at index %d" % indexToRemove)
-    register.removeScannedAt(indexToRemove)
-    print("   Total %6.2f" % (register.getTotal()))  
-              
+def printRemoveStep(index):
+    print("Removing item at index %d" % index)
 
 if __name__ == '__main__':
 
