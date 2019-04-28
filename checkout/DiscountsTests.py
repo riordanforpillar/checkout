@@ -74,14 +74,14 @@ class DiscountsTest(unittest.TestCase):
         self.discount.applyTo(self.scannedItems)
         
     def testMarkdownConstructor(self):
-        checkout.Discounts.Markdown(self.countableItem, 5.00)
-        checkout.Discounts.Markdown(self.countableItem, 0.30)
+        self.MarkdownConstructionTest(self.countableItem, 5.0)
+        self.MarkdownConstructionTest(self.weightedItem, 0.3)
+        self.assertIsInstance(self.countableMarkdown, checkout.Discounts.Discount, "Markdown is not a Discount subclass")
         
-    def MarkdownConstructionTest(self, value):
-        aMarkdown = checkout.Discounts.Markdown(self.countableItem, value)
+    def MarkdownConstructionTest(self, item, value):
+        aMarkdown = checkout.Discounts.Markdown(item, value)
         self.assertEqual(aMarkdown.value, value, "Markdown value not set")
-        self.assertEqual(aMarkdown.itemToDiscount.name, self.countableItem.name, "Markdown name not set")
-        self.assertIsInstance(aMarkdown, checkout.Discounts.Discount, "Markdown is not a Discount subclass")
+        self.assertEqual(aMarkdown.itemToDiscount.name, item.name, "Markdown name not set")
         
     def testGetMatchedItems(self):
         scanned = self.makeScannedSetOfCountableAndWeighted(7,3)
