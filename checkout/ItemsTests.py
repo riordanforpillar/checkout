@@ -189,7 +189,8 @@ class ItemsTest(unittest.TestCase):
         mutableScannedItem.discountPrice = adjustedDiscountPrice
         self.scannedItemContainer.addScannedItem(mutableScannedItem)
 
-        self.assertNotEqual(originalItem.getDiscountPrice(), adjustedDiscountPrice, "ScannedItemContainer item with adjusted price propagated to other items")
+        self.assertNotEqual(originalItem.getDiscountPrice(), adjustedDiscountPrice, 
+                            "ScannedItemContainer item with adjusted price propagated to other items")
 
 
 if __name__ == "__main__":

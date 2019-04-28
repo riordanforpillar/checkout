@@ -55,7 +55,8 @@ class RegisterTest(unittest.TestCase):
         highPrecisionWeight = 0.501
         lowPrecisionPrice = round(highPrecisionWeight*self.weightedItemPPU,2)
         self.register.scanItemByNameWithWeight(self.weightedItemName, highPrecisionWeight)
-        self.assertAlmostEqual(lowPrecisionPrice, self.register.getTotal(), 3, "Register returned too much precision in total price")
+        self.assertAlmostEqual(lowPrecisionPrice, self.register.getTotal(), 3, 
+                               "Register returned too much precision in total price")
         
     def testRegisterGetTotal(self):
         self.assertAlmostEqual(0.0, self.register.getTotal(), 3, "Empty register total price not 0")
@@ -74,7 +75,8 @@ class RegisterTest(unittest.TestCase):
         self.specials.addDiscount(self.buy2Get1FreeSpecial)
         for _ in range(3):
             self.register.scanItemByName(self.countableItemName)
-        self.assertAlmostEqual(self.register.getTotal(), self.countableItemPPU*2, 3, "Special from Register not applied")
+        self.assertAlmostEqual(self.register.getTotal(), self.countableItemPPU*2, 3, 
+                               "Special from Register not applied")
         
     def testRegisterRemoveLastScannedWithNoScanned(self):
         with self.assertRaises(IndexError):
@@ -95,7 +97,8 @@ class RegisterTest(unittest.TestCase):
     def testRegisterRemoveLastScanned(self):
         self.register.scanItemByName(self.countableItemName)
         self.register.removeLastScanned()
-        self.assertAlmostEqual(self.register.getTotal(), 0.0, 3, "Register Special not applied to updated smaller scanned set")
+        self.assertAlmostEqual(self.register.getTotal(), 0.0, 3, 
+                               "Register Special not applied to updated smaller scanned set")
             
             
 if __name__ == "__main__":

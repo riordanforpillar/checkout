@@ -40,7 +40,8 @@ class DiscountsTest(unittest.TestCase):
         self.get2 = 2
 
         self.seventyPercentOff = 70.0
-        self.buy3get1Special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, self.buy3, self.get1, self.seventyPercentOff)
+        self.buy3get1Special = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, self.buy3, self.get1,
+                                                                                self.seventyPercentOff)
 
         self.buy2Get1FreeSpecial = checkout.Discounts.BuyNGetMForPercentOffSpecial(self.countableItem, 2, 1, 100.0)
 
@@ -48,9 +49,13 @@ class DiscountsTest(unittest.TestCase):
         self.buy3For5DollarsSpecial = checkout.Discounts.BuyNForXSpecial(self.countableItem, self.buy3, self.buy3price)
         
         self.limit5 = 5
-        self.buy3WeightedGet2Limit5 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy3, self.get2, self.seventyPercentOff, self.limit5)
+        self.buy3WeightedGet2Limit5 = \
+            checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy3, self.get2, 
+                                                                       self.seventyPercentOff, self.limit5)
 
-        self.buy2WeightedGet1 = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy2, self.get1, self.seventyPercentOff)
+        self.buy2WeightedGet1 = \
+            checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, self.buy2, self.get1, 
+                                                                       self.seventyPercentOff)
         
         self.container = checkout.Discounts.DiscountContainer()
 
@@ -113,8 +118,10 @@ class DiscountsTest(unittest.TestCase):
     def testMarkdownApplicationNotOnIncorrectItem(self):
         self.countableMarkdown.applyTo(self.scannedItems)
         targetPrice = self.calculateDiscountedPrice(self.weightedScanned.getBasePrice(), 0.0, self.weightedItemWeight)
-        self.assertMarkdownForIndexInSetEqualTo(self.scannedItems, self.firstWeightedItemIndex, targetPrice, "Markdown misapplied to incorrect items")
-        self.assertDiscountAndMarkdownEqualForIndexInSet(self.scannedItems, self.firstCountableItemIndex, "Discount price not set with Markdown")
+        self.assertMarkdownForIndexInSetEqualTo(self.scannedItems, self.firstWeightedItemIndex, targetPrice, 
+                                                "Markdown misapplied to incorrect items")
+        self.assertDiscountAndMarkdownEqualForIndexInSet(self.scannedItems, self.firstCountableItemIndex, 
+                                                         "Discount price not set with Markdown")
         
     def testMultipleMarkdownApplicationNotUndoingPreviousMarkdowns(self):
         self.countableMarkdown.applyTo(self.scannedItems)
@@ -195,7 +202,8 @@ class DiscountsTest(unittest.TestCase):
     def testBuyNGetMForPercentOffConstruction(self):
         self.BuyNGetMForPercentOffConstructCheck(1, 1, 100.0)
         self.BuyNGetMForPercentOffConstructCheck(3, 4, 100.0)
-        self.assertIsInstance(self.buy2Get1FreeSpecial, checkout.Discounts.PercentOffSpecial, "BuyNGetMForPercentOff not subclass of PercentOffSpecial")
+        self.assertIsInstance(self.buy2Get1FreeSpecial, checkout.Discounts.PercentOffSpecial, 
+                              "BuyNGetMForPercentOff not subclass of PercentOffSpecial")
 
         
     def BuyNGetMForPercentOffConstructCheck(self, buyN, getM, percentOff):
@@ -206,7 +214,8 @@ class DiscountsTest(unittest.TestCase):
 
     def testBuy3Get1ForPercentOffApplication(self):
         self.buy3get1Special.applyTo(self.scannedItems)
-        self.assertDiscountAndMarkdownWithPercentOffEqualForIndexInSet(self.scannedItems, 4, self.seventyPercentOff, "Buy3Get1For70PercentOff special not applied")
+        self.assertDiscountAndMarkdownWithPercentOffEqualForIndexInSet(self.scannedItems, 4, self.seventyPercentOff, 
+                                                                       "Buy3Get1For70PercentOff special not applied")
     
     def testBuy2Get1FreeApplication(self):    
         self.buy2Get1FreeSpecial.applyTo(self.scannedItems)
@@ -217,7 +226,8 @@ class DiscountsTest(unittest.TestCase):
         modifiedSpecialItem = self.scannedItems.getAt(0)
         self.mangleDiscountPrice(modifiedSpecialItem)
         self.buy3get1Special.applyTo(self.scannedItems)       
-        self.assertAlmostEqual(modifiedSpecialItem.getMarkdownPrice(), modifiedSpecialItem.getBasePrice(), 3, "BuyNGetMForPercentOff undiscounted price not recalculated")
+        self.assertAlmostEqual(modifiedSpecialItem.getMarkdownPrice(), modifiedSpecialItem.getBasePrice(), 3, 
+                               "BuyNGetMForPercentOff undiscounted price not recalculated")
  
     def testBuyNGetMForPercentOffApplicationOnNonSpecialItem(self):
         self.buy3get1Special.applyTo(self.scannedItems)     
@@ -271,7 +281,8 @@ class DiscountsTest(unittest.TestCase):
         self.mangleDiscountPrice(nonZeroedItem)
         
         self.buy3For5DollarsSpecial.applyTo(subThresholdScan)
-        self.assertDiscountAndMarkdownEqualForIndexInSet(subThresholdScan, self.firstCountableItemIndex, "BuyNForX nonzeroed item wrong price")
+        self.assertDiscountAndMarkdownEqualForIndexInSet(subThresholdScan, self.firstCountableItemIndex, 
+                                                         "BuyNForX nonzeroed item wrong price")
                 
     def testBuyNForXLimitApplication(self):
         limit = 3
@@ -319,7 +330,8 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(special.buyN, buyN, "BuyNWeightedGetMLesserPercentOff buyN for weighted special not set")
         self.assertEqual(special.getM, getM, "BuyNWeightedGetMLesserPercentOff getM for weighted special not set")
         self.assertEqual(special.percentOff, percent, "BuyNWeightedGetMLesserPercentOff percentOff for weighted special not set") 
-        self.assertIsInstance(special, checkout.Discounts.PercentOffSpecial, "BuyNWeightedGetMLesserPercentOff not a subclass of PercentOffSpecial")   
+        self.assertIsInstance(special, checkout.Discounts.PercentOffSpecial, 
+                              "BuyNWeightedGetMLesserPercentOff not a subclass of PercentOffSpecial")   
             
     def testBuyNWeightedGetMLesserPercentOffApplication(self):
         self.buy3WeightedGet2Limit5.applyTo(self.mixedWeightSet)
@@ -327,7 +339,8 @@ class DiscountsTest(unittest.TestCase):
 
     def testBuyNWeightedGetMLesserPercentOffApplicationWithSmallN(self):        
         self.buy2WeightedGet1.applyTo(self.mixedWeightSet)
-        self.assertDiscountAndMarkdownWithPercentOffEqualForIndexInSet(self.mixedWeightSet, 1, self.seventyPercentOff, "BuyNWeightedMLesserPercentOff discount not applied")      
+        self.assertDiscountAndMarkdownWithPercentOffEqualForIndexInSet(self.mixedWeightSet, 1, self.seventyPercentOff, 
+                                                                       "BuyNWeightedMLesserPercentOff discount not applied")      
  
     def testBuyNWeightedGetMLesserPercentOffApplicationWithSmallNNonApplication(self):        
         self.buy2WeightedGet1.applyTo(self.mixedWeightSet)
@@ -343,7 +356,8 @@ class DiscountsTest(unittest.TestCase):
         self.buy3WeightedGet2Limit5.applyTo(scannedItems)
             
         lastItem = scannedItems.getLastItem()
-        self.assertEqual(lastItem.getDiscountPrice(), lastItem.getMarkdownPrice(), "BuyNWeightedGetMLesserPercentOff limit in weighted special not imposed")
+        self.assertEqual(lastItem.getDiscountPrice(), lastItem.getMarkdownPrice(), 
+                         "BuyNWeightedGetMLesserPercentOff limit in weighted special not imposed")
         
     def testDiscountContainerConstruction(self):
         checkout.Discounts.DiscountContainer()
