@@ -305,9 +305,12 @@ class DiscountsTest(unittest.TestCase):
         self.assertEqual(nSets, int(nMatched/self.buy3), "BuyNForX number of complete sets incorrect")
         
     def testIsPricePositionForBuyNForXSpecial(self):
-        self.assertFalse(self.buy3For5DollarsSpecial.isPricePosition(0),           "Zeroed position for BuyNForXSpecial misidentified")
-        self.assertTrue( self.buy3For5DollarsSpecial.isPricePosition(self.buy3-1),  "Price position for BuyNForXSpecial misidentified")
-        self.assertFalse(self.buy3For5DollarsSpecial.isPricePosition(4),           "Zeroed position for BuyNForXSpecial misidentified")
+        self.assertFalse(self.buy3For5DollarsSpecial.isPricePosition(0),           
+                         "Zeroed position for BuyNForXSpecial misidentified")
+        self.assertTrue( self.buy3For5DollarsSpecial.isPricePosition(self.buy3-1),  
+                         "Price position for BuyNForXSpecial misidentified")
+        self.assertFalse(self.buy3For5DollarsSpecial.isPricePosition(4),           
+                         "Zeroed position for BuyNForXSpecial misidentified")
     
     def testPartitionFullAndLeftoversforBuyNForXSpecial(self):
         self.runPartitionForFullAndLeftovers(3, 8, 'a')
@@ -333,7 +336,8 @@ class DiscountsTest(unittest.TestCase):
         special = checkout.Discounts.BuyNWeightedGetMEqualOrLesserPercentOff(self.weightedItem, buyN, getM, percent)
         self.assertEqual(special.buyN, buyN, "BuyNWeightedGetMLesserPercentOff buyN for weighted special not set")
         self.assertEqual(special.getM, getM, "BuyNWeightedGetMLesserPercentOff getM for weighted special not set")
-        self.assertEqual(special.percentOff, percent, "BuyNWeightedGetMLesserPercentOff percentOff for weighted special not set") 
+        self.assertEqual(special.percentOff, percent, 
+                         "BuyNWeightedGetMLesserPercentOff percentOff for weighted special not set") 
         self.assertIsInstance(special, checkout.Discounts.PercentOffSpecial, 
                               "BuyNWeightedGetMLesserPercentOff not a subclass of PercentOffSpecial")   
             
@@ -349,8 +353,10 @@ class DiscountsTest(unittest.TestCase):
     def testBuyNWeightedGetMLesserPercentOffApplicationWithSmallNNonApplication(self):        
         self.buy2WeightedGet1.applyTo(self.mixedWeightSet)
                
-        self.assertDiscountAndMarkdownEqualForIndexInSet(self.mixedWeightSet, 2, "BuyNWeightedMLesserPercentOff discount misapplied")
-        self.assertDiscountAndMarkdownEqualForIndexInSet(self.mixedWeightSet, 5, "BuyNWeightedMLesserPercentOff discount misapplied")
+        self.assertDiscountAndMarkdownEqualForIndexInSet(self.mixedWeightSet, 2, 
+                                                         "BuyNWeightedMLesserPercentOff discount misapplied")
+        self.assertDiscountAndMarkdownEqualForIndexInSet(self.mixedWeightSet, 5, 
+                                                         "BuyNWeightedMLesserPercentOff discount misapplied")
 
     def testBuyNWeightedGetMLesserPercentOffWithLimitSettingLimit(self):
         self.assertEqual(self.buy3WeightedGet2Limit5.limit, self.limit5, "BuyNWeightedGetMLesserPercentOff limit not set")
