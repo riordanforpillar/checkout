@@ -59,7 +59,6 @@ class Special(Discount):
     def __init__(self, item, limit=None):
         super().__init__(item)
         self.limit = limit
-        
      
     def applyTo(self, scannedItems):
         matchedItems = self.getMatchedItems(scannedItems)
@@ -77,8 +76,7 @@ class Special(Discount):
         else:
             belowLimit = listToParition[:self.limit]
             aboveLimit = listToParition[self.limit:]
-        return (belowLimit,aboveLimit)    
-        
+        return (belowLimit,aboveLimit)
         
     def applyDiscountAboveLimit(self, aboveLimitItems):
         for item in aboveLimitItems:
@@ -97,10 +95,13 @@ class PercentOffSpecial(Special):
     def applyDiscountBelowLimit(self, belowLimitItems):
         for index in range(len(belowLimitItems)):
             item = belowLimitItems[index]
-            if self.isDiscountPosition(index):
-                item.discountPrice = self.calculateDiscount(item)
-            else:
-                item.discountPrice = item.markdownPrice
+            self.applyDiscountIfInDiscountPosition(item, index)
+                
+    def applyDiscountIfInDiscountPosition(self, item, index):
+        if self.isDiscountPosition(index):
+            item.discountPrice = self.calculateDiscount(item)
+        else:
+            item.discountPrice = item.markdownPrice        
                 
     def isDiscountPosition(self, index):
         nInDiscountSet = self.buyN + self.getM

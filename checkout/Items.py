@@ -8,7 +8,7 @@ class ItemBase(object):
         
 class Item(ItemBase):
     def __init__(self, name, pricePerUnit):
-        super(Item, self).__init__(name, pricePerUnit)
+        super().__init__(name, pricePerUnit)
 
 class WeightedItem(ItemBase):
     def __init__(self, name, pricePerUnit):
