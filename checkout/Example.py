@@ -18,8 +18,8 @@ def runScanSequence(register, scanSequence):
 
 if __name__ == '__main__':
 
-        soup   = checkout.Items.ItemBase("Soup", 1.00)
-        cereal = checkout.Items.ItemBase("Cereal", 5.71)
+        soup   = checkout.Items.Item("Soup", 1.00)
+        cereal = checkout.Items.Item("Cereal", 5.71)
         beef   = checkout.Items.WeightedItem("Beef", 4.09)
 
         soupMarkdown = checkout.Discounts.Markdown(soup, 0.40)   
