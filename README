@@ -3,7 +3,7 @@ Checkout kata
 This code is written in python3 and it is assumed that python3 is installed and in the path
 
 
-Linux:
+Linux (and presumably OS X, not tested):
 
 To run all tests 
 
