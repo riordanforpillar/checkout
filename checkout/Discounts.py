@@ -104,8 +104,8 @@ class PercentOffSpecial(Special):
             item.discountPrice = item.markdownPrice        
                 
     def isDiscountPosition(self, index):
-        nInDiscountSet = self.buyN + self.getM
-        if index % nInDiscountSet < self.buyN:
+        sizeOfDiscountSet = self.buyN + self.getM
+        if index % sizeOfDiscountSet < self.buyN:
             return False
         else:
             return True
@@ -131,24 +131,24 @@ class BuyNForXSpecial(Special):
 
     def partitionFullAndLeftovers(self, items):
         nFullSets = self.calcNumberOfFullSets(items)
-        nFullSetItems = nFullSets*self.buyN
+        nItemsInFullSet = nFullSets*self.buyN
         
-        fullSetItems = items[:nFullSetItems]
-        leftoverSetItems = items[nFullSetItems:]
+        fullSetItems = items[:nItemsInFullSet]
+        leftoverSetItems = items[nItemsInFullSet:]
         
         return (fullSetItems, leftoverSetItems)
                 
     def calcNumberOfFullSets(self, matchedItems):
-        length = len(matchedItems)
-        return int(length/self.buyN)
+        nTotalItems = len(matchedItems)
+        return int(nTotalItems/self.buyN)
     
     def applyDiscountToFullSetItems(self, fullSetItems):
         nFullItems = len(fullSetItems)
         for index in range(nFullItems):
             item = fullSetItems[index]
-            self.setPriceOrZeroOnPosition(index, item)
+            self.setPriceOrZeroOnPosition(item, index)
                 
-    def setPriceOrZeroOnPosition(self, index, item):
+    def setPriceOrZeroOnPosition(self, item, index):
         if self.isPricePosition(index):
             item.discountPrice = self.price
         else:
@@ -159,7 +159,6 @@ class BuyNForXSpecial(Special):
             return True
         else:
             return False
-        
         
 class BuyNWeightedGetMEqualOrLesserPercentOff(PercentOffSpecial):
     def __init__(self, item, N, M, percent, limit=None):
