@@ -1,7 +1,6 @@
 import unittest
 import checkout.Discounts
 import checkout.Items
-from setuptools.dist import sequence
 
 class DiscountsTest(unittest.TestCase):
     
@@ -84,7 +83,8 @@ class DiscountsTest(unittest.TestCase):
     def testMarkdownConstructor(self):
         self.MarkdownConstructionTest(self.countableItem, 5.0)
         self.MarkdownConstructionTest(self.weightedItem, 0.3)
-        self.assertIsInstance(self.countableMarkdown, checkout.Discounts.Discount, "Markdown is not a Discount subclass")
+        self.assertIsInstance(self.countableMarkdown, checkout.Discounts.Discount, 
+                              "Markdown is not a Discount subclass")
         
     def MarkdownConstructionTest(self, item, value):
         aMarkdown = checkout.Discounts.Markdown(item, value)
@@ -101,13 +101,16 @@ class DiscountsTest(unittest.TestCase):
 
     def assertGetMatchedItemsLengthAndSizeEqual(self, scannedSet, expectedMatchedLength):
         matchedItems = self.discount.getMatchedItems(scannedSet)
-        self.assertEqual(len(matchedItems), expectedMatchedLength, "Discount matched items length doesn't match expected")       
+        self.assertEqual(len(matchedItems), expectedMatchedLength, 
+                         "Discount matched items length doesn't match expected")       
 
     def testSpecialMatchToCorrectItem(self):
-        self.assertTrue(self.buy2Get1FreeSpecial.itemMatchesDiscount(self.countableScanned), "Markdown did not match scanned item")
+        self.assertTrue(self.buy2Get1FreeSpecial.itemMatchesDiscount(self.countableScanned), 
+                        "Markdown did not match scanned item")
 
     def testSpecialMatchNotToIncorrectItem(self):
-        self.assertFalse(self.buy2Get1FreeSpecial.itemMatchesDiscount(self.weightedScanned), "Markdown matched scanned item incorrectly")
+        self.assertFalse(self.buy2Get1FreeSpecial.itemMatchesDiscount(self.weightedScanned), 
+                         "Markdown matched scanned item incorrectly")
         
     def testMarkdownApplicationOnItem(self):
         self.countableMarkdown.applyTo(self.scannedItems)
@@ -130,13 +133,14 @@ class DiscountsTest(unittest.TestCase):
         self.weightedMarkdown.applyTo(self.scannedItems)        
 
         self.assertMarkdownForIndexInSetEqualTo(self.scannedItems, self.firstCountableItemIndex,
-                                                       unchangedPrice, "Countable markdown undone after different applied markdown")
+                                                unchangedPrice, "Countable markdown undone after different applied markdown")
 
     def testMarkdownOnWeightedItem(self):
         self.weightedMarkdown.applyTo(self.scannedItems)
         weightedBasePrice = self.weightedScanned.getBasePrice()
         newPrice = self.calculateDiscountedPrice(weightedBasePrice, self.weightedMarkdownValue, self.weightedItemWeight)
-        self.assertMarkdownForIndexInSetEqualTo(self.scannedItems, self.firstWeightedItemIndex, newPrice, "Weighted markdown misapplied")
+        self.assertMarkdownForIndexInSetEqualTo(self.scannedItems, self.firstWeightedItemIndex, newPrice, 
+                                                "Weighted markdown misapplied")
         
     def assertMarkdownForIndexInSetEqualTo(self, itemSet, index, price, message = ""):
         item = itemSet.getAt(index)
@@ -243,7 +247,7 @@ class DiscountsTest(unittest.TestCase):
 
         buy2Get1FreeLimit3Special.applyTo(self.scannedItems)
         self.assertDiscountAndMarkdownEqualForIndexInSet(self.scannedItems, 6, 
-                                                         "BuyNGetMForPercentOff Markdown and special price do not match for discounted item but past limit")
+                            "BuyNGetMForPercentOff Markdown and special price do not match for discounted item but past limit")
 
     def mangleDiscountPrice(self, item):
         item.discountPrice = item.discountPrice*5.21

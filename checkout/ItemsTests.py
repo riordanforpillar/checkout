@@ -41,10 +41,12 @@ class ItemsTest(unittest.TestCase):
         
         sizeBeforeAdding = self.inventory.getSize()
         self.inventory.addItem(uniqueItem)
-        self.assertEqual(self.inventory.getSize(), sizeBeforeAdding+1, "Inventory size not incremented on unique item addition")
+        self.assertEqual(self.inventory.getSize(), sizeBeforeAdding+1, 
+                         "Inventory size not incremented on unique item addition")
         
         self.inventory.addItem(uniqueItem)
-        self.assertEqual(self.inventory.getSize(), sizeBeforeAdding+1, "Inventory size not maintained with identical item addition")      
+        self.assertEqual(self.inventory.getSize(), sizeBeforeAdding+1, 
+                         "Inventory size not maintained with identical item addition")      
         
     def testInventoryGetByNameForMissingItem(self):
         with self.assertRaises(checkout.Items.NotFoundInInventoryException):
@@ -52,7 +54,8 @@ class ItemsTest(unittest.TestCase):
 
     def testInventoryGetByNameForExistingItem(self):
         returnedItem = self.inventory.getItemByName(self.countableItemName)
-        self.assertEqual(returnedItem.name, self.countableItemName, "Inventory did not return %s" % (self.countableItemName))
+        self.assertEqual(returnedItem.name, self.countableItemName, 
+                         "Inventory did not return %s" % (self.countableItemName))
 
     def testScannedItemTotalQuantity(self):  
         testCases = [(self.countableScanned,                         1,           "countable"), 
@@ -64,7 +67,8 @@ class ItemsTest(unittest.TestCase):
 
     def testScannedItemConstruction(self):
         self.assertIsInstance(self.countableScanned, checkout.Items.ScannedItem,     "No such class as ScannedItem")
-        self.assertIsInstance(self.countableScanned, checkout.Items.ScannedItemBase, "ScannedItem does not derive from ScannedItemBase")
+        self.assertIsInstance(self.countableScanned, checkout.Items.ScannedItemBase, 
+                              "ScannedItem does not derive from ScannedItemBase")
 
     def testWeightedItemConstruction(self):
         weightedItem = checkout.Items.WeightedItem("Chicken", 4.9)
@@ -178,7 +182,8 @@ class ItemsTest(unittest.TestCase):
         self.scannedItemContainer.removeAt(0)
 
         lastItem = self.scannedItemContainer.getLastItem()
-        self.assertEqual(lastItem.getName(), self.weightedItemName, "ScannedItemContainer removeAt Did not remove correct item")
+        self.assertEqual(lastItem.getName(), self.weightedItemName, 
+                         "ScannedItemContainer removeAt Did not remove correct item")
 
     def testScannedItemContainerUsesDeepCopyOfScannedItems(self):
         mutableScannedItem = checkout.Items.ScannedItem(self.countableItem)
